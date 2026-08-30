@@ -852,6 +852,107 @@ input[type=text],input[type=password],textarea{
   .panel-body{padding:9px}
   .topic-tools{padding:0 8px}
 }
+
+/* RC1.9.4: posting/reference usability */
+.nav .nav-post{
+  font-weight:bold;
+  border:1px solid #8d9aa8;
+  background:#eef2f5;
+  padding:2px 10px;
+  margin:-2px 4px;
+  box-shadow:inset 0 1px 0 #fff;
+}
+.forum-post-link,.post-action-link{
+  font-weight:bold;
+  text-decoration:none;
+}
+.post-tools-strong{
+  margin-top:8px;
+  padding:7px 10px;
+  border:1px solid #aab3bc;
+  background:#edf1f4;
+}
+.post-action-link{
+  display:inline-block;
+  border:1px solid #8d98a4;
+  background:linear-gradient(#fff,#e7ebef);
+  padding:3px 10px;
+  color:#24384a;
+  box-shadow:inset 0 1px 0 #fff;
+}
+.post-editor-strong{
+  border-color:#9ea9b3;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.post-editor-strong .panel-title{
+  font-weight:bold;
+}
+.post-submit{
+  min-width:92px;
+  font-weight:bold;
+}
+.crumb-action{
+  float:right;
+}
+.quote-current-page{
+  font-weight:normal;
+  text-decoration:underline;
+}
+.reference-composer{
+  border:1px solid #c5ccd2;
+  background:#f7f8f9;
+  padding:7px;
+}
+.reference-row{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.reference-select{
+  width:min(600px,100%);
+  min-width:0;
+  border:1px solid #9fa8b1;
+  background:#fff;
+  padding:4px;
+  font:inherit;
+}
+.reference-help{
+  margin-top:4px;
+  color:#6a7279;
+}
+.selected-references{
+  margin-top:6px;
+  line-height:1.8;
+}
+.selected-reference{
+  display:inline-block;
+  border:1px solid #b7c0c8;
+  background:#fff;
+  padding:1px 5px;
+  margin:0 5px 3px 0;
+}
+.remove-reference{
+  border:0;
+  background:none;
+  color:#667;
+  cursor:pointer;
+  padding:0 2px;
+}
+.post-references{
+  margin-top:12px;
+  padding-top:7px;
+  border-top:1px dotted #b5bbc1;
+  font-size:12px;
+}
+.post-references a{
+  margin-right:7px;
+}
+@media(max-width:680px){
+  .crumb-action{float:none;display:block;margin-top:4px}
+  .reference-row{align-items:stretch}
+  .reference-select{flex:1}
+  .nav .nav-post{padding:3px 8px}
+}
 </style></head><body><div id="sideb-start-error" style="display:none"></div><div id="app"></div><script>window.__sideBLoaded=false;window.addEventListener("error",function(e){var b=document.getElementById("sideb-start-error");if(b){b.style.display="block";b.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown")}});</script><script>
 const SideBStorage = (() => {
   const mem = {};
@@ -939,6 +1040,9 @@ function forumUtilityNav(){
   return `<div class="forum-utility-nav">
     <a href="#home" data-route="home">论坛首页</a>
     <span>›</span>
+    <a href="#general" data-forum="general" class="forum-post-link">发帖</a>
+    ${state.inquiryThreadId ? `<span>·</span><a href="#" data-thread="${esc(state.inquiryThreadId)}">我的主题</a>`:""}
+    <span>·</span>
     <a href="#search" data-route="search">搜索</a>
     <span>·</span>
     <a href="#pm" data-route="pm">短消息</a>
@@ -960,6 +1064,159 @@ function threadUtilities(){
   </div>`;
 }
 function forumHelpBox(){ return ""; }
+
+function refId(ref){
+  return [ref.kind||"页面",ref.route||"",ref.arg||"",ref.label||""].join("|");
+}
+
+function currentPageReference(){
+  const r=state.route, a=state.routeArg||"";
+  if(r==="thread"){
+    const t=allThreads().find(x=>x.id===a);
+    if(!t || t.userCreated) return null;
+    let label=t.title;
+    if(a==="newcomer_2019") label=`2019旧帖 · ${t.title} · UID1848`;
+    return {kind:"帖子",label,route:"thread",arg:a};
+  }
+  if(r==="profile"){
+    const reg=profileLevel()>=1?"2019-06-11":"今天";
+    return {kind:"页面",label:`用户资料 · UID1848 · 注册时间 ${reg}`,route:"profile",arg:""};
+  }
+  const map={
+    oldprofile:["页面","旧版用户资料 · UID1848","oldprofile"],
+    history2:["页面","旧版用户资料 · 历史记录","history2"],
+    tools:["页面","旧站工具 · UID1848","tools"],
+    sources:["文件目录","旧接口 · thread/41772","sources"],
+    evidence:["文件目录","download/sideb/","evidence"],
+    relationtest:["页面","relation_1848_2023.html","relationtest"],
+    pigeon:["文件目录","2024_pigeon/","pigeon"],
+    nas:["文件目录","E_NAS/1848/","nas"],
+    outside:["文件","2023_questionmarks/paste_index.txt","outside"],
+    feb12:["文件目录","2024_pigeon/0212_recovery/","feb12"],
+    forsn:["附件","for_sn.zip","forsn"],
+    candidate:["页面","candidate / user_gap 工具","candidate"],
+    wjc:["页面","usr_1261 · 未见财","wjc"],
+    code17:["文件","relation.php · version history","code17"],
+    incident2018:["文件目录",state.futureDbSeen?"future_db / 2018 export":"2018-10-28 incident/","incident2018"],
+    temp1848:["文件","TEMP_USER / 1848 patch","temp1848"],
+    helper:["页面","Side Helper","helper"],
+    audit:["页面","helper / identity audit","audit"],
+    snapshots:["文件目录","snapshot_B / CLIENT","snapshots"],
+    snapconfig:["文件","snapshot_B repair config","snapconfig"],
+    edges:["页面","repair/manual_map.tmp","edges"]
+  };
+  if(map[r]){
+    const [kind,label,route]=map[r];
+    return {kind,label,route,arg:""};
+  }
+  return null;
+}
+
+function discoveredFileReferences(){
+  const out=[];
+  const add=(cond,kind,label,route,arg="")=>{ if(cond) out.push({kind,label,route,arg}); };
+  add(state.printSeen,"文件","thread/41772.print · 2023-08-19 · UID1848 · 作者？？","sources");
+  add(state.rssSeen,"文件","rss/thread-41772.xml · 作者？？","sources");
+  add(state.searchLayerSeen,"文件","search/user_1848_2023.idx","sources");
+  add(state.saw2023Paste,"文件","cache/sideb_memo.txt","sources");
+  add(state.pigeonReleaseFileSeen,"文件","2024_pigeon · migration/release receipt","pigeon");
+  add(state.rawCsvSeen,"文件","for_sn · raw users.csv","forsn");
+  add(state.relation19Seen,"文件","relation.php 1.9 · WJC","code17");
+  add(state.relation17Seen,"文件","relation.php 1.7 · SN","code17");
+  add(state.rollbackSeen,"日志","2018-10-28 rollback log","incident2018");
+  add(state.group32Seen,"日志","GROUP32 relation rebuild log","incident2018");
+  add(state.uid1848BirthSeen,"日志","CREATE UID1848 · FROM_UID=1261","incident2018");
+  add(state.reconstructedPmSeen,"文件","2018 reconstructed PM export","incident2018");
+  add(state.futureDbSeen,"文件","2018 export · future dated rows","incident2018");
+  add(state.tempPatchSeen,"文件","TEMP_USER patch","temp1848");
+  add(state.helperSeen,"页面","Side Helper 插件页","helper");
+  add(state.snapshotBSeen,"文件目录","snapshot_B","snapshots");
+  add(state.hiddenConfigSeen,"文件","snapshot_B repair config","snapconfig");
+  return out;
+}
+
+function rememberReference(ref){
+  if(!ref) return;
+  state.recentReferences=state.recentReferences||[];
+  const id=refId(ref);
+  state.recentReferences=state.recentReferences.filter(x=>refId(x)!==id);
+  state.recentReferences.unshift(ref);
+  for(const f of discoveredFileReferences()){
+    if(!state.recentReferences.some(x=>refId(x)===refId(f))) state.recentReferences.push(f);
+  }
+  state.recentReferences=state.recentReferences.slice(0,12);
+}
+
+function composerKey(kind,id=""){
+  return kind==="reply"?`reply:${id}`:"new";
+}
+
+function composerRefList(key){
+  state.composerRefs=state.composerRefs||{};
+  state.composerRefs[key]=state.composerRefs[key]||[];
+  return state.composerRefs[key];
+}
+
+function addComposerRef(key,ref){
+  if(!ref) return;
+  const xs=composerRefList(key);
+  if(!xs.some(x=>refId(x)===refId(ref))) xs.push(ref);
+  state.composerRefs[key]=xs.slice(0,5);
+  save();
+}
+
+function removeComposerRef(key,index){
+  const xs=composerRefList(key);
+  xs.splice(index,1);
+  save();
+}
+
+function availableReferenceOptions(excludeRoute="",excludeArg=""){
+  const seen=[...(state.recentReferences||[]),...discoveredFileReferences()];
+  const uniq=[];
+  const ids=new Set();
+  for(const ref of seen){
+    if(!ref) continue;
+    if(ref.route===excludeRoute && String(ref.arg||"")===String(excludeArg||"")) continue;
+    const id=refId(ref);
+    if(ids.has(id)) continue;
+    ids.add(id); uniq.push(ref);
+  }
+  return uniq.slice(0,12);
+}
+
+function referencePickerHtml(key,excludeRoute="",excludeArg=""){
+  const selected=composerRefList(key);
+  const options=availableReferenceOptions(excludeRoute,excludeArg);
+  return `
+    <div class="reference-composer" data-composer-key="${esc(key)}">
+      <div class="reference-row">
+        <select class="reference-select">
+          ${options.length?options.map((r,i)=>`<option value="${i}">${esc(`[${r.kind}] ${r.label}`)}</option>`).join(""):`<option value="">最近没有可附的页面</option>`}
+        </select>
+        <button class="btn smallbtn add-reference" type="button" ${options.length?"":"disabled"}>附上</button>
+      </div>
+      <div class="reference-help small">这里列的是你最近打开过的帖子、页面和文件，不会自动替你选。</div>
+      <div class="selected-references">
+        ${selected.length?selected.map((r,i)=>`<span class="selected-reference">[${esc(r.kind)}] ${esc(r.label)} <button type="button" class="remove-reference" data-index="${i}" title="移除">×</button></span>`).join(""):`<span class="small muted">未附内容</span>`}
+      </div>
+    </div>`;
+}
+
+function renderPostReferences(refs){
+  if(!refs || !refs.length) return "";
+  return `<div class="post-references"><b>附：</b>${refs.map(r=>`<a href="#" data-ref-route="${esc(r.route)}" data-ref-arg="${esc(r.arg||"")}">[${esc(r.kind)}] ${esc(r.label)}</a>`).join("　")}</div>`;
+}
+
+function inquiryEntryText(text,refs=[]){
+  return `${String(text||"")} ${(refs||[]).map(r=>`[${r.kind}] ${r.label}`).join(" ")}`.trim();
+}
+
+function currentQuoteAction(){
+  const ref=currentPageReference();
+  if(!ref) return "";
+  return `<button class="linklike quote-current-page" type="button">引用本页发帖</button>`;
+}
 
 
 const ordinaryAttachments = {
@@ -1264,8 +1521,8 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
-  const BUILD_ID = "rc1.9.3-20260831";
-  const BUILD_LABEL = "RC1.9.3";
+  const BUILD_ID = "rc1.9.4-20260831";
+  const BUILD_LABEL = "RC1.9.4";
 
   const initialState = {
     username: "",
@@ -1291,6 +1548,8 @@ function safeParseSave(raw){
     inquiryLastSeenReplyCount: 0,
     inquirySeq: 0,
     inquiryPromptedMilestones: {},
+    recentReferences: [],
+    composerRefs: {},
     events: [],
     signature: "",
     phaseClock: 0,
@@ -1902,7 +2161,7 @@ function safeParseSave(raw){
   function inquiryPlayerTexts(){
     const t=(state.userThreads||[]).find(x=>x.id===state.inquiryThreadId);
     if(!t) return [];
-    return [t.body||"",...(t.userReplies||[]).map(x=>x.text||"")];
+    return [inquiryEntryText(t.body||"",t.refs||[]),...(t.userReplies||[]).map(x=>inquiryEntryText(x.text||"",x.refs||[]))];
   }
 
   function inquiryLastPlayerText(){
@@ -1927,18 +2186,35 @@ function safeParseSave(raw){
     const anyProfile=texts.some(x=>inquiryMentions(x,"profile"));
 
     // 早期：NPC不读心。玩家说得含糊，火山就只追问；说清楚后才去验证。
-    deliverInquiryReply("fire_open", true, {user:"火山",uid:388,body:intent.kind==="anomaly" && (anyOld||anyIdentity) ? "你说哪个？发下链接。" : "咋了？"});
-    deliverInquiryReply("fire_where", replies>=1 && !anyOld && !anyIdentity, {user:"火山",uid:388,body:"你说的是哪页？我没懂。"});
+    deliverInquiryReply("fire_open", true, {user:"火山",uid:388,body:intent.kind==="anomaly" && (anyOld||anyIdentity) ? "你说哪个？把那页附上来，或者贴链接。" : "咋了？"});
+    deliverInquiryReply("fire_where", replies>=1 && !anyOld && !anyIdentity, {user:"火山",uid:388,body:"你说的是哪页？把那页附上来我看看。"});
     deliverInquiryReply("fire_check", replies>=1 && ((anyOld&&anyIdentity) || (state.saw2019Twin&&anyOld)), {user:"火山",uid:388,body:"找到了。等下，我这边作者也是你。你今天刚注册？"});
     deliverInquiryReply("fire_call_e", !!state.inquiryRepliesDelivered?.fire_check && (replies>=2 || state.oldProfileOpened), {user:"火山",uid:388,body:"行。我叫E看一眼，他以前弄过旧站。"});
-    deliverInquiryReply("e_enter", !!state.inquiryRepliesDelivered?.fire_call_e && (replies>=3 || state.oldProfileOpened), {user:"E",uid:77,body:"火山发我了。你现在资料页注册时间写什么？"});
-    deliverInquiryReply("e_profile", state.oldProfileOpened && !!state.inquiryRepliesDelivered?.e_enter, {user:"E",uid:77,body:"别改资料。我这边先存一份。打印页也开一下，看作者栏。后面再翻到什么就接着回这帖，别另开，我好找。"}, ()=>{
+    deliverInquiryReply("e_enter", !!state.inquiryRepliesDelivered?.fire_call_e && (replies>=3 || state.oldProfileOpened), {user:"E",uid:77,body:"火山发我了。你点一下自己的用户名，资料页“注册时间”现在写什么？原样回我。"});
+
+    // E已经问过注册时间后，允许两种自然继续方式：
+    // 1) 玩家真的去看了旧资料页；
+    // 2) 玩家直接在帖子里回答“2019 / 注册时间 / 主页写着……”。
+    // 旧版只认 oldProfileOpened，导致玩家正常回帖也会卡死。
+    const eEntered = !!state.inquiryRepliesDelivered?.e_enter;
+    const eEnterSeq = state.inquiryRepliesDelivered?.e_enter?.seq || 0;
+    const playerAnsweredE = eEntered && (state.userThreads||[]).some(t =>
+      t.id===state.inquiryThreadId &&
+      (t.userReplies||[]).some(r =>
+        (r.seq||0) > eEnterSeq &&
+        (inquiryMentions(inquiryEntryText(r.text||"",r.refs||[]),"profile") ||
+         inquiryMentions(inquiryEntryText(r.text||"",r.refs||[]),"old") ||
+         /2019|06[-/.]11|六月|注册|今天|刚注册|刚来的/.test(inquiryEntryText(r.text||"",r.refs||[])))
+      )
+    );
+
+    deliverInquiryReply("e_profile", eEntered && (state.oldProfileOpened || playerAnsweredE), {user:"E",uid:77,body:"好，先别改资料。资料页下面有“查看发帖记录”，点进去看看最早一条的日期和标题。你回这帖时可以把那一页直接附上，我好对。"}, ()=>{
       state.eSavedProfile=true;
       if(state.saw2019Twin){state.historyExpanded=true;state.oldReplyCount=Math.max(state.oldReplyCount,26);}
     });
-    deliverInquiryReply("fire_1848", (state.volcanoNoticed||state.volcanoEvidenceSeen) && !!state.inquiryRepliesDelivered?.e_profile, {user:"火山",uid:388,body:"1848这个号我真有点印象。不是你这个人，我是说这个号。"});
+    deliverInquiryReply("fire_1848", (state.volcanoNoticed||state.volcanoEvidenceSeen) && !!state.inquiryRepliesDelivered?.e_profile, {user:"火山",uid:388,body:"1848这个号我真有点印象。不是你这个人，我是说这个号。你站内搜一下1848，我记得旧帖里见过。"});
     deliverInquiryReply("fire_get_han", state.volcanoEvidenceSeen && !!state.inquiryRepliesDelivered?.fire_1848, {user:"火山",uid:388,body:"我问下Han，他以前老翻存档。"});
-    deliverInquiryReply("han_oldposts", !!state.inquiryRepliesDelivered?.fire_get_han && (replies>=2||state.historyExpanded), {user:"Hanlexios",uid:521,body:"刚翻了下。1848以前在旧页里出现过，不止今天。年份我还没对完。"}, ()=>{state.hanJoined=true;state.sinanToolsUnlocked=true;});
+    deliverInquiryReply("han_oldposts", !!state.inquiryRepliesDelivered?.fire_get_han && (replies>=2||state.historyExpanded), {user:"Hanlexios",uid:521,body:"刚翻了下。1848以前在旧页里出现过，不止今天。你如果搜到2023那条，把那页附过来，我再对一下。"}, ()=>{state.hanJoined=true;state.sinanToolsUnlocked=true;});
 
     // 中段：讨论帖继续承接玩家已经实际查到的东西，不凭空解锁。
     deliverInquiryReply("e_2023", state.holder2023Known && inquiryMentions(last,"holder2023"), {user:"E",uid:77,body:"2023那个我找到了。用户名就是两个问号。"});
@@ -1949,13 +2225,13 @@ function safeParseSave(raw){
     deliverInquiryReply("e_forget", state.eForgot2023 && inquiryMentions(last,"holder2023"), {user:"E",uid:77,body:"等会，两个问号是谁？NAS里有文件夹，我没印象。"});
 
     // 技术线：先有人提“旧接口”，再由玩家自己去看。
-    deliverInquiryReply("sinan_enter", state.sinanToolsUnlocked && (state.editLogSeen||state.cacheSeen||state.sourceCompareUnlocked) && (inquiryMentions(last,"relation")||inquiryMentions(last,"wjc")), {user:"司南",uid:1094,body:"旧版编辑记录还活着。以前修站时没删干净。"});
+    deliverInquiryReply("sinan_enter", state.sinanToolsUnlocked && (state.editLogSeen||state.cacheSeen||state.sourceCompareUnlocked) && (inquiryMentions(last,"relation")||inquiryMentions(last,"wjc")), {user:"司南",uid:1094,body:"你附的那页是旧版编辑记录。页里要是能看到“旧版本”，把1.7和1.9的改动人、日期先对一下。"});
     deliverInquiryReply("wjc_voice", state.wjcKnown && inquiryMentions(last,"wjc"), {user:"E",uid:77,body:"未见财我记得。人挺欠的。你说WJC的话，像是他以前签名。"});
     deliverInquiryReply("adam_memory", state.adamCandidateSeen && inquiryMentions(last,"adam"), {user:"火山",uid:388,body:"Adam这个名字我也眼熟。年份别问我，我真记不准。"});
-    deliverInquiryReply("han_futuredb", state.futureDbSeen && inquiryMentions(last,"future"), {user:"Hanlexios",uid:521,body:"那份未来日期的表我看了。里面有一条和后来实际记录对不上。先放着，别急着给它起名字。"});
+    deliverInquiryReply("han_futuredb", state.futureDbSeen && inquiryMentions(last,"future"), {user:"Hanlexios",uid:521,body:"你附的那份未来日期表我看了。有一条和后来实际记录对不上。先把那一行和实际记录留着，别急着给它起名字。"});
     deliverInquiryReply("sinan_force", state.forceConfirmRevealSeen && (inquiryMentions(last,"relation")||inquiryMentions(last,"temp")), {user:"司南",uid:1094,body:"那个关联是我绑的。你没点确认，我知道。"});
     deliverInquiryReply("helper_fire", (state.helperSeen||state.helperStatusSeen) && inquiryMentions(last,"helper"), {user:"火山",uid:388,body:"Side Helper我装过。以前就拿它看头像和备注，后来嫌烦卸了。"});
-    deliverInquiryReply("snapshot_han", (state.snapshotsSeen||state.snapshotBSeen) && inquiryMentions(last,"snapshot"), {user:"Hanlexios",uid:521,body:"snapshot_B里那些CLIENT行，和Helper导出的格式能对上。"});
+    deliverInquiryReply("snapshot_han", (state.snapshotsSeen||state.snapshotBSeen) && inquiryMentions(last,"snapshot"), {user:"Hanlexios",uid:521,body:"你附的snapshot_B里那些CLIENT行，格式和Helper导出能对上。先看同一个UID在两边的名字是不是一致。"});
   }
 
   function inquiryNPCPosts(){
@@ -1972,9 +2248,9 @@ function safeParseSave(raw){
   function userCreatedThreads(){
     const rows=(state.userThreads||[]).map(t=>{
       if(t.id===state.inquiryThreadId) syncInquiryReplies();
-      const stream=[{user:state.username,uid:1848,time:t.time||"今天",body:t.body||"",_seq:0,_kind:"user"}];
+      const stream=[{user:state.username,uid:1848,time:t.time||"今天",body:t.body||"",refs:t.refs||[],_seq:0,_kind:"user"}];
       if(t.id===state.inquiryThreadId) stream.push(...inquiryNPCPosts());
-      (t.userReplies||[]).forEach((x,i)=>stream.push({user:state.username,uid:1848,time:"刚刚",body:x.text,_seq:x.seq||((i+1)*1000),_kind:"user"}));
+      (t.userReplies||[]).forEach((x,i)=>stream.push({user:state.username,uid:1848,time:"刚刚",body:x.text,refs:x.refs||[],_seq:x.seq||((i+1)*1000),_kind:"user"}));
       stream.sort((a,b)=>(a._seq||0)-(b._seq||0));
       const last=stream[stream.length-1];
       return {
@@ -2064,13 +2340,15 @@ function topShell(content, crumb="首页"){
         <div class="nav">
           <button class="linklike" data-route="home">论坛首页</button>
           ${state.registered ? `
+            <button class="linklike nav-post" data-forum="general">发帖</button>
+            ${state.inquiryThreadId ? `<button class="linklike" data-thread="${esc(state.inquiryThreadId)}">我的主题</button>`:""}
             <button class="linklike" data-route="profile">我的主页</button>
             <button class="linklike ${unreadCount?'pm-alert':''}" data-route="pm">短消息${unreadCount ? `<span class="newmark">(${unreadCount})</span><span class="pm-alert-text"> 新消息</span>`:""}</button>
             <button class="linklike" data-route="search">搜索</button>
           `:""}
           <button class="linklike" data-route="about">关于</button>
         </div>
-        <div class="crumb">${canBack?`<button class="linklike" id="navBack">« 返回上页</button>　`:""}${navCrumb(crumb)}</div>
+        <div class="crumb">${canBack?`<button class="linklike" id="navBack">« 返回上页</button>　`:""}${navCrumb(crumb)}${state.registered && currentQuoteAction()?`<span class="crumb-action"> | ${currentQuoteAction()}</span>`:""}</div>
         ${content}
         <div class="page-bottom-nav">${canBack?`<button class="linklike" id="navBackBottom">« 返回上页</button>　|　`:""}<button class="linklike" data-route="home">论坛首页</button>　|　<a href="#" id="backTop">返回顶部</a></div>
         <div class="footer">Powered by Side Forum 2.3　页面生成时间 0.0${Math.floor(Math.random()*9)+1}s</div>
@@ -2171,13 +2449,14 @@ function threadRow(t){
         ${ts.length ? ts.map(threadRow).join("") : `<div class="empty">这里没什么东西。</div>`}
       </div>
       ${fid==="general" ? `
-      <div class="topic-tools"><span>本版主题: ${ts.length}</span><a href="#postbox" class="linklike">发表新主题</a></div>
-      <div class="panel post-editor" id="postbox">
+      <div class="topic-tools post-tools-strong"><span>本版主题: ${ts.length}</span><a href="#postbox" class="post-action-link">发表新主题</a></div>
+      <div class="panel post-editor post-editor-strong" id="postbox">
         <div class="panel-title">发表新主题</div>
         <div class="panel-body editor-table">
           <div class="editor-label">标题</div><div><input id="newTopicTitle" type="text" maxlength="40"></div>
-          <div class="editor-label">内容</div><div><textarea id="newTopicBody" rows="6" maxlength="1000"></textarea><div class="small editor-hint">支持普通文本。请勿连续顶帖。</div></div>
-          <div></div><div><button class="btn primary" id="postNewTopic">发表主题</button>　<button class="btn" type="button" id="clearNewTopic">清空</button></div>
+          <div class="editor-label">内容</div><div><textarea id="newTopicBody" rows="6" maxlength="1000"></textarea><div class="small editor-hint">支持普通文本。看到了哪一页，也可以直接附在下面。</div></div>
+          <div class="editor-label">附上</div><div>${referencePickerHtml("new","forum","general")}</div>
+          <div></div><div><button class="btn primary post-submit" id="postNewTopic">发表主题</button>　<button class="btn" type="button" id="clearNewTopic">清空</button></div>
         </div>
       </div>`:""}
       `,`首页 › ${esc(f?.name||"")}`);
@@ -2237,6 +2516,7 @@ function threadRow(t){
           <div class="post-body">
             <div class="post-time">${esc(p.time)}</div>
             <div>${formatBody(body)}</div>
+            ${renderPostReferences(p.refs||[])}
             ${sig}
           </div>
         </div>`;
@@ -2249,9 +2529,10 @@ function threadRow(t){
     let related="";
     const ownReplyBox=t.userCreated ? `
       <div class="topic-tools"><span>回复 ${t.replies}</span><a href="#replybox" class="linklike">快速回复</a></div>
-      <div class="panel post-editor" id="replybox"><div class="panel-title">快速回复</div><div class="panel-body editor-table">
-        <div class="editor-label">内容</div><div><textarea id="userThreadReplyText" rows="4" placeholder=""></textarea><div class="small editor-hint">楼主可继续补充情况。</div></div>
-        <div></div><div><button class="btn primary" id="replyUserThread" data-user-thread="${esc(t.id)}">发表回复</button></div>
+      <div class="panel post-editor post-editor-strong" id="replybox"><div class="panel-title">快速回复</div><div class="panel-body editor-table">
+        <div class="editor-label">内容</div><div><textarea id="userThreadReplyText" rows="4" placeholder=""></textarea><div class="small editor-hint">楼主可继续补充情况。需要别人看哪一页，就从下面附上。</div></div>
+        <div class="editor-label">附上</div><div>${referencePickerHtml(composerKey("reply",t.id),"thread",t.id)}</div>
+        <div></div><div><button class="btn primary post-submit" id="replyUserThread" data-user-thread="${esc(t.id)}">发表回复</button></div>
       </div></div>`:"";
     return topShell(`${banner}<div class="panel"><div class="panel-title">${esc(t.title)}</div>${renderedPosts}</div>${ownReplyBox}${related}`,`首页 › ${esc(t.title)}`);
   }
@@ -4384,6 +4665,8 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     state.inquiryRepliesDelivered = state.inquiryRepliesDelivered || {};
     state.inquiryThreadId = state.inquiryThreadId || "";
     state.inquiryLastSeenReplyCount = Number.isFinite(state.inquiryLastSeenReplyCount) ? state.inquiryLastSeenReplyCount : 0;
+    state.recentReferences = state.recentReferences || [];
+    state.composerRefs = state.composerRefs || {};
     state.inquirySeq = Number.isFinite(state.inquirySeq) ? state.inquirySeq : 0;
     state.inquiryPromptedMilestones = state.inquiryPromptedMilestones || {};
     // RC1.9.2 delivered records did not carry dialogue content/sequence. Rebuild only that
@@ -4437,6 +4720,8 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     if(state.registered && !hashBootApplied){ applyHashRoute(); hashBootApplied=true; }
     updateDocumentTitle();
     guardRoute();
+    const currentRef=currentPageReference();
+    if(currentRef) rememberReference(currentRef);
     const app=document.querySelector("#app");
     if(!state.registered){ app.innerHTML=renderLogin(); bind(); return; }
     switch(state.route){
@@ -4551,14 +4836,65 @@ function bind(){
       const a=document.querySelector("#newTopicTitle"),b=document.querySelector("#newTopicBody"); if(a)a.value=""; if(b)b.value="";
     });
 
+    document.querySelectorAll(".add-reference").forEach(btn=>btn.addEventListener("click",()=>{
+      const box=btn.closest(".reference-composer");
+      const key=box?.dataset.composerKey||"";
+      const sel=box?.querySelector(".reference-select");
+      const options=availableReferenceOptions(
+        state.route==="thread"?"thread":"",
+        state.route==="thread"?(state.routeArg||""):""
+      );
+      const idx=Number(sel?.value);
+      if(key && Number.isInteger(idx) && options[idx]){
+        addComposerRef(key,options[idx]);
+        sidebPageSwap(render);
+      }
+    }));
+    document.querySelectorAll(".remove-reference").forEach(btn=>btn.addEventListener("click",()=>{
+      const box=btn.closest(".reference-composer");
+      const key=box?.dataset.composerKey||"";
+      const idx=Number(btn.dataset.index);
+      if(key && Number.isInteger(idx)){
+        removeComposerRef(key,idx);
+        sidebPageSwap(render);
+      }
+    }));
+    document.querySelectorAll("[data-ref-route]").forEach(el=>el.addEventListener("click",(e)=>{
+      e.preventDefault();
+      pushNav();
+      state.route=el.dataset.refRoute||"home";
+      state.routeArg=el.dataset.refArg||null;
+      save(); sidebPageSwap(render);
+    }));
+    document.querySelectorAll(".quote-current-page").forEach(btn=>btn.addEventListener("click",()=>{
+      const ref=currentPageReference();
+      if(!ref) return;
+      if(state.inquiryThreadId){
+        const key=composerKey("reply",state.inquiryThreadId);
+        addComposerRef(key,ref);
+        pushNav();
+        state.route="thread";
+        state.routeArg=state.inquiryThreadId;
+      }else{
+        addComposerRef("new",ref);
+        pushNav();
+        state.route="forum";
+        state.routeArg="general";
+      }
+      save(); sidebPageSwap(render);
+      setTimeout(()=>document.querySelector(state.inquiryThreadId?"#replybox":"#postbox")?.scrollIntoView({block:"start"}),30);
+    }));
+
     document.querySelector("#postNewTopic")?.addEventListener("click",()=>{
       const title=(document.querySelector("#newTopicTitle")?.value||"").trim();
       const body=(document.querySelector("#newTopicBody")?.value||"").trim();
       if(!title || !body) return;
       state.userThreads=state.userThreads||[];
       const id="user_"+Date.now().toString(36);
-      state.userThreads.unshift({id,forum:"general",title:title.slice(0,40),body:body.slice(0,1000),time:"今天",userReplies:[]});
-      const intent=inquiryIntent(title,body);
+      const refs=[...composerRefList("new")];
+      state.composerRefs["new"]=[];
+      state.userThreads.unshift({id,forum:"general",title:title.slice(0,40),body:body.slice(0,1000),refs,time:"今天",userReplies:[]});
+      const intent=inquiryIntent(title,inquiryEntryText(body,refs));
       if(!state.inquiryThreadId && event("first_anomaly") && intent.kind!=="mundane"){
         state.inquiryThreadId=id;
         state.inquiryRepliesDelivered={};
@@ -4579,7 +4915,10 @@ function bind(){
       const t=(state.userThreads||[]).find(x=>x.id===id);
       if(!t) return;
       t.userReplies=t.userReplies||[];
-      t.userReplies.push({text:text.slice(0,700),at:Date.now(),seq:nextInquirySeq()});
+      const key=composerKey("reply",id);
+      const refs=[...composerRefList(key)];
+      state.composerRefs[key]=[];
+      t.userReplies.push({text:text.slice(0,700),refs,at:Date.now(),seq:nextInquirySeq()});
       if(id===state.inquiryThreadId) syncInquiryReplies();
       save(); sidebPageSwap(render);
     });

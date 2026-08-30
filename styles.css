@@ -852,3 +852,104 @@ input[type=text],input[type=password],textarea{
   .panel-body{padding:9px}
   .topic-tools{padding:0 8px}
 }
+
+/* RC1.9.4: posting/reference usability */
+.nav .nav-post{
+  font-weight:bold;
+  border:1px solid #8d9aa8;
+  background:#eef2f5;
+  padding:2px 10px;
+  margin:-2px 4px;
+  box-shadow:inset 0 1px 0 #fff;
+}
+.forum-post-link,.post-action-link{
+  font-weight:bold;
+  text-decoration:none;
+}
+.post-tools-strong{
+  margin-top:8px;
+  padding:7px 10px;
+  border:1px solid #aab3bc;
+  background:#edf1f4;
+}
+.post-action-link{
+  display:inline-block;
+  border:1px solid #8d98a4;
+  background:linear-gradient(#fff,#e7ebef);
+  padding:3px 10px;
+  color:#24384a;
+  box-shadow:inset 0 1px 0 #fff;
+}
+.post-editor-strong{
+  border-color:#9ea9b3;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.post-editor-strong .panel-title{
+  font-weight:bold;
+}
+.post-submit{
+  min-width:92px;
+  font-weight:bold;
+}
+.crumb-action{
+  float:right;
+}
+.quote-current-page{
+  font-weight:normal;
+  text-decoration:underline;
+}
+.reference-composer{
+  border:1px solid #c5ccd2;
+  background:#f7f8f9;
+  padding:7px;
+}
+.reference-row{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.reference-select{
+  width:min(600px,100%);
+  min-width:0;
+  border:1px solid #9fa8b1;
+  background:#fff;
+  padding:4px;
+  font:inherit;
+}
+.reference-help{
+  margin-top:4px;
+  color:#6a7279;
+}
+.selected-references{
+  margin-top:6px;
+  line-height:1.8;
+}
+.selected-reference{
+  display:inline-block;
+  border:1px solid #b7c0c8;
+  background:#fff;
+  padding:1px 5px;
+  margin:0 5px 3px 0;
+}
+.remove-reference{
+  border:0;
+  background:none;
+  color:#667;
+  cursor:pointer;
+  padding:0 2px;
+}
+.post-references{
+  margin-top:12px;
+  padding-top:7px;
+  border-top:1px dotted #b5bbc1;
+  font-size:12px;
+}
+.post-references a{
+  margin-right:7px;
+}
+@media(max-width:680px){
+  .crumb-action{float:none;display:block;margin-top:4px}
+  .reference-row{align-items:stretch}
+  .reference-select{flex:1}
+  .nav .nav-post{padding:3px 8px}
+}
