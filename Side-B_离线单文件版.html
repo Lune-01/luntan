@@ -87,47 +87,6 @@
 }
 
 
-.source-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
-}
-.source-card{
-  border:1px solid #b8bec3;
-  background:#eceeef;
-}
-.source-head{
-  padding:7px 9px;
-  border-bottom:1px solid #c7ccd0;
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-}
-.source-body{
-  padding:9px;
-  min-height:92px;
-}
-.source-actions{
-  padding:0 9px 9px;
-}
-.evidence-row{
-  display:grid;
-  grid-template-columns:1fr 90px;
-  gap:12px;
-  align-items:center;
-  padding:10px 12px;
-  border-top:1px solid #d2d6d9;
-}
-.evidence-tier{
-  display:inline-block;
-  margin-left:7px;
-  padding:0 4px;
-  border:1px solid #a9afb4;
-  font-size:10px;
-  color:#596169;
-  background:#e4e7e9;
-}
 .memo-box{
   width:100%;
   min-height:130px;
@@ -143,9 +102,7 @@ button:disabled{
   opacity:.55;
 }
 @media(max-width:700px){
-  .source-grid{grid-template-columns:1fr}
-  .evidence-row{grid-template-columns:1fr}
-}
+  }
 
 
 .diary-tabs{
@@ -261,20 +218,6 @@ button:disabled{
   border-top:1px solid #d4d8db;
 }
 .proof-row:first-child{border-top:0}
-.score-list{
-  border-top:1px solid #d2d6d9;
-}
-.score-row{
-  display:grid;
-  grid-template-columns:40px 1fr 70px;
-  gap:8px;
-  padding:8px 12px;
-  border-bottom:1px solid #d8dcdf;
-}
-.score-row.threshold{
-  font-weight:600;
-  background:#e8e8e3;
-}
 @media(max-width:700px){
   .proof-row{grid-template-columns:1fr}
   .future-row{grid-template-columns:60px 80px 1fr 70px}
@@ -358,21 +301,6 @@ button:disabled{
 }
 
 
-.identity-locks{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-}
-.lock-card{
-  border:1px solid #c9ced1;
-  padding:9px;
-  display:grid;
-  gap:6px;
-  background:#f2f3f0;
-}
-.lock-card.locked{
-  background:#eceeea;
-}
 .smallbtn{width:max-content}
 .edge-row{
   display:grid;
@@ -391,7 +319,6 @@ button:disabled{
   margin:0 auto;
 }
 @media(max-width:700px){
-  .identity-locks{grid-template-columns:1fr}
   .edge-row{grid-template-columns:1fr}
 }
 
@@ -611,8 +538,7 @@ h1,h2,h3{
 .ordinary-false-positive pre{max-height:150px;overflow:auto}
 .ordinary-false-positive .attachments{margin-top:6px}
 .panel[data-important="true"]{outline:none !important}
-.clue,.evidence,.important{box-shadow:none;color:#777;padding:3px 5px;margin-bottom:5px;border-bottom:1px dotted #bbb}
-
+.clue,.evidence,.important{color:inherit;padding:0;margin:0;border:0;box-shadow:none}
 /* Phase32: player memory aids, not quest markers */
 .recent-viewed,.search-history-hint{
   font-size:11px;
@@ -730,24 +656,6 @@ input,select,textarea{
 .pm-notice{border:1px solid #d7b500;background:#fffbe0}
 .mail-icon{font-family:serif}
 .pm-unread{background:#fffceb;border-left:3px solid #d7b500}
-.anomaly-link{font-weight:bold;text-decoration:underline}
-.anomaly-tag{
-  display:inline-block;
-  margin-left:4px;
-  padding:0 3px;
-  border:1px solid #b88d00;
-  background:#fff1a8;
-  color:#7a4f00;
-  font-size:11px;
-  line-height:1.4;
-  vertical-align:baseline
-}
-.anomaly-field{
-  display:inline-block;
-  padding:1px 3px;
-  background:#fff3b0;
-  outline:1px solid #d1ad32
-}
 .blink-soft,.pm-alert-text{
   animation:sideb-blink 1.15s steps(2,end) infinite
 }
@@ -759,7 +667,60 @@ input,select,textarea{
   .blink-soft,.pm-alert-text{animation:none}
 }
 
-</style></head><body><div id="sideb-start-error" style="display:none"></div><div id="app"></div><script>window.__sideBLoaded=false;window.addEventListener("error",function(e){var b=document.getElementById("sideb-start-error");if(b){b.style.display="block";b.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown")}});setTimeout(function(){if(!window.__sideBLoaded){var a=document.getElementById("app"),b=document.getElementById("sideb-start-error");if(a&&!a.innerHTML.trim()&&b){b.style.display="block";b.textContent="页面没有正常启动。请把文件保存到本地后再用浏览器打开。"}}},1500);</script><script>
+
+.raw-fold{
+  margin:6px 0;
+  border:1px solid #c8c8c8;
+  background:#f7f7f7;
+}
+.raw-fold>summary{
+  cursor:pointer;
+  padding:5px 7px;
+  font-size:12px;
+  color:#444;
+  background:#ededed;
+  list-style-position:inside;
+}
+.raw-fold[open]>summary{border-bottom:1px solid #c8c8c8}
+.raw-fold>.codebox,.raw-fold>.logbox{
+  margin:0;
+  border:0;
+  max-height:320px;
+  overflow:auto;
+}
+
+.pm-new-badge{
+  display:inline-block;
+  margin-left:4px;
+  padding:0 3px;
+  border:1px solid #b30000;
+  background:#fff;
+  color:#b30000;
+  font-size:11px;
+  line-height:1.35;
+  font-weight:bold;
+  vertical-align:baseline;
+}
+.pm-unread .pm-from{font-weight:bold}
+.pm-unread .pm-preview{color:#333}
+@media (prefers-reduced-motion:reduce){
+  .pm-new-badge{opacity:1!important}
+}
+
+.record-check-list{padding:0}
+.record-check-row{display:grid;grid-template-columns:minmax(160px,1fr) 80px auto;gap:10px;align-items:center;padding:8px 10px;border-top:1px solid #d4d7da}
+.record-check-row:first-child{border-top:0}
+.legacy-css-debt .panel-title{font-weight:normal}
+.legacy-css-debt .panel{border-color:#aaa}
+.legacy-css-debt .era-stamp{font-size:10px;text-align:left}
+.search-history-hint,.recent-viewed{font-size:12px;color:#69727b;margin:6px 0 10px}
+.search-history-hint span{color:#555}
+@media(max-width:700px){.record-check-row{grid-template-columns:1fr}}
+.archive-record{margin:0 0 8px;border:1px solid #b8bdc2;background:#f5f5f2}
+.archive-record>summary{cursor:pointer;padding:6px 9px;font-size:12px;color:#4f5962;background:#eceeef}
+.archive-record[open]>summary{border-bottom:1px solid #b8bdc2}
+.archive-record>.panel{margin:0;border:0}
+</style></head><body><div id="sideb-start-error" style="display:none"></div><div id="app"></div><script>window.__sideBLoaded=false;window.addEventListener("error",function(e){var b=document.getElementById("sideb-start-error");if(b){b.style.display="block";b.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown")}});setTimeout(function(){if(!window.__sideBLoaded){var a=document.getElementById("app"),b=document.getElementById("sideb-start-error");if(a&&!a.innerHTML.trim()&&b){b.style.display="block";b.textContent="页面没有正常启动。请刷新页面再试。"}}},1500);</script><script>
 const SideBStorage = (() => {
   const mem = {};
   return {
@@ -794,6 +755,7 @@ function sidebPageSwap(draw){
 }
 
 let state = null;
+let hashBootApplied = false;
 function escGlobal(s=""){
   return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 }
@@ -824,16 +786,19 @@ function legacyFooter(){
 function eraPage(year, content){
   let era="era-current";
   if(year<=2011) era="era-2009";
-  else if(year<=2014) era="era-2012";
-  else if(year<=2020) era="era-2018";
-  else if(year<=2024) era="era-2023";
-  return `<div class="era-page ${era}" data-era="${year}">${content}</div>`;
+  else if(year<=2014) era=(year%2===0?"era-2009":"era-2012");
+  else if(year<=2020) era=(year===2018?"era-2012":"era-2018");
+  else if(year<=2024) era=(year===2023?"era-2018":"era-current");
+  const debt=(year===2012||year===2018||year===2024)?" legacy-css-debt":"";
+  return `<div class="era-page ${era}${debt}" data-era="${year}">${content}</div>`;
 }
+
 function eraStamp(year){
-  if(year<=2011) return `<div class="era-stamp">Side Forum　[标准版]　Archiver 0.8</div>`;
-  if(year<=2014) return `<div class="era-stamp">Side-B / 打印模式</div>`;
-  if(year<=2020) return `<div class="era-stamp">Side-B　旧版页面</div>`;
-  if(year<=2024) return `<div class="era-stamp">Side-B Archive</div>`;
+  if(year<=2011) return `<div class="era-stamp">Side Forum　标准版</div>`;
+  if(year===2012) return `<div class="era-stamp">Side Forum © 2009-2012</div>`;
+  if(year<=2014) return `<div class="era-stamp">Side-B / archive copy</div>`;
+  if(year===2018) return `<div class="era-stamp">Side-B　Powered by Side Forum 2.1</div>`;
+  if(year===2024) return `<div class="era-stamp">Archive copy · 样式表缺失 1 项</div>`;
   return "";
 }
 
@@ -885,7 +850,7 @@ function ordinaryPrintPage(id){
   const t=ordinaryForumData.threads.find(x=>x.id===id); if(!t)return;
   document.querySelector("#app").innerHTML=`<div class="print-page era-2012"><div class="era-stamp">Side-B / 打印模式</div>
   <h3>${t.title}</h3><div>${t.author}　${t.board}</div><hr><p>${t.body}</p>
-  <p class="muted">打印时间以服务器为准。</p></div>`;
+  <p class="muted">打印时间以服务器为准。</p><p><a href="#ordinary/${id}" data-ordinary-thread="${id}">返回主题</a></p></div>`;
 }
 function ordinaryRSS(id){
   const t=ordinaryForumData.threads.find(x=>x.id===id); if(!t)return;
@@ -907,9 +872,15 @@ const ordinaryForumData = {
     {id:"g_earbuds",board:"电脑数码",title:"耳机右边突然变小声了",author:"白开水",replies:8,body:"昨晚还好好的，今天右边突然小一截。换手机也一样，是不是线要断了？"},
     {id:"g_steam",board:"游戏",title:"Steam今天又怎么了",author:"火山",replies:16,body:"商店能开，好友列表一直转圈。你们也这样？"},
     {id:"g_font",board:"资源分享",title:"求以前那个点阵字体",author:"纸盒",replies:5,body:"大概14年前后有人发过，蓝底那个预览图。原链接已经死了。"},
-    {id:"g_sleep",board:"综合闲聊",title:"睡不着，有人还在吗",author:"盐汽水",replies:23,body:"明早还得起床，现在一点都不困。"},
+    {id:"g_sleep",board:"综合闲聊",title:"有人吗",author:"盐汽水",replies:23,body:"睡不着。"},
     {id:"g_avatar",board:"站务",title:"头像又挂了？",author:"折页",replies:4,body:"上传说成功了，刷新还是原来那张。"},
-    {id:"g_disk",board:"电脑数码",title:"旧机械盘咔一下要紧吗",author:"水杯",replies:11,body:"不是一直响，隔几分钟咔一下。盘里还有照片，有点慌。"}
+    {id:"g_disk",board:"电脑数码",title:"旧机械盘咔一下要紧吗",author:"水杯",replies:11,body:"不是一直响，隔几分钟咔一下。盘里还有照片，有点慌。"},
+    {id:"g_q1",board:"电脑数码",title:"问一下",author:"白开水",replies:0,body:"算了，找到了。"},
+    {id:"g_del",board:"综合闲聊",title:"删",author:"火山",replies:2,body:"发错版了，版主看到删一下。"},
+    {id:"g_help",board:"电脑数码",title:"怎么又挂了",author:"白开水",replies:7,body:"还是上次那个路由器。重启能好半天。"},
+    {id:"g_old",board:"资源分享",title:"求助",author:"纸盒",replies:1,body:"附件过期了。楼主如果还在的话能不能补一下。"},
+    {id:"g_done",board:"电脑数码",title:"好了",author:"小陆",replies:3,body:"上一帖那个滚轮问题，吹了不行，拆开擦了下好了。"},
+    {id:"g_wrong",board:"游戏",title:"这个有人玩吗",author:"盐汽水",replies:0,body:"[图片已失效]"}
   ],
   profiles:{
     "火山":{uid:"0871",joined:"2011-09-22",posts:"3864",bio:"以前签名太长，被管理删过一次。",last:"今天 10:42"},
@@ -1032,25 +1003,6 @@ function ordinaryLongPost(){
 function noteForumVisit(kind="page"){
   state.forumVisits=(state.forumVisits||0)+1;
   state.lastForumVisitKind=kind;
-  if(state.pendingForumEvents&&state.pendingForumEvents.length){
-    const next=state.pendingForumEvents[0];
-    if(state.forumVisits>=next.afterVisit){
-      state.pendingForumEvents.shift();
-      state.readyForumEvents=state.readyForumEvents||[];
-      state.readyForumEvents.push(next);
-    }
-  }
-}
-function queueForumEvent(id,after=1,channel="pm"){
-  state.pendingForumEvents=state.pendingForumEvents||[];
-  state.readyForumEvents=state.readyForumEvents||[];
-  if(state.pendingForumEvents.some(x=>x.id===id)||state.readyForumEvents.some(x=>x.id===id))return;
-  state.pendingForumEvents.push({id,channel,afterVisit:(state.forumVisits||0)+Math.max(1,after)});
-}
-function readyForumEvent(id){return !!(state.readyForumEvents||[]).find(x=>x.id===id);}
-function mailboxNoise(){
-  const pool=["订阅主题有新回复","资源区有链接更新","关注主题有新回复","1 条未读短消息"];
-  return pool[(state.forumVisits||0)%pool.length];
 }
 
 
@@ -1066,42 +1018,21 @@ function recentViewedBox(){
   if(!rows.length)return "";
   return `<div class="recent-viewed"><b>最近查看</b>　${rows.map(x=>x.route?`<a href="${x.route}">${x.label}</a>`:x.label).join(" · ")}</div>`;
 }
-function contextualSearchTerms(){
-  const terms=[];
-  const seen=(state.recentViewed||[]).map(x=>x.label).join(" ");
-  if(/1848/.test(seen))terms.push("1848");
-  if(/Adam/.test(seen))terms.push("Adam");
-  if(/司南/.test(seen))terms.push("司南");
-  if(/房东/.test(seen))terms.push("房东");
-  if(/未见财/.test(seen))terms.push("未见财");
-  return [...new Set(terms)].slice(0,4);
+function recordSearchQuery(q){
+  q=String(q||"").trim();
+  if(!q)return;
+  state.searchHistory=state.searchHistory||[];
+  state.searchHistory=state.searchHistory.filter(x=>x!==q);
+  state.searchHistory.unshift(q);
+  state.searchHistory=state.searchHistory.slice(0,8);
 }
 function searchHistoryHint(){
-  const t=contextualSearchTerms();
-  if(!t.length)return "";
-  return `<div class="search-history-hint">刚才看过：${t.map(x=>`<span>${x}</span>`).join("、")}</div>`;
+  const rows=(state.searchHistory||[]).slice(0,6);
+  if(!rows.length)return "";
+  return `<div class="search-history-hint"><b>搜索记录：</b>${rows.map(x=>`<span>${escGlobal(x)}</span>`).join("　")}</div>`;
 }
 
 
-
-function chatNoise(kind="late"){
-  const pools={
-    early:[
-      ["火山：等下","火山：靠，我回错帖了"],
-      ["火山：你们先说","火山：我烧个水"],
-      ["司南：等我一下","司南：这页手机上挤成一坨"]
-    ],
-    late:[
-      ["火山：等会","火山：上面那句别看了"],
-      ["Hanlexios：刚回来","Hanlexios：你们这几个人刷得也太快了"],
-      ["E：等会。","E：我找文件。"],
-      ["司南：我翻下旧代码","火山：你不是刚说不记得？","司南：我说的是不记得哪一版"]
-    ]
-  };
-  const a=pools[kind]||pools.late;
-  const pair=a[(state.forumVisits||0)%a.length];
-  return `<div class="chat-noise">${pair.map(x=>`<div>${x}</div>`).join("")}</div>`;
-}
 function delayedChatLine(who,text){
   return `<div class="chat-delayed"><span class="muted">${mundaneDelayLabel(who)}</span>　${who}：${text}</div>`;
 }
@@ -1109,23 +1040,11 @@ function delayedChatLine(who,text){
 
 
 function eraForumTexture(year){
-  if(year<=2012)return `<div class="era-texture era-texture-old">
-    <div class="old-quote">引用: 原帖由 某用户 发表于 2012-03-04 22:17<br>我这边能打开，你换个浏览器试试。</div>
-    <div>2#　发表于 2012-03-04 22:31　&nbsp;　回复　引用</div>
-    <div>3#　发表于 2012-03-04 23:02　&nbsp;　= = 我这里也挂了</div>
-  </div>`;
-  if(year<=2018)return `<div class="era-texture era-texture-mid">
-    <div><b>17楼</b>　2018-10-28 23:16</div>
-    <div>我手机回的，格式乱了别管。</div>
-    <div class="muted">来自移动版</div>
-  </div>`;
-  if(year<=2024)return `<div class="era-texture era-texture-new">
-    <div>2024-02-06 00:41</div>
-    <div>刚才那楼我删了，贴错窗口。</div>
-    <div>编辑于 00:43</div>
-  </div>`;
+  if(year===2012)return `<div class="era-texture era-texture-old"><div>2#　发表于 2012-03-04 22:31　回复　引用</div><div>3#　发表于 2012-03-04 23:02　= = 我这里也挂了</div></div>`;
+  if(year===2018)return `<div class="era-texture era-texture-mid"><div class="muted">本页沿用旧手机版模板，部分样式未载入。</div></div>`;
   return "";
 }
+
 function eraQuote(author,text,year){
   if(year<=2012)return `<div class="old-quote"><b>引用:</b> ${author} 发表于 ${year}-??-??<br>${text}</div>`;
   if(year<=2018)return `<blockquote><div class="muted">${author}：</div>${text}</blockquote>`;
@@ -1197,8 +1116,6 @@ function normalizeBranchState(){
   if(state.phase && !Number.isFinite(state.phase)) state.phase=1;
   state.savedEvidence=state.savedEvidence||[];
   state.edgeAssignments=state.edgeAssignments||{};
-  state.pendingForumEvents=state.pendingForumEvents||[];
-  state.readyForumEvents=state.readyForumEvents||[];
 }
 
 
@@ -1215,8 +1132,8 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
-  const BUILD_ID = "rc1.8.3-20260830";
-  const BUILD_LABEL = "RC1.8.3";
+  const BUILD_ID = "rc1.9-20260830";
+  const BUILD_LABEL = "RC1.9";
 
   const initialState = {
     username: "",
@@ -1231,6 +1148,7 @@ function safeParseSave(raw){
     routeArg: null,
     navStack: [],
     readPMs: [],
+    deliveredPMs: {},
     visibilityKnown: {},
     pendingSections: [],
     pendingPageUpdates: [],
@@ -1323,6 +1241,8 @@ function safeParseSave(raw){
     phase8Unlocked: false,
     wjcKnown: false,
     uid1261Seen: false,
+    wjcChatSeen: false,
+    commitHistorySeen: false,
     relationCodeSeen: false,
     relationVersion: "1.7",
     rollbackSeen: false,
@@ -1334,6 +1254,7 @@ function safeParseSave(raw){
     futureDbSeen: false,
     adamTruthSeen: false,
     gameCodeSeen: false,
+    futureDbRowsSeen: 1,
 
     phase9Unlocked: false,
     tempUserSeen: false,
@@ -1342,6 +1263,7 @@ function safeParseSave(raw){
     cycleExplained: false,
 
     helperSeen: false,
+    helperIntroStep: 1,
     evidenceAuditSeen: false,
     helperFireSeen: false,
     helperESeen: false,
@@ -1590,15 +1512,15 @@ function safeParseSave(raw){
     if(state.evidenceChoiceUnlocked && state.holder2023Known && state.holder2024Known){
       state.phase5Unlocked = true;
       state.pigeonDiaryUnlocked = true;
+      state.nasUnlocked = true;
     }
     if(state.unlink2023Done){
       state.eForgot2023 = true;
       state.nasUnlocked = true;
     }
-    if(state.releaseTestSeen && state.pigeonDay >= 5 && state.eForgot2023){
+    if(state.releaseTestSeen && state.eForgot2023){
       state.phase6Unlocked = true;
       state.qmarkExitSeen = true;
-      queueForumEvent('deferred_qmarkExitSeen', 1, 'pm');
     }
     if(state.phase6Unlocked && state.qmarkOutsideSeen && state.releaseV2Seen){
       state.pigeonFinalUnlocked = true;
@@ -1810,92 +1732,31 @@ function safeParseSave(raw){
     const clean=String(crumb||"").replace(/^首页\s*›\s*/,"").replace(/^首页$/,"");
     return `<button class="linklike crumb-link" data-route="home">论坛首页</button>${clean?` <span>›</span> ${clean}`:""}`;
   }
+
+  function deliverPM(id, condition=true){
+    state.deliveredPMs=state.deliveredPMs||{};
+    if(condition && !state.deliveredPMs[id]){
+      state.deliveredPMs[id]={
+        at: Date.now(),
+        visit: state.forumVisits||0
+      };
+    }
+    return !!state.deliveredPMs[id];
+  }
+
   function unreadPmCount(){
     const read=new Set(state.readPMs||[]);
-    let ids=["e1","sys1"];
-    if(state.saw2019Twin || state.searched1848) ids.push("e2");
-    if(event("first_anomaly") && !state.saw2019Twin && (state.forumVisits||0)>=4) ids.push("v_archive");
-    if(state.volcanoNoticed) ids.push("v1");
-    if(state.hanJoined) ids.push("han1");
-    if(state.sinanToolsUnlocked) ids.push("sn1");
-    syncStallMarks();
-    [
-      ["old_coop","stall_coop",5],["source_compare","stall_sources",5],
-      ["relation_phase","stall_relation",5],["nas_release","stall_nas",4],
-      ["outside_qmark","stall_outside",4],["feb12","stall_feb12",5],
-      ["forsn","stall_forsn",4],["candidate","stall_candidate",4],
-      ["wjc","stall_wjc",4],["temp1848","stall_temp",4],
-      ["helper_audit","stall_helper",4],["snapshots","stall_snap",5],
-      ["edges","stall_edges",5]
-    ].forEach(x=>{ if(stalled(x[0],x[2])) ids.push(x[1]); });
-    return ids.filter(x=>!read.has(x)).length;
+    return pmData().filter(pm=>!read.has(pm.id)).length;
   }
 
   
-  function sectionDefs(){
-    return [
-      ["saved","离线保存",!!state.eSavedProfile],
-      ["tools","旧站工具",!!state.sinanToolsUnlocked],
-      ["sources","页面版本",!!state.sourceCompareUnlocked],
-      ["evidence","本地文件",!!state.evidenceChoiceUnlocked],
-      ["relationtest","关联记录",!!state.phase5Unlocked],
-      ["pigeon","2024记录",!!state.pigeonDiaryUnlocked],
-      ["nas","E的NAS",!!state.nasUnlocked],
-      ["outside","站外记录",!!state.phase6Unlocked],
-      ["feb12","02/12 记录",!!state.pigeonFinalUnlocked],
-      ["leave","退出入口",!!state.exitEndingUnlocked],
-      ["forsn","for_sn.zip",!!state.phase7Unlocked],
-      ["candidate","候选匹配",!!state.rawCsvSeen],
-      ["wjc","2018资料",!!state.phase8Unlocked],
-      ["code17","relation.php",!!state.relationCodeSeen],
-      ["incident2018","10/28事故",!!state.incident2018Unlocked],
-      ["temp1848","1848循环",!!state.phase9Unlocked],
-      ["helper","Side Helper",!!state.helperSeen],
-      ["audit","证据重审",!!state.evidenceAuditSeen],
-      ["snapshots","旧快照",!!state.phase10Unlocked],
-      ["snapconfig","B库设置",!!state.hiddenRouteUnlocked],
-      ["edges","归属修复",!!state.phase11Unlocked],
-      ["releasefinal","释放1848",!!state.finalReleaseSeen]
-    ];
-  }
-  function syncVisibility(){
-    if(!state.registered) return;
-    const defs=sectionDefs();
-    const known=state.visibilityKnown||{};
-    if(!state.visibilityReady){
-      defs.forEach(([route,label,on])=>{known[route]=!!on;});
-      state.visibilityKnown=known;
-      state.visibilityReady=true;
-      return;
-    }
-    defs.forEach(([route,label,on])=>{
-      const before=!!known[route];
-      if(on && !before && route!==state.route){
-        if(!(state.pendingSections||[]).some(x=>x.route===route)){
-          state.pendingSections.push({route,label});
-        }
-      }
-      known[route]=!!on;
-    });
-    state.visibilityKnown=known;
-  }
-  function notePageUpdate(key,label,route){
-    state.pendingPageUpdates=state.pendingPageUpdates||[];
-    const id=key||route;
-    if(!state.pendingPageUpdates.some(x=>x.key===id)){
-      state.pendingPageUpdates.push({key:id,label,route});
-    }
-  }
-  function acknowledgeRoute(route){
-    state.pendingSections=(state.pendingSections||[]).filter(x=>x.route!==route);
-    state.pendingPageUpdates=(state.pendingPageUpdates||[]).filter(x=>x.route!==route);
-  }
-  function newBadge(route){
-    const hit=(state.pendingSections||[]).some(x=>x.route===route) ||
-              (state.pendingPageUpdates||[]).some(x=>x.route===route);
-    return hit?`<span class="section-new">新</span>`:"";
-  }
+  function sectionDefs(){ return []; }
+  function syncVisibility(){ }
+  function notePageUpdate(){ }
+  function acknowledgeRoute(){ }
+  function newBadge(){ return ""; }
   function updateNoticeBox(){ return ""; }
+
 
 function topShell(content, crumb="首页"){
     syncVisibility();
@@ -1914,28 +1775,6 @@ function topShell(content, crumb="首页"){
             <button class="linklike" data-route="profile">我的主页</button>
             <button class="linklike ${unreadCount?'pm-alert':''}" data-route="pm">短消息${unreadCount ? `<span class="newmark">(${unreadCount})</span><span class="pm-alert-text"> 新消息</span>`:""}</button>
             <button class="linklike" data-route="search">搜索</button>
-            ${state.eSavedProfile ? `<button class="linklike" data-route="saved">离线保存</button>`:""}
-            ${state.sinanToolsUnlocked ? `<button class="linklike" data-route="tools">旧站工具</button>`:""}
-            ${state.sourceCompareUnlocked ? `<button class="linklike" data-route="sources">页面版本</button>`:""}
-            ${state.evidenceChoiceUnlocked ? `<button class="linklike" data-route="evidence">本地文件</button>`:""}
-            ${state.phase5Unlocked ? `<button class="linklike" data-route="relationtest">关联记录</button>`:""}
-            ${state.pigeonDiaryUnlocked ? `<button class="linklike" data-route="pigeon">2024记录</button>`:""}
-            ${state.nasUnlocked ? `<button class="linklike" data-route="nas">E的NAS</button>`:""}
-            ${state.phase6Unlocked ? `<button class="linklike" data-route="outside">站外记录</button>`:""}
-            ${state.pigeonFinalUnlocked ? `<button class="linklike" data-route="feb12">02/12</button>`:""}
-            ${state.exitEndingUnlocked ? `<button class="linklike danger-link" data-route="leave">退出论坛</button>`:""}
-            ${state.phase7Unlocked ? `<button class="linklike" data-route="forsn">for_sn.zip</button>`:""}
-            ${state.rawCsvSeen ? `<button class="linklike" data-route="candidate">候选匹配</button>`:""}
-            ${state.phase8Unlocked ? `<button class="linklike" data-route="wjc">2018资料</button>`:""}
-            ${state.relationCodeSeen ? `<button class="linklike" data-route="code17">relation.php</button>`:""}
-            ${state.incident2018Unlocked ? `<button class="linklike" data-route="incident2018">10/28事故</button>`:""}
-            ${state.phase9Unlocked ? `<button class="linklike" data-route="temp1848">1848循环</button>`:""}
-            ${state.helperSeen ? `<button class="linklike" data-route="helper">Side Helper</button>`:""}
-            ${state.evidenceAuditSeen ? `<button class="linklike" data-route="audit">证据重审</button>`:""}
-            ${state.phase10Unlocked ? `<button class="linklike" data-route="snapshots">旧快照</button>`:""}
-            ${state.hiddenRouteUnlocked ? `<button class="linklike" data-route="snapconfig">B库设置</button>`:""}
-            ${state.phase11Unlocked ? `<button class="linklike" data-route="edges">归属修复</button>`:""}
-            ${state.finalReleaseSeen ? `<button class="linklike" data-route="releasefinal">释放1848</button>`:""}
           `:""}
           <button class="linklike" data-route="about">关于</button>
         </div>
@@ -1983,24 +1822,6 @@ function topShell(content, crumb="首页"){
   }
 
   
-  function organicForumPulse(){
-    const rows=[];
-    const read=new Set(state.readThreads||[]);
-    if(event("first_anomaly") && !read.has("newcomer_2019")){
-      rows.push(`<div class="thread-row"><div><span class="badge">存档</span><a href="#" data-thread="newcomer_2019">新来的，冒个泡。</a></div><div class="small">${esc(state.username)}<br>2 回复</div><div class="small">2019-06-11 21:46</div></div>`);
-    }
-    if(state.historyExpanded && !read.has("old_2020_coop")){
-      rows.push(`<div class="thread-row"><div><a href="#" data-thread="old_2020_coop">晚上有人打那个破合作图吗</a></div><div class="small">火山<br>14 回复</div><div class="small">2020-08-07 19:07</div></div>`);
-    }
-    if(state.saw2023Index && !read.has("old_2023_visible")){
-      rows.push(`<div class="thread-row"><div><a href="#" data-thread="old_2023_visible">有人能看到这个帖子吗</a></div><div class="small">${esc(state.username)}<br>5 回复</div><div class="small">2023-08-19 01:23</div></div>`);
-    }
-    if(state.saw2024Index && !read.has("old_2024_font")){
-      rows.push(`<div class="thread-row"><div><a href="#" data-thread="old_2024_font">这个字体还有人有吗</a></div><div class="small">${esc(state.username)}<br>4 回复</div><div class="small">2024-02-04 19:10</div></div>`);
-    }
-    if(!rows.length)return "";
-    return `<div class="panel"><div class="panel-title">最近有回复的主题</div>${rows.slice(0,2).join("")}</div>`;
-  }
 
 function threadRow(t){
     const unread = state.registered && !state.readThreads.includes(t.id);
@@ -2037,7 +1858,6 @@ function threadRow(t){
             <div class="small">${f.last}</div>
           </div>`).join("")}
       </div>
-      ${organicForumPulse()}
       <div class="panel"><div class="panel-title">最近主题</div>${latest.map(threadRow).join("")}</div>
       <div class="panel"><div class="panel-title">在线信息</div><div class="statline">注册会员: 1847　今日: 12　在线: 7</div></div>
     ${legacyGrime("home")}
@@ -2082,7 +1902,6 @@ function threadRow(t){
       }
       if(tid==="old_2020_coop" && state.volcanoNoticed){
         state.volcanoEvidenceSeen=true;
-        queueForumEvent('deferred_volcanoEvidenceSeen', 2, 'home');
         record("volcano_evidence_seen");
       }
       if(tid==="old_2022_work" && state.signature){
@@ -2120,13 +1939,6 @@ function threadRow(t){
     }).join("");
 
     let related="";
-    if(tid==="temp_notice"){
-      related=`<div class="panel"><div class="panel-title">相关主题</div><div class="panel-body"><a href="#" data-thread="migration_2019">2019 临时账号迁移测试说明</a></div></div>`;
-    }else if(tid==="migration_2019" && event("first_anomaly")){
-      related=`<div class="panel"><div class="panel-title">存档区同期开贴</div><div class="panel-body"><a href="#" data-thread="newcomer_2019">新来的，冒个泡。</a> <span class="small">2019-06-11　最后回复 21:46</span></div></div>`;
-    }else if(tid==="newcomer_2019"){
-      related=`<div class="panel"><div class="panel-title">用户</div><div class="panel-body"><a href="#" data-route="profile">${esc(state.username)}（UID 1848）</a></div></div>`;
-    }
     return topShell(`${banner}<div class="panel"><div class="panel-title">${esc(t.title)}</div>${renderedPosts}</div>${related}`,`首页 › ${esc(t.title)}`);
   }
 
@@ -2170,7 +1982,6 @@ function threadRow(t){
 
   function renderOldProfile(){
     state.oldProfileOpened=true;
-    queueForumEvent('deferred_oldProfileOpened', 1, 'pm');
     save();
     const items = userHistoryItems();
     return topShell(`
@@ -2230,156 +2041,22 @@ function threadRow(t){
   }
 
 
-  function stallMark(key,on){
-    state.stallSince=state.stallSince||{};
-    if(on){
-      if(state.stallSince[key]==null) state.stallSince[key]=state.forumVisits||0;
-    }else{
-      delete state.stallSince[key];
-    }
-  }
-  function stalled(key,after=4){
-    const n=(state.stallSince||{})[key];
-    return n!=null && (state.forumVisits||0)-n>=after;
-  }
-  function syncStallMarks(){
-    stallMark("old_coop", state.historyExpanded && state.volcanoNoticed && !state.volcanoEvidenceSeen);
-    stallMark("source_compare", state.sourceCompareUnlocked && (!state.holder2023Known || !state.holder2024Known));
-    stallMark("relation_phase", state.phase5Unlocked && !state.unlink2023Done);
-    stallMark("nas_release", state.nasUnlocked && !state.releaseTestSeen);
-    stallMark("outside_qmark", state.phase6Unlocked && !state.qmarkOutsideSeen);
-    stallMark("feb12", state.pigeonFinalUnlocked && (state.pigeonFinalStep||1)<7);
-    stallMark("forsn", state.phase7Unlocked && !state.forSnSeen);
-    stallMark("candidate", state.rawCsvSeen && !state.forceConfirmRevealSeen);
-    stallMark("wjc", state.phase8Unlocked && !state.relationCodeSeen);
-    stallMark("temp1848", state.phase9Unlocked && !state.tempPatchSeen);
-    stallMark("helper_audit", state.helperSeen && !state.evidenceAuditSeen);
-    stallMark("snapshots", state.phase10Unlocked && !state.replaySeen && !state.hiddenRunDone);
-    stallMark("edges", state.phase11Unlocked && !state.edgeAuditDone);
-  }
+  function syncStallMarks(){ }
 
   function pmData(){
     syncStallMarks();
     const pms = [];
 
 
-    if(stalled("edges",5)){
-      pms.push({id:"stall_edges",from:"E",time:"刚刚",preview:"我把那几个人的凭据分开了。",body:[
-        ["E","我把那几个人的凭据分开了。"],
-        ["火山","哪几个人。"],
-        ["E","Adam、未见财、？？、鸽子。"],
-        ["E","先别再按账号名往一起并。"]
-      ]});
-    }
-    if(stalled("snapshots",5)){
-      pms.push({id:"stall_snap",from:"Hanlexios",time:"刚刚",preview:"旧盘里还有个 snapshots 目录。",body:[
-        ["Hanlexios","旧盘里还有个 snapshots 目录。"],
-        ["E","哪年的。"],
-        ["Hanlexios","乱七八糟，最早2009。"],
-        ["司南","B库那份也在？"],
-        ["Hanlexios","在。"]
-      ]});
-    }
-    if(stalled("helper_audit",4)){
-      pms.push({id:"stall_helper",from:"E",time:"刚刚",preview:"火山那份联系人导出先别当离线证据。",body:[
-        ["E","火山那份联系人导出先别当离线证据。"],
-        ["火山","为什么。"],
-        ["E","Helper会写名字进去。"],
-        ["Hanlexios","我那边2019以后没装，可以对一下。"]
-      ]});
-    }
-    if(stalled("temp1848",4)){
-      pms.push({id:"stall_temp",from:"Hanlexios",time:"刚刚",preview:"2018那份SQL后面还有TEMP_USER。",body:[
-        ["Hanlexios","2018那份SQL后面还有TEMP_USER。"],
-        ["E","1848那段？"],
-        ["Hanlexios","嗯。"],
-        ["Hanlexios","看起来是先把原来的东西搬出去，再把1848空出来。"]
-      ]});
-    }
-    if(stalled("wjc",4)){
-      pms.push({id:"stall_wjc",from:"E",time:"刚刚",preview:"1261那份打印页对上名字了。",body:[
-        ["E","1261那份打印页对上名字了。"],
-        ["火山","谁。"],
-        ["E","未见财。"],
-        ["司南","那relation 1.9也能对上。"]
-      ]});
-    }
-    if(stalled("candidate",4)){
-      pms.push({id:"stall_candidate",from:"司南",time:"刚刚",preview:"预览器把名字补上了，原文件没写。",body:[
-        ["司南","预览器把名字补上了，原文件没写。"],
-        [state.username,"那原文件写什么。"],
-        ["司南","usr_1848。"],
-        ["E","先看原始的。"]
-      ]});
-    }
-    if(stalled("forsn",4)){
-      pms.push({id:"stall_forsn",from:"司南",time:"刚刚",preview:"Adam那包我找到了。",body:[
-        ["司南","Adam那包我找到了。"],
-        ["E","哪包。"],
-        ["司南","for_sn.zip。2018那份。"],
-        ["E","别改文件。"]
-      ]});
-    }
-    if(stalled("feb12",5)){
-      pms.push({id:"stall_feb12",from:"E",time:"刚刚",preview:"02/12那晚的几份时间能拼上。",body:[
-        ["E","02/12那晚的几份时间能拼上。"],
-        ["火山","拼到哪。"],
-        ["E","00:31以后。"],
-        ["E","后面还有。"]
-      ]});
-    }
-    if(stalled("outside_qmark",4)){
-      pms.push({id:"stall_outside",from:"火山",time:"刚刚",preview:"？？那个站外账号后来还在发东西。",body:[
-        ["火山","？？那个站外账号后来还在发东西。"],
-        [state.username,"哪儿。"],
-        ["火山","以前贴过的Paste。"],
-        ["E","把日期留着。"]
-      ]});
-    }
-    if(stalled("nas_release",4)){
-      pms.push({id:"stall_nas",from:"E",time:"刚刚",preview:"NAS里2024那个目录还有个release_test。",body:[
-        ["E","NAS里2024那个目录还有个release_test。"],
-        ["火山","鸽子留的？"],
-        ["E","文件夹这么写。"],
-        ["E","我不保证是谁写的。"]
-      ]});
-    }
-    if(stalled("relation_phase",5)){
-      pms.push({id:"stall_relation",from:"司南",time:"刚刚",preview:"关联页那条1094→1848还在。",body:[
-        ["司南","关联页那条1094→1848还在。"],
-        [state.username,"哪年的。"],
-        ["司南","不止一年。"],
-        ["E","先看记录，别点确认。"]
-      ]});
-    }
-    if(stalled("source_compare",5)){
-      pms.push({id:"stall_sources",from:"Hanlexios",time:"刚刚",preview:"2023那页打印版和RSS我都留了。",body:[
-        ["Hanlexios","2023那页打印版和RSS我都留了。"],
-        [state.username,"一样吗。"],
-        ["Hanlexios","不完全一样。"],
-        ["Hanlexios","2024那份也有类似的。"]
-      ]});
-    }
-    if(stalled("old_coop",5)){
-      pms.push({id:"stall_coop",from:"火山",time:"刚刚",preview:"我翻到以前那个合作图帖了。",body:[
-        ["火山","我翻到以前那个合作图帖了。"],
-        ["火山","2020的。"],
-        [state.username,"怎么了。"],
-        ["火山","里面1848说“我来”。"],
-        ["火山","后面我还回了句“老地方”。"],
-        ["火山","这句我有点印象。"]
-      ]});
-    }
-
-    if(state.futureDbSeen && !state.adamTruthSeen){
+    if(deliverPM("futuredb", (state.futureDbSeen && !state.adamTruthSeen))){
       pms.push({
-        id:"futuredb",from:"Hanlexios",time:"刚刚",preview:"Adam那条删除记录翻到了。",body:[
-          ["Hanlexios","Adam那条删除记录翻到了。"],
+        id:"futuredb",from:"Hanlexios",time:"刚刚",preview:"之前日志里那个 Adam，删除记录翻到了。",body:[
+          ["Hanlexios","之前日志里那个 Adam，删除记录翻到了。"],
           [state.username,"是你删的Adam？"],
           ["Hanlexios","不是我自己要删他。"],
           ["Hanlexios","他让我从旧的自助删除页代提交。"],
           ["火山","那日志怎么写成你删的？"],
-          ["Hanlexios","因为点提交的是我。"],
+          ["Hanlexios","提交键是我按的。"],
           ["E","那后面怎么又回来了？"],
           ["Hanlexios","司南拉回来的。"],
           
@@ -2387,14 +2064,14 @@ function threadRow(t){
       });
     }
 
-    if(state.wjcKnown){
+    if(deliverPM("wjcvoice", (state.wjcKnown))){
       pms.push({
         id:"wjcvoice",from:"E",time:"刚刚",preview:"未见财……这个我有点印象。",body:[
           ["E","未见财……这个我有点印象。"],
           [state.username,"他人怎么样？"],
           ["E","嘴挺欠。"],
           
-          ["Hanlexios","他以前确实碰过迁移那套代码。"],
+          ["Hanlexios","1.9 里有他的签名。"],
           ["司南","1.9 他写的。"],
           [state.username,"那 1.7 是你？"],
           ["司南","嗯"],
@@ -2405,7 +2082,7 @@ function threadRow(t){
       });
     }
 
-    if(state.forceConfirmRevealSeen){
+    if(deliverPM("snforce", (state.forceConfirmRevealSeen))){
       pms.push({
         id:"snforce",from:"司南",time:"刚刚",preview:"你点开关联页以后。",body:[
           [state.username,"你什么时候看到我过 0.60 的？"],
@@ -2424,7 +2101,7 @@ function threadRow(t){
       });
     }
 
-    if(state.stayChosen && !state.forSnSeen){
+    if(deliverPM("stay", (state.stayChosen && !state.forSnSeen))){
       pms.push({
         id:"stay",from:"E",time:"刚刚",preview:"确定？",body:[
           ["E","确定？"],
@@ -2438,21 +2115,21 @@ function threadRow(t){
       });
     }
 
-    if(state.adamCandidateSeen){
+    if(deliverPM("adamcandidate", (state.adamCandidateSeen))){
       pms.push({
         id:"adamcandidate",from:"火山",time:"刚刚",preview:"等下，我好像想起 Adam 了。",body:[
           ["火山","等下，我好像想起 Adam 了。"],
           [state.username,"这时候想起来？"],
           ["火山","嗯"],
           ["火山","他是不是 2019 左右也来过？"],
-          ["E","先别信年份。"],
+          ["E","年份先放着。"],
           ["E","你上次说的是别的年份。"],
-          ["E","看记录。"]
+          ["E","翻一下旧的。"]
         ]
       });
     }
 
-    if(state.pigeonMigrated){
+    if(deliverPM("afterpigeon", (state.pigeonMigrated))){
       pms.push({
         id:"afterpigeon",from:"E",time:"刚刚",preview:"鸽子退了。",body:[
           ["E","鸽子退了。"],
@@ -2466,7 +2143,7 @@ function threadRow(t){
       });
     }
 
-    if(state.eForgot2023){
+    if(deliverPM("eforget", (state.eForgot2023 && (state.readPMs||[]).includes("afterunlink")))){
       pms.push({
         id:"eforget",from:"E",time:"刚刚",preview:"？？是谁。",body:[
           ["火山","你真一点都不记得？？？"],
@@ -2479,12 +2156,12 @@ function threadRow(t){
           ["E","……还真有。"],
           [state.username,"一点印象都没？"],
           ["E","没有。"],
-          ["E","先别碰文件。"]
+          ["E","文件别动。"]
         ]
       });
     }
 
-    if(state.unlink2023Done && !state.eForgot2023){
+    if(deliverPM("afterunlink", (state.unlink2023Done))){
       pms.push({
         id:"afterunlink",from:"火山",time:"刚刚",preview:"他真退出去了。",body:[
           ["火山","他真退出去了。"],
@@ -2492,7 +2169,7 @@ function threadRow(t){
           ["火山","嗯"],
           ["火山","我这边旧聊天还在。"],
           ["E","先存。"],
-          ["司南","解绑以后 1848 现在空了？"],
+          ["司南","1848空了？"],
           ["E","别动。"],
           ["司南","我就问问。"],
           ["E","最好真只是问。"]
@@ -2500,12 +2177,12 @@ function threadRow(t){
       });
     }
 
-    if(state.holder2024Known){
+    if(deliverPM("v2024", (state.holder2024Known))){
       pms.push({
-        id:"v2024",from:"火山",time:"刚刚",preview:"鸽子。",body:[
-          ["火山","鸽子。"],
+        id:"v2024",from:"火山",time:"刚刚",preview:"2024那个号有名字了。",body:[
+          ["火山","2024那个号有名字了。"],
           [state.username,"什么？"],
-          ["火山","2024那个。"],
+          ["火山","联系人备注写的“鸽子”。"],
           ["火山","我刚翻到聊天导出的联系人备注。"],
           ["火山","我当时给他备注了“鸽子”。"],
           [state.username,"你记得他？"],
@@ -2517,14 +2194,14 @@ function threadRow(t){
       });
     }
 
-    if(state.holder2023Known){
+    if(deliverPM("e2023", (state.holder2023Known))){
       pms.push({
-        id:"e2023",from:"E",time:"刚刚",preview:"这名字我有点印象。",body:[
-          ["E","这名字我有点印象。"],
+        id:"e2023",from:"E",time:"刚刚",preview:"2023那个号，我好像见过。",body:[
+          ["E","2023那个号，我好像见过。"],
           [state.username,"？？？"],
           ["E","两个问号。"],
           [state.username,"这也能注册？"],
-          ["E","以前能注册。"],
+          ["E","那时候能。"],
           [state.username,"你记得他？"],
           ["E","一点。"],
           ["E","手快。你说别点的时候他一般已经点了。"],
@@ -2534,45 +2211,45 @@ function threadRow(t){
       });
     }
 
-    if(state.historyExpanded && state.volcanoEvidenceSeen && !state.sawStaticQuoteConflict && !state.signature){
+    if(deliverPM("e_sig", (state.historyExpanded && state.volcanoEvidenceSeen && !state.sawStaticQuoteConflict && !state.signature))){
       pms.push({
         id:"e_sig",from:"E",time:"刚刚",preview:"你资料页现在还能改什么？",body:[
           ["E","你资料页现在还能改什么？"],
           [state.username,"签名。"],
           ["E","随便写点。"],
           [state.username,"干嘛。"],
-          ["E","我看看旧帖。"],
+          ["E","我看看旧帖会不会跟着变。"],
           [state.username,"你自己怎么不试？"],
-          ["E","因为我 UID 不是 1848。"]
+          ["E","我这边没变。"]
         ]
       });
     }
 
-    if(state.hanJoined){
+    if(deliverPM("han1", (state.hanJoined))){
       pms.push({
         id:"han1",from:"Hanlexios",time:"刚刚",preview:"火山把那两帖甩我了。",body:[
           ["Hanlexios","火山把那两帖甩我了。"],
           [state.username,"你见过这个号？"],
-          ["Hanlexios","见过这个 UID。"],
+          ["Hanlexios","1848我见过。"],
           [state.username,"什么时候？"],
-          ["Hanlexios","以前帖子里见过，哪年我得翻。"],
+          ["Hanlexios","旧帖里。哪年忘了。"],
           [state.username,"那以前那个是我？"],
           ["Hanlexios","我哪知道。"],
           [state.username,"名字都一样。"],
-          ["Hanlexios","我只存了现在这版。以前显示什么，不知道。"],
-          ["Hanlexios","别先往自己身上套。"]
+          ["Hanlexios","我手里这份是刚存的。旧的没留。"],
+          
         ]
       });
     }
 
-    if(state.sinanToolsUnlocked){
+    if(deliverPM("sn1", (state.sinanToolsUnlocked))){
       pms.push({
         id:"sn1",from:"司南",time:"刚刚",preview:"旧版编辑记录还能点开。",body:[
           ["司南","旧版编辑记录还能点开。"],
           [state.username,"在哪？"],
           ["司南","我给你加个入口。"],
           [state.username,"你怎么知道？"],
-          ["司南","以前帮忙修过几回。"],
+          ["司南","以前修过几次。"],
           [state.username,"你以前是管理？"],
           ["司南","不是。"],
           
@@ -2581,7 +2258,7 @@ function threadRow(t){
       });
     }
 
-    if(state.volcanoNoticed){
+    if(deliverPM("v1", (state.volcanoNoticed))){
       pms.push({
         id:"v1",from:"火山",time:"刚刚",preview:"我是不是见过你这个号",body:[
           ["火山","我是不是见过你这个号"],
@@ -2603,19 +2280,7 @@ function threadRow(t){
       });
     }
 
-    if(event("first_anomaly") && !state.saw2019Twin && (state.forumVisits||0)>=4){
-      pms.push({
-        id:"v_archive",from:"火山",time:"刚刚",preview:"你刚翻的是存档区？",body:[
-          ["火山","你刚翻的是存档区？"],
-          [state.username,"嗯。"],
-          ["火山","那边居然还能按最后回复排。"],
-          ["火山","我刚看到个 2019 的老帖被顶在前面。"],
-          ["火山","标题跟你刚发那个一样。"]
-        ]
-      });
-    }
-
-    if(state.saw2019Twin || state.searched1848){
+    if(deliverPM("e2", (state.saw2019Twin || state.searched1848))){
       pms.push({
         id:"e2",from:"E",time:"刚刚",preview:"你主页现在写的哪年？",body:[
           ["E","你主页现在写的哪年？"],
@@ -2624,7 +2289,7 @@ function threadRow(t){
           [state.username,"发你了。"],
           ["E","行"],
           [state.username,"什么叫“行”？"],
-          ["E","我存了。先别动资料。"],
+          ["E","存了。资料先别改。"],
           ...(state.sawStaticQuoteConflict ? [
             [state.username,"旧帖里我的签名也变了。"],
             ["E","哪一帖。"],
@@ -2637,6 +2302,8 @@ function threadRow(t){
       });
     }
 
+    deliverPM("e1", true);
+    deliverPM("sys1", true);
     pms.push(
       {id:"e1",from:"E",time:"今天",preview:"新来的？",body:[
         ["E","新来的？"],
@@ -2666,12 +2333,15 @@ function threadRow(t){
           record("e_saved_profile");
         }
         if(pm.id==="sn1") state.sinanToolsUnlocked=true;
-        return topShell(`<div class="mailbox-noise">${mailboxNoise()}</div>
+        return topShell(`
           <div class="panel">
             <div class="panel-title">短消息：${esc(pm.from)}</div>
             <div class="panel-body chatlog">
               ${pm.body.map(x=>`<div class="chatline"><span class="chatname">${esc(x[0])}：</span>${esc(x[1])}</div>`).join("")}
             </div>
+            ${pm.id==="e2" && state.eSavedProfile ? `<div class="panel-body small">附件：<a href="#saved" data-route="saved">profile_1848_first.txt</a></div>`:""}
+            ${pm.id==="sn1" ? `<div class="panel-body small">旧链接：<a href="#tools" data-route="tools">edit_history.php</a></div>`:""}
+            ${pm.id==="stay" ? `<div class="panel-body small">附件：<a href="#forsn" data-route="forsn">for_sn.zip</a></div>`:""}
           </div>
         `,`首页 › 短消息 › ${esc(pm.from)}`);
       }
@@ -2679,11 +2349,17 @@ function threadRow(t){
     return topShell(`
       <div class="panel">
         <div class="panel-title">短消息</div>
-        ${pms.map(pm=>`
-          <div class="pm ${!(state.readPMs||[]).includes(pm.id)?'pm-unread':''}">
-            <div class="pm-head"><a href="#" data-pm="${pm.id}" class="pm-from">${esc(pm.from)}${!(state.readPMs||[]).includes(pm.id)?' <span class="badge blink-soft">新</span>':''}</a><span class="small">${esc(pm.time)}</span></div>
+        ${pms.map(pm=>{
+          const unread=!(state.readPMs||[]).includes(pm.id);
+          return `
+          <div class="pm ${unread?'pm-unread':''}" data-pm-row="${pm.id}">
+            <div class="pm-head">
+              <a href="#" data-pm="${pm.id}" class="pm-from">${esc(pm.from)}${unread?' <span class="pm-new-badge blink-soft" aria-label="未读新消息">新</span>':''}</a>
+              <span class="small">${esc(pm.time)}</span>
+            </div>
             <div class="pm-preview">${esc(pm.preview)}</div>
-          </div>`).join("")}
+          </div>`;
+        }).join("")}
         ${(state.ordinaryPMs||[]).map(pm=>`<div class="pm"><div class="pm-head">发给 ${esc(pm.to)} <span class="small">刚刚</span></div><div class="pm-preview">${esc(pm.text)}</div></div>`).join("")}
       </div>
       <div class="panel"><div class="panel-title">写短消息</div><div class="panel-body">
@@ -2744,7 +2420,7 @@ function threadRow(t){
         t.posts.some(p=>String(p.uid)===q || p.user.includes(q) || p.body.includes(q))
       );
       if(q==="1848" || q===state.username){
-        userResult = `${searchHistoryHint()}
+        userResult = `
           <div class="panel">
             <div class="panel-title">用户结果</div>
             <div class="panel-body">
@@ -2766,6 +2442,7 @@ function threadRow(t){
         ${q ? (results.length?results.map(threadRow).join(""):`<div class="empty">没搜到。</div>`) : ""}
       </div>
       ${q && ordinaryResults.length ? `<div class="panel"><div class="panel-title">论坛里另外几条</div><div class="panel-body">${ordinaryResults.map(t=>`<div class="search-hit"><a href="#ordinary/${t.id}" data-ordinary-thread="${t.id}">${t.title}</a><br><span class="muted">${t.board} · ${t.author}</span></div>`).join("")}</div></div>`:""}
+      ${searchHistoryHint()}
       ${userResult}
     `,`首页 › 搜索${legacyGrime("search")}
     `);
@@ -2809,89 +2486,36 @@ function threadRow(t){
           </div>
           <div class="small pad">缓存目录里已经有 2020–2022 的索引文件。</div>
         </div>`:""}
+      ${state.sourceCompareUnlocked ? `<div class="panel"><div class="panel-body small">旧接口还活着：<a href="#sources" data-route="sources">打印页 / RSS / 索引</a></div></div>`:""}
     `,`首页 › 旧站工具`);
   }
 
 
-  function layerCard(title, subtitle, body, actionId, actionLabel){
-    return `
-      <div class="source-card">
-        <div class="source-head"><strong>${title}</strong><span class="small">${subtitle}</span></div>
-        <div class="source-body">${body}</div>
-        ${actionId ? `<div class="source-actions"><button class="btn" id="${actionId}">${actionLabel}</button></div>`:""}
-      </div>`;
-  }
+
 
   function renderSources(){
-    const currentName = esc(state.username);
-    const cards = [];
-
-    cards.push(layerCard(
-      "当前主题页",
-      "论坛数据库",
-      `<div class="mono">2023-08-19<br>作者：${currentName}<br>UID：1848<br>标题：有人能看到这个帖子吗${state.unlink2023Done ? "<br>关联：无" : ""}</div>`,
-      null,null
-    ));
-
-    cards.push(layerCard(
-      "搜索索引",
-      "索引更新时间：2023-08-19 01:26",
-      `<div class="mono">uid=1848<br>author=usr_1848<br>title=有人能看到这个帖子吗</div>`,
-      "markSearchLayer","记下这份"
-    ));
-
-    cards.push(layerCard(
-      "打印页",
-      "旧模板",
-      `<div class="mono">作者：${state.unlink2023Done && !state.savedEvidence.includes("e_print_2023") ? currentName : (state.printSeen ? "？？" : currentName)}<br>UID：1848<br>发表于：2023-08-19 01:14</div>`,
-      "openPrint","打开打印页"
-    ));
-
-    cards.push(layerCard(
-      "RSS",
-      "旧订阅接口",
-      `<div class="mono">&lt;author&gt;${state.unlink2023Done && !state.savedEvidence.includes("e_rss_2023") ? "usr_1848" : (state.rssSeen ? "？？" : "usr_1848")}&lt;/author&gt;<br>&lt;guid&gt;thread-41772-post-88233&lt;/guid&gt;</div>`,
-      "openRSS","读取 RSS"
-    ));
-
-    if(state.saw2023Raw){
-      cards.push(layerCard(
-        "旧 Paste 缓存",
-        "站外缓存副本",
-        `<div class="mono">sideb memo<br>author: ？？<br><br>主页没用。<br>每次都是它先变。<br>搜索慢一点。<br>打印页更慢。<br>RSS更慢。<br>能下载就下载。<br>别截图以后再传论坛。<br>会跟着变。</div>`,
-        "openPaste","查看完整缓存"
-      ));
-    }
-
-    if(state.holder2023Known || state.phaseClock >= 21){
-      cards.push(layerCard(
-        "2024 聊天导出",
-        "火山本地导出",
-        `<div class="mono">contact_uid=1848<br>display_name=${currentName}<br>contact_alias=${state.saw2024Alias ? "鸽子" : "(未载入)"}</div>`,
-        "openAlias","读取联系人备注"
-      ));
-    }
-
+    const currentName=esc(state.username);
     return topShell(`
       <div class="panel">
-        <div class="panel-title">同一条记录的不同页面</div>
-        <div class="panel-body">
-          <p>司南：别只盯主题页。旧站有打印页、RSS、搜索索引，更新时间不一样。</p>
-          <p class="small">这里没有“正确版本”提示。页面只是把目前还能打开的几层摆在一起。</p>
-          <div class="source-grid">${cards.join("")}</div>
-        </div>
+        <div class="panel-title">旧接口</div>
+        <div class="panel-body small">这几种链接原本就在主题页底部。现在有的还能开，有的只剩缓存。</div>
+        <div class="file-entry"><strong>thread/41772</strong><div class="small">2023-08-19 · UID1848 · 当前显示：${currentName}</div></div>
+        <div class="file-entry"><strong>search/user_1848_2023.idx</strong><div class="small">更新时间 2023-08-19 01:26</div><button class="btn" id="markSearchLayer">打开</button></div>
+        <div class="file-entry"><strong>thread/41772.print</strong><div class="small">旧打印模板</div><button class="btn" id="openPrint">打开</button></div>
+        <div class="file-entry"><strong>rss/thread-41772.xml</strong><div class="small">RSS 2.0</div><button class="btn" id="openRSS">打开</button></div>
+        ${state.saw2023Raw ? `<div class="file-entry"><strong>cache/sideb_memo.txt</strong><div class="small">第三方缓存副本</div><button class="btn" id="openPaste">打开</button></div>`:""}
+        ${(state.holder2023Known || state.phaseClock>=21) ? `<div class="file-entry"><strong>huoshan_chat_export.txt</strong><div class="small">本地聊天导出</div><button class="btn" id="openAlias">打开</button></div>`:""}
       </div>
-      ${state.printSeen && state.rssSeen ? `
-        <div class="panel">
-          <div class="panel-title">你现在能确定的事</div>
-          <div class="panel-body">
-            <p>当前主题页把 2023 年的作者显示成了 <strong>${currentName}</strong>。</p>
-            <p>打印页和 RSS 留下的是 <strong>？？</strong>。</p>
-            <p class="small">它们至少不是同一时间生成的。</p>
-          </div>
-        </div>`:""}
-    `,`首页 › 页面版本`);
+      ${state.searchLayerSeen ? `<div class="panel"><div class="panel-title">search/user_1848_2023.idx</div><div class="panel-body mono">uid=1848<br>author=usr_1848<br>title=有人能看到这个帖子吗</div></div>`:""}
+      ${state.printSeen ? `<div class="panel"><div class="panel-title">thread/41772.print</div><div class="panel-body mono">作者：？？<br>UID：1848<br>发表于：2023-08-19 01:14</div></div>`:""}
+      ${state.rssSeen ? `<div class="panel"><div class="panel-title">rss/thread-41772.xml</div><div class="panel-body mono">&lt;author&gt;？？&lt;/author&gt;<br>&lt;guid&gt;thread-41772-post-88233&lt;/guid&gt;</div></div>`:""}
+      ${state.saw2023Paste ? `<div class="panel"><div class="panel-title">cache/sideb_memo.txt</div><div class="panel-body mono">主页没用。<br>每次都是它先变。<br>搜索慢一点。<br>打印页更慢。<br>RSS更慢。<br>能下载就下载。<br>别截图以后再传论坛。</div></div>`:""}
+      ${state.saw2024Alias ? `<div class="panel"><div class="panel-title">huoshan_chat_export.txt</div><div class="panel-body mono">contact_uid=1848<br>display_name=${currentName}<br>contact_alias=鸽子</div></div>`:""}
+      ${state.evidenceChoiceUnlocked ? `<div class="panel"><div class="panel-body small">本地目录：<a href="#evidence" data-route="evidence">download/sideb/</a></div></div>`:""}
+      ${state.phase5Unlocked ? `<div class="panel"><div class="panel-body small">旧缓存：<a href="#relationtest" data-route="relationtest">relation_1848_2023.html</a></div></div>`:""}
+    `,`首页 › 旧接口`);
   }
+
 
   function evidenceCatalog(){
     const items = [
@@ -2906,14 +2530,14 @@ function threadRow(t){
         id:"e_print_2023",
         name:"thread_41772.print",
         tier:"B",
-        desc:"2023 打印页，作者显示“？？”而不是当前用户名。",
+        desc:"2023-08-19 的打印页缓存。",
         available:state.printSeen
       },
       {
         id:"e_rss_2023",
         name:"rss_41772.xml",
         tier:"B",
-        desc:"旧 RSS，作者字段为“？？”；GUID 指向同一帖子。",
+        desc:"2023-08-19 的 RSS 缓存。",
         available:state.rssSeen
       },
       {
@@ -2938,35 +2562,10 @@ function threadRow(t){
     const items=evidenceCatalog();
     return topShell(`
       <div class="panel">
-        <div class="panel-title">本地文件</div>
-        <div class="panel-body">
-          <p>E：先存重要的。别什么都往论坛里复制。</p>
-          <p class="small">临时目录只留 ${state.evidenceSlots} 份。当前已保存 ${state.savedEvidence.length}/${state.evidenceSlots}。</p>
-        </div>
-        ${items.map(it=>{
-          const saved=state.savedEvidence.includes(it.id);
-          const full=state.savedEvidence.length>=state.evidenceSlots && !saved;
-          return `
-            <div class="evidence-row">
-              <div>
-                <strong>${esc(it.name)}</strong>
-                <span class="evidence-tier">证据 ${it.tier}</span>
-                <div class="small">${esc(it.desc)}</div>
-              </div>
-              <div>
-                <button class="btn evidence-save" data-evidence="${it.id}" ${full?"disabled":""}>${saved?"已保存":"保存"}</button>
-              </div>
-            </div>`;
-        }).join("")}
-      </div>
-      ${state.savedEvidence.length>=state.evidenceSlots ? `
-        <div class="notice">临时目录满了。之后出现的新文件不会自动替你保存。</div>`:""}
-      <div class="panel">
-        <div class="panel-title">自己的备注</div>
-        <div class="panel-body">
-          <textarea id="userMemo" class="memo-box" maxlength="800" placeholder="随便记。这个不是论坛帖子。">${esc(state.userMemo)}</textarea>
-          <div><button class="btn" id="saveMemo">保存备注</button></div>
-        </div>
+        <div class="panel-title">download/sideb/</div>
+        <div class="panel-body small">浏览器下载目录里目前能找到的文件。</div>
+        ${items.length ? items.map(it=>`
+          <div class="file-entry"><strong>${esc(it.name)}</strong><div class="small">${esc(it.desc)}</div></div>`).join("") : `<div class="empty">目录是空的。</div>`}
       </div>
     `,`首页 › 本地文件`);
   }
@@ -3018,6 +2617,7 @@ function threadRow(t){
             <div class="chatline"><span class="chatname">E：</span>等会。先看别的页。</div>
           </div>
         </div>`:""}
+      ${state.pigeonDiaryUnlocked ? `<div class="panel"><div class="panel-body small">同目录：<a href="#pigeon" data-route="pigeon">2024_pigeon/</a></div></div>`:""}
     `,`首页 › 关联记录`);
   }
 
@@ -3053,50 +2653,30 @@ function threadRow(t){
 
   function renderPigeon(){
     const days=pigeonDays();
-    const visible=Math.max(1, Math.min(days.length, state.pigeonDay || 1));
     return topShell(`
       <div class="panel">
-        <div class="panel-title">2024 · 鸽子的文件</div>
-        <div class="panel-body">
-          <p class="small">文件名来自 E NAS 的目录索引。内容按日期逐份恢复。</p>
-          <div class="diary-tabs">
-            ${days.map((x,i)=>`<button class="btn diary-btn" data-day="${i+1}" ${i+1>visible?"disabled":""}>${x.d}</button>`).join("")}
-          </div>
+        <div class="panel-title">2024_pigeon/</div>
+        <div class="panel-body small">E NAS 目录里留下的几份文本。文件日期连续，但不是每份都完整。</div>
+        <div class="file-list plain-files">
+          ${days.map(x=>`<span class="file-button">${x.file}</span>`).join("")}
         </div>
       </div>
-
-      ${days.slice(0,visible).map((x,i)=>`
-        <div class="panel diary-entry">
-          <div class="panel-title">${x.file}</div>
-          <div class="panel-body">
-            <div class="profile-grid">
-              <div>日期</div><div>2024-${x.d.replace("/","-")}</div>
-              <div>UID</div><div>1848</div>
-              <div>注册时间</div><div>${x.reg}</div>
-            </div>
-            <p>${esc(x.text)}</p>
-          </div>
-        </div>`).join("")}
-
-      ${visible<days.length ? `
-        <div class="panel">
-          <div class="panel-body">
-            <button class="btn" id="recoverNextPigeon">恢复下一份</button>
-          </div>
-        </div>` : `
-        <div class="panel">
-          <div class="panel-title">02/08 晚上</div>
-          <div class="panel-body chatlog">
-            <div class="chatline"><span class="chatname">鸽子：</span>？？是不是也这样。</div>
-            <div class="chatline"><span class="chatname">E：</span>谁。</div>
-            <div class="chatline"><span class="chatname">鸽子：</span>2023那个。</div>
-            <div class="chatline"><span class="chatname">E：</span>我找文件。</div>
-            <div class="chatline"><span class="chatname">鸽子：</span>你不记得？</div>
-            <div class="chatline"><span class="chatname">E：</span>不记得。</div>
-          </div>
-        </div>`}
-    `,`首页 › 2024记录`);
+      ${days.map(x=>`<details class="archive-record"><summary>${x.file}</summary><div class="panel"><div class="panel-body">
+        <div class="profile-grid"><div>日期</div><div>2024-${x.d.replace("/","-")}</div><div>UID</div><div>1848</div><div>注册时间</div><div>${x.reg}</div></div>
+        <p>${esc(x.text)}</p>
+      </div></div></details>`).join("")}
+      <details class="archive-record"><summary>0208_chat.txt</summary><div class="panel"><div class="panel-body chatlog">
+        <div class="chatline"><span class="chatname">鸽子：</span>？？是不是也这样。</div>
+        <div class="chatline"><span class="chatname">E：</span>谁。</div>
+        <div class="chatline"><span class="chatname">鸽子：</span>2023那个。</div>
+        <div class="chatline"><span class="chatname">E：</span>我找文件。</div>
+        <div class="chatline"><span class="chatname">鸽子：</span>你不记得？</div>
+        <div class="chatline"><span class="chatname">E：</span>不记得。</div>
+      </div></div></details>
+      <div class="panel"><div class="panel-body small">目录来自：<a href="#nas" data-route="nas">E_NAS/1848/</a></div></div>
+    `,`首页 › 2024_pigeon`);
   }
+
 
   function nasFiles(folder){
     const map = {
@@ -3145,7 +2725,7 @@ function threadRow(t){
           </div>
         </div>
       </div>
-      ${state.nasFolder==="1848" && state.pigeonDay>=5 ? `
+      ${state.nasFolder==="1848" ? `
         <div class="panel">
           <div class="panel-title">2024_pigeon</div>
           <div class="panel-body">
@@ -3199,12 +2779,14 @@ function threadRow(t){
           </div>
           <div class="panel-body chatlog">
             <div class="chatline"><span class="chatname">鸽子：</span>这个比第一版靠谱？</div>
-            <div class="chatline"><span class="chatname">司南：</span>至少不会一刀把关系全删了。</div>
+            <div class="chatline"><span class="chatname">司南：</span>比第一版稳点。</div>
             <div class="chatline"><span class="chatname">E：</span>没写完就别跑。</div>
             <div class="chatline"><span class="chatname">鸽子：</span>我没说要跑。</div>
             <div class="chatline"><span class="chatname">司南：</span>他确实没说。</div>
           </div>
         </div>`:""}
+      ${state.phase6Unlocked ? `<div class="panel"><div class="panel-body small">1848 目录里还有：<a href="#outside" data-route="outside">2023_questionmarks/paste_index.txt</a></div></div>`:""}
+      ${state.pigeonFinalUnlocked ? `<div class="panel"><div class="panel-body small">2024_pigeon：<a href="#feb12" data-route="feb12">0212_recovery/</a></div></div>`:""}
     `,`首页 › E的NAS › ${esc(state.nasFolder)}`);
   }
 
@@ -3357,33 +2939,18 @@ function threadRow(t){
 
   function renderFeb12(){
     const steps=feb12Steps();
-    const visible=Math.max(1,Math.min(steps.length,state.pigeonFinalStep||1));
+    state.consistencyRepairSeen=true;
+    state.sinanOverrideSeen=true;
+    state.pigeonMigrated=true;
+    state.adamCandidateSeen=true;
+    state.exitEndingUnlocked=true;
     return topShell(`
-      <div class="panel">
-        <div class="panel-title">2024-02-12 · 恢复记录</div>
-        <div class="panel-body">
-          <p class="small">来源混合：E NAS、火山聊天导出、服务器日志、鸽子本地文件时间。这里只按时间排列，不自动判断谁说得对。</p>
-        </div>
-      </div>
-      ${steps.slice(0,visible).map(s=>`
-        <div class="panel">
-          <div class="panel-title">${s.title}</div>
-          <div class="panel-body">${s.body}</div>
-        </div>`).join("")}
-      ${visible<steps.length ? `
-        <div class="panel"><div class="panel-body"><button class="btn" id="nextFeb12">继续恢复</button></div></div>
-      ` : `
-        <div class="panel">
-          <div class="panel-title">当前能确认</div>
-          <div class="panel-body">
-            <p>鸽子和 E 都明确选择停止。</p>
-            <p>01:03 的迁移由 UID1094 发起。</p>
-            <p>鸽子被迁到 UID2097 后仍能登录，并在 01:11 从站外联系 E。</p>
-            <p>1848 空置后，consistency_repair 开始把 Adam 当作候选。</p>
-          </div>
-        </div>`}
+      <div class="panel"><div class="panel-title">2024_pigeon/0212_recovery/</div><div class="panel-body small">E NAS、聊天导出和服务器日志按时间放在一起。原文件没有结论页。</div></div>
+      ${steps.map(s=>`<details class="archive-record"><summary>${s.title}</summary><div class="panel"><div class="panel-body">${s.body}</div></div></details>`).join("")}
+      <div class="panel"><div class="panel-body small"><a href="#leave" data-route="leave">退出登录</a></div></div>
     `,`首页 › 02/12`);
   }
+
 
   function renderLeave(){
     if(state.exitEndingTaken){
@@ -3502,7 +3069,7 @@ YEAR,UID,NAME_REF,STATUS<br>
             <div class="chatline"><span class="chatname">E：</span>MD5也对。</div>
             <div class="chatline"><span class="chatname">火山：</span>所以2018年这个包里真有2026？</div>
             <div class="chatline"><span class="chatname">E：</span>对。</div>
-            <div class="chatline"><span class="chatname">Hanlexios：</span>只能证明文件当时就是这样。别多加结论。</div>
+            <div class="chatline"><span class="chatname">Hanlexios：</span>文件对得上。别的我不知道。</div>
           </div>
         </div>
 
@@ -3522,166 +3089,61 @@ YEAR,UID,NAME_REF,STATUS<br>
   }
 
   function renderCandidate(){
-    const scoreSteps=[
-      ["临时注册","0.21"],
-      ["和火山聊天","0.28"],
-      ["搜索 1848","0.34"],
-      ["打开 2019 新人帖","0.41"],
-      ["查看旧个人页","0.49"],
-      ["搜索 Adam","0.56"],
-      ["打开关联页","0.63"],
-      ["继续历史审计","0.71"]
-    ];
-    const visible = Math.max(1, Math.min(scoreSteps.length, state.candidateStage || 1));
+    if(!state.rawCsvSeen){
+      return topShell(`<div class="panel"><div class="panel-title">user_gap.php</div><div class="panel-body small">脚本在，但当前目录没有它要读的那份 CSV。</div><div class="panel-body mono codebox">SELECT year, uid FROM user_history WHERE uid = 1848 ORDER BY year;</div></div>`,`首页 › user_gap.php`);
+    }
     return topShell(`
-      <div class="panel">
-        <div class="panel-title">user_gap.php</div>
-        <div class="panel-body mono codebox">
-SELECT year, uid<br>
-FROM user_history<br>
-WHERE uid = 1848<br>
-ORDER BY year;
-        </div>
-        <div class="panel-body">
-          <p class="small">没什么神秘算法。这个脚本只是把 UID1848 哪些年份有人、哪些年份空着列出来。</p>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">match_candidate()</div>
-        <div class="panel-body mono codebox">
-if (!uid1848_empty) return false;<br>
-$score = user_similarity($user, aggregate_uid_history(1848));<br>
-return $score &gt;= 0.60;
-        </div>
-        <div class="panel-body">
-          <p>旧迁移插件原本拿来判断“这个新账号是不是某个旧账号本人”。比较项后来越加越多。</p>
-          <div class="small">邮箱 / IP / 用户名 → 常逛版块 / 登录时间 → 发帖长度 / 标点习惯 / 常回复的人 / 浏览顺序</div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">当前会话 · 匹配记录</div>
-        <div class="score-list">
-          ${scoreSteps.slice(0,visible).map((x,i)=>`
-            <div class="score-row ${Number(x[1])>=0.60?"threshold":""}">
-              <span>${i+1}</span><span>${x[0]}</span><strong>${x[1]}</strong>
-            </div>`).join("")}
-        </div>
-        <div class="panel-body">
-          ${visible<scoreSteps.length ? `<button class="btn" id="nextScore">下一条记录</button>`:""}
-        </div>
-      </div>
-
-      ${visible>=7 ? `
-        <div class="panel">
-          <div class="panel-title">阈值</div>
-          <div class="panel-body">
-            <p>第一次超过 0.60：打开关联页以后。</p>
-            <div class="mono codebox">
-candidate uid=temp_current<br>
-target=1848<br>
-score=0.63<br>
-result=MATCH
-            </div>
-            ${!state.forceConfirmRevealSeen ? `<button class="btn" id="openForceConfirm">查看随后操作</button>`:""}
-          </div>
-        </div>`:""}
-
-      ${state.forceConfirmRevealSeen ? `
-        <div class="panel">
-          <div class="panel-title">relation action</div>
-          <div class="panel-body mono codebox">
-RELATION 1094 -&gt; 1848<br>
-CREATED_BY=1094<br>
-RESOLVED_BY=1094<br>
-force_confirm=1
-          </div>
-          <div class="panel-body chatlog">
-            <div class="chatline"><span class="chatname">${esc(state.username)}：</span>这个怎么解释。</div>
-            <div class="chatline"><span class="chatname">司南：</span>我绑的。</div>
-            <div class="chatline"><span class="chatname">${esc(state.username)}：</span>我没确认。</div>
-            <div class="chatline"><span class="chatname">司南：</span>我知道。</div>
-            <div class="chatline"><span class="chatname">${esc(state.username)}：</span>force_confirm？</div>
-            <div class="chatline"><span class="chatname">司南：</span>对。</div>
-            <div class="chatline"><span class="chatname">${esc(state.username)}：</span>所以你一开始就在拿我试？</div>
-            <div class="chatline"><span class="chatname">司南：</span>不是一开始。</div>
-            <div class="chatline"><span class="chatname">司南：</span>你开始查1848以后。</div>
-            <div class="chatline"><span class="chatname">火山：</span>有什么区别。</div>
-            <div class="chatline"><span class="chatname">司南：</span>有。</div>
-            <div class="chatline"><span class="chatname">E：</span>没有。</div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-title">2025 为什么没人拿到 1848</div>
-          <div class="panel-body">
-            <div class="tablelike">
-              <div class="table-row"><span>奶盖</span><span>0.18</span><span>普通临时账号</span><span>未匹配</span></div>
-              <div class="table-row"><span>水母</span><span>0.25</span><span>普通临时账号</span><span>未匹配</span></div>
-              <div class="table-row"><span>一号电池</span><span>0.31</span><span>普通临时账号</span><span>未匹配</span></div>
-            </div>
-            <p class="small">2025 并不是“缺了一个人”。那一年有人注册，只是没人过阈值。</p>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-title">1848 aggregate</div>
-          <div class="panel-body chatlog">
-            <div class="chatline"><span class="chatname">Hanlexios：</span>它拿1848以前所有人的行为做目标。</div>
-            <div class="chatline"><span class="chatname">火山：</span>所以查这个号的人，会越来越像以前查这个号的人？</div>
-            <div class="chatline"><span class="chatname">Hanlexios：</span>数据上是。</div>
-            <div class="chatline"><span class="chatname">E：</span>那就够了。</div>
-            <div class="chatline"><span class="chatname">司南：</span>我当时也是这么判断的。</div>
-            <div class="chatline"><span class="chatname">E：</span>你判断完就拿他试。</div>
-            <div class="chatline"><span class="chatname">司南：</span>对。</div>
-          </div>
-          <div class="notice">当前账号不是因为用户名、年份或某个预先写好的身份被分配到1848。匹配分数是在调查过程中升上去的。</div>
-        </div>`:""}
-    `,`首页 › 候选匹配${ordinaryThreadStrip("mix")}
-      `);
+      <div class="panel"><div class="panel-title">user_gap.php</div><div class="panel-body mono codebox">SELECT year, uid<br>FROM user_history<br>WHERE uid = 1848<br>ORDER BY year;</div></div>
+      <div class="panel"><div class="panel-title">match.log</div><div class="panel-body mono">
+temp_current register ........ 0.21<br>
+reply uid_0388 ............... 0.28<br>
+search uid_1848 .............. 0.34<br>
+thread_30041 ................. 0.41<br>
+profile_1848 ................. 0.49<br>
+search usr_1839 .............. 0.56<br>
+relation_1094_1848 ........... 0.63<br>
+history_scan ................. 0.71
+      </div><div class="panel-body small">旧迁移脚本的会话日志。0.60 以上会进入 MATCH 分支。</div></div>
+      <div class="panel"><div class="panel-title">relation.log</div><div class="panel-body mono codebox">candidate uid=temp_current<br>target=1848<br>score=0.63<br>result=MATCH</div>${!state.forceConfirmRevealSeen ? `<div class="panel-body"><button class="btn" id="openForceConfirm">往下看</button></div>`:""}</div>
+      ${state.forceConfirmRevealSeen ? `<div class="panel"><div class="panel-title">下一条</div><div class="panel-body mono codebox">RELATION 1094 -&gt; 1848<br>CREATED_BY=1094<br>RESOLVED_BY=1094<br>force_confirm=1</div><div class="panel-body chatlog">
+        <div class="chatline"><span class="chatname">${esc(state.username)}：</span>这个怎么回事。</div>
+        <div class="chatline"><span class="chatname">司南：</span>我绑的。</div>
+        <div class="chatline"><span class="chatname">${esc(state.username)}：</span>我没确认。</div>
+        <div class="chatline"><span class="chatname">司南：</span>我知道。</div>
+        <div class="chatline"><span class="chatname">${esc(state.username)}：</span>force_confirm？</div>
+        <div class="chatline"><span class="chatname">司南：</span>对。</div>
+        <div class="chatline"><span class="chatname">${esc(state.username)}：</span>你拿我试的？</div>
+        <div class="chatline"><span class="chatname">司南：</span>嗯。</div>
+        <div class="chatline"><span class="chatname">火山：</span>你是真欠打。</div>
+      </div></div>`:""}
+      ${state.phase8Unlocked ? `<div class="panel"><div class="panel-body small">同一批旧索引里还有：<a href="#wjc" data-route="wjc">usr_1261</a></div></div>`:""}
+    `,`首页 › user_gap.php`);
   }
 
 
   function renderWJC(){
     return topShell(`
-      <div class="panel">
-        <div class="panel-title">2018 · UID1261</div>
-        <div class="panel-body">
-          <p class="small">来源：旧积分转账打印页、代码提交记录、E NAS。</p>
-          <div class="profile-grid">
-            <div>UID</div><div>1261</div>
-            <div>用户名</div><div>${state.wjcKnown ? "未见财" : "usr_1261"}</div>
-            <div>活跃</div><div>2016—2018</div>
-            <div>权限</div><div>普通用户 / 临时维护协助</div>
-          </div>
-          ${!state.wjcKnown ? `<button class="btn" id="revealWJC">核对积分转账打印页</button>`:""}
-        </div>
-      </div>
-
-      ${state.wjcKnown ? `
-        <div class="panel">
-          <div class="panel-title">旧聊天</div>
-          <div class="panel-body chatlog">
-            <div class="chatline"><span class="chatname">Adam：</span>在？</div>
-            <div class="chatline"><span class="chatname">未见财：</span>不在</div>
-            <div class="chatline"><span class="chatname">Adam：</span>那滚</div>
-            <div class="chatline"><span class="chatname">未见财：</span>好</div>
-            <div class="chatline"><span class="chatname">Adam：</span>回来</div>
-            <div class="chatline"><span class="chatname">未见财：</span>有屁快放</div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-title">relation.php · 提交历史</div>
-          <div class="tablelike">
-            <div class="table-row"><span>2014</span><span>1.7</span><span>SN</span><span>司南</span></div>
-            <div class="table-row"><span>2016</span><span>1.9</span><span>WJC</span><span>未见财</span></div>
-          </div>
-          <div class="panel-body">
-            <button class="btn" id="openRelationCode">查看版本差异</button>
-          </div>
-        </div>`:""}
+      <div class="panel"><div class="panel-title">2018 · UID1261</div><div class="panel-body">
+        <p class="small">旧积分转账打印页。</p>
+        <div class="profile-grid"><div>UID</div><div>1261</div><div>用户名</div><div>${state.wjcKnown?"未见财":"usr_1261"}</div><div>活跃</div><div>2016—2018</div></div>
+        ${!state.wjcKnown?`<button class="btn" id="revealWJC">翻到签名页</button>`:""}
+      </div></div>
+      ${state.wjcKnown?`<div class="panel"><div class="panel-title">打印页背面</div><div class="panel-body">
+        <p>手写了一行：<strong>未见财 / 1261</strong></p>
+        <div class="chatlog"><div class="chatline"><span class="chatname">E：</span>1261是他。</div><div class="chatline"><span class="chatname">火山：</span>这名我真没印象。</div></div>
+        ${!state.wjcChatSeen?`<button class="btn" id="openWJCChat">旁边还有一张聊天打印页</button>`:""}
+      </div></div>`:""}
+      ${state.wjcChatSeen?`<div class="panel"><div class="panel-title">旧聊天 · Adam / 未见财</div><div class="panel-body chatlog">
+        <div class="chatline"><span class="chatname">Adam：</span>在？</div><div class="chatline"><span class="chatname">未见财：</span>不在</div>
+        <div class="chatline"><span class="chatname">Adam：</span>那滚</div><div class="chatline"><span class="chatname">未见财：</span>好</div>
+        <div class="chatline"><span class="chatname">Adam：</span>回来</div><div class="chatline"><span class="chatname">未见财：</span>有屁快放</div>
+      </div>${!state.commitHistorySeen?`<div class="panel-body"><button class="btn" id="openCommitHistory">再翻一页</button></div>`:""}</div>`:""}
+      ${state.commitHistorySeen?`<div class="panel"><div class="panel-title">维护记录 · 2016</div><div class="panel-body">
+        <p>同一个名字还出现在一条代码提交记录里。</p>
+        <div class="tablelike"><div class="table-row"><span>文件</span><span>relation.php</span><span>版本</span><span>1.9</span></div><div class="table-row"><span>提交标记</span><span>WJC</span><span>备注</span><span>weijiancai</span></div></div>
+        <div class="chatlog"><div class="chatline"><span class="chatname">Hanlexios：</span>WJC是他。</div><div class="chatline"><span class="chatname">E：</span>嗯。</div></div>
+        <button class="btn" id="openRelationCode">看这两个版本</button>
+      </div></div>`:""}
     `,`首页 › 2018资料`);
   }
 
@@ -3729,7 +3191,7 @@ function resolve_history_conflict($row) {<br>
           <div class="panel-body small">作者标记：WJC / weijiancai</div>
         </div>`}
 
-      <div class="panel">
+      ${!v17 ? `      <div class="panel">
         <div class="panel-title">2018-10-28 部署记录</div>
         <div class="panel-body mono logbox">
 23:41:02 deploy relation.php 1.7<br>
@@ -3751,6 +3213,7 @@ reason: compare conflict behavior
           `}
         </div>
       </div>
+      `:""}
       ${mundaneBreak("code")}
     `,`首页 › relation.php${ordinaryThreadStrip("night")}
       ${forumDetour()}
@@ -3864,29 +3327,16 @@ reason: compare conflict behavior
 
   function renderIncident2018(){
     const steps=incidentSteps();
-    const visible=Math.max(1,Math.min(steps.length,state.incident2018Step||1));
+    state.group32Seen=true;
+    state.uid1848BirthSeen=true;
+    state.reconstructedPmSeen=true;
     return topShell(`${eraForumTexture(2018)}${eraStamp(2018)}
-      <div class="panel">
-        <div class="panel-title">2018-10-28 → 10-29</div>
-        <div class="panel-body">
-          <p class="small">服务器、聊天和 E 本地记录按时间对齐。时间都在同一时区。</p>
-        </div>
-      </div>
-      ${steps.slice(0,visible).map(s=>`
-        <div class="panel">
-          <div class="panel-title">${s.t}</div>
-          <div class="panel-body">${s.html}</div>
-        </div>`).join("")}
-      ${visible<steps.length ? `<div class="panel"><div class="panel-body"><button class="btn" id="nextIncident">继续</button></div></div>` : `
-        <div class="panel">
-          <div class="panel-title">01:07 导出</div>
-          <div class="panel-body">
-            <p>未见财把数据库导出后，给 Adam 留了一份完全离线的副本。</p>
-            <button class="btn" id="openFutureDb">查看 Adam 那份副本</button>
-          </div>
-        </div>`}
+      <div class="panel"><div class="panel-title">2018-10-28 → 10-29</div><div class="panel-body small">服务器日志、聊天导出和 E 本地文件按时间排在同一个目录里。</div></div>
+      ${steps.map(s=>`<details class="archive-record"><summary>${s.t}</summary><div class="panel"><div class="panel-body">${s.html}</div></div></details>`).join("")}
+      <div class="panel"><div class="panel-body small">01:07 导出：<button class="btn" id="openFutureDb">sideb_20181029_0107.sql</button></div></div>
     `,`首页 › 10/28事故`);
   }
+
 
   function renderFutureDb(){
     return topShell(`
@@ -3936,7 +3386,7 @@ Adam: 晚点说
           <div class="panel-body chatlog">
             <div class="chatline"><span class="chatname">司南：</span>我后来把Adam恢复了。</div>
             <div class="chatline"><span class="chatname">${esc(state.username)}：</span>为什么。</div>
-            <div class="chatline"><span class="chatname">司南：</span>删掉以后他的记录全往1848并，恢复至少还能留个独立账号。</div>
+            <div class="chatline"><span class="chatname">司南：</span>删完更乱。我给他拉回来了。</div>
             <div class="chatline"><span class="chatname">E：</span>这次他没说错。</div>
           </div>
           <div class="notice">“Hanlexios 删除 Adam”这条日志是真的，但日志没有记录 Adam 是主动要求删除的人。</div>
@@ -3965,12 +3415,13 @@ J DROP J / C DROP<br>
             </div>
             <div class="chatlog">
               <div class="chatline"><span class="chatname">火山：</span>你们当年聊天为什么跟特务接头一样。</div>
-              <div class="chatline"><span class="chatname">E：</span>因为论坛里的东西会变。</div>
+              <div class="chatline"><span class="chatname">E：</span>站里的我现在不敢信。</div>
               <div class="chatline"><span class="chatname">司南：</span>而且他俩闲。</div>
               <div class="chatline"><span class="chatname">E：</span>也有这个原因。</div>
             </div>
           </div>
         </div>`:""}
+      ${state.phase9Unlocked ? `<div class="panel"><div class="panel-body small">同目录：<a href="#temp1848" data-route="temp1848">1848_temp/</a></div></div>`:""}
     `,`首页 › 2018未来记录`);
   }
 
@@ -3980,7 +3431,7 @@ J DROP J / C DROP<br>
       <div class="panel">
         <div class="panel-title">2018-11-03 · UID1848</div>
         <div class="panel-body">
-          <p class="small">来源：未见财本地 SQL、Adam 留存聊天、E NAS。</p>
+          <p class="small">Adam 留下的一段聊天和同一时段的本地记录。</p>
           <div class="chatlog">
             <div class="chatline"><span class="chatname">Adam：</span>好了？</div>
             <div class="chatline"><span class="chatname">未见财：</span>好了。</div>
@@ -4038,20 +3489,20 @@ function release_1848() {<br>
           </div>
           <div class="panel-body">
             <p>下面没了。</p>
-            <div class="tablelike">
-              <div class="table-row"><span>2023</span><span>？？</span><span>0.74</span><span>分配1848</span></div>
-              <div class="table-row"><span>2024</span><span>鸽子</span><span>0.68</span><span>分配1848</span></div>
-              <div class="table-row"><span>2025</span><span>最高0.31</span><span>未过阈值</span><span>空</span></div>
-              <div class="table-row"><span>2026</span><span>${esc(state.username)}</span><span>调查后0.63+</span><span>分配1848</span></div>
+            <div class="chatlog">
+              <div class="chatline"><span class="chatname">火山：</span>所以这东西后来没删。</div>
+              <div class="chatline"><span class="chatname">E：</span>看起来没有。</div>
+              <div class="chatline"><span class="chatname">Hanlexios：</span>2025也有人注册过临时号，没拿到1848。</div>
+              <div class="chatline"><span class="chatname">火山：</span>那2023和2024那两个……</div>
+              <div class="chatline"><span class="chatname">E：</span>嗯。</div>
             </div>
-            <div class="notice">2025也有临时注册记录。都没过线。</div>
             ${!state.helperSeen ? `<button class="btn" id="openHelper">继续查“记忆”问题</button>`:""}
           </div>
         </div>`:""}
 
       ${state.wjcAfterSeen || state.adamAfterSeen ? `
         <div class="panel">
-          <div class="panel-title">后来</div>
+          <div class="panel-title">站外零散记录</div>
           <div class="panel-body">
             ${state.wjcAfterSeen ? `<div class="outside-entry"><strong>未见财</strong><span>2019 年仍有编程相关站外活动，之后不明。</span></div>`:""}
             ${state.adamAfterSeen ? `<div class="outside-entry"><strong>Adam</strong><span>2018-11-07 Paste：“不搞了。号没了就没了。”；11-09 仍与 E 正常联系。</span></div>`:""}
@@ -4071,14 +3522,9 @@ function release_1848() {<br>
             <span>本地草稿</span><span>离线页面</span>
             <span>快速 @</span><span>联系人缓存</span>
           </div>
-          <div class="mono codebox">
-user_cache.db<br>
-uid -&gt; nickname<br>
-uid -&gt; avatar<br>
-uid -&gt; contact_name<br>
-uid -&gt; last_seen<br>
-uid -&gt; relation_group
-          </div>
+          ${(state.helperIntroStep||1)>=2?`<div class="mono codebox">
+user_cache.db<br>uid -&gt; nickname<br>uid -&gt; contact_name<br>uid -&gt; relation_group
+          </div>`:""}
           <div class="chatlog">
             <div class="chatline"><span class="chatname">火山：</span>这个我以前装过。</div>
             <div class="chatline"><span class="chatname">E：</span>你现在还装着？</div>
@@ -4086,7 +3532,7 @@ uid -&gt; relation_group
             <div class="chatline"><span class="chatname">E：</span>这回答真有用。</div>
             <div class="chatline"><span class="chatname">火山：</span>我电脑换过三台了。</div>
           </div>
-          <button class="btn" id="auditHelper">查旧设置</button>
+          ${(state.helperIntroStep||1)<2?`<button class="btn" id="openHelperCache">看看它在本地存什么</button>`:`<button class="btn" id="auditHelper">查旧设置</button>`}
         </div>
       </div>
 
@@ -4157,11 +3603,11 @@ if (history_identity_conflict) {<br>
   function renderAudit(){
     return topShell(`
       <div class="panel">
-        <div class="panel-title">证据重审</div>
+        <div class="panel-title">E_NAS/source_notes.txt</div>
         <div class="panel-body">
-          <p class="small">E：先别管什么“本地”。看它到底从哪来的。</p>
+          <p class="small">文件里是 E 后来补的来源备注。</p>
           <div class="audit-table">
-            <div class="audit-head"><span>等级</span><span>含义</span><span>例子</span></div>
+            <div class="audit-head"><span>标记</span><span>来源</span><span>文件</span></div>
             <div class="audit-row"><strong>A0</strong><span>纯离线，不读取 Side-B 身份映射</span><span>Adam 手写TXT、未见财 SQL、原始游戏核心日志</span></div>
             <div class="audit-row"><strong>A1</strong><span>本地文件，但 Helper 可能读写</span><span>联系人导出、旧浏览器缓存</span></div>
             <div class="audit-row"><strong>B</strong><span>第三方服务缓存</span><span>Paste、邮件缓存</span></div>
@@ -4173,7 +3619,7 @@ if (history_identity_conflict) {<br>
       </div>
 
       <div class="panel">
-        <div class="panel-title">重新看“忘记”</div>
+        <div class="panel-title">helper_status.txt</div>
         <div class="panel-body">
           <div class="audit-case">
             <strong>火山</strong>
@@ -4190,7 +3636,7 @@ if (history_identity_conflict) {<br>
           <div class="chatlog">
             <div class="chatline"><span class="chatname">${esc(state.username)}：</span>所以网站没改人的记忆？</div>
             <div class="chatline"><span class="chatname">E：</span>不知道。</div>
-            <div class="chatline"><span class="chatname">E：</span>至少以前拿来证明这件事的东西，有一部分不算数。</div>
+            <div class="chatline"><span class="chatname">E：</span>那几份导出先放一边。</div>
             <div class="chatline"><span class="chatname">Hanlexios：</span>这个说法比较稳。</div>
             <div class="chatline"><span class="chatname">火山：</span>我现在连自己忘没忘都得先查插件。</div>
             <div class="chatline"><span class="chatname">E：</span>差不多。</div>
@@ -4199,7 +3645,7 @@ if (history_identity_conflict) {<br>
       </div>
 
       <div class="panel">
-        <div class="panel-title">A0 · 保留下来的东西</div>
+        <div class="panel-title">没经过 Helper 的文件</div>
         <div class="panel-body">
           <div class="mono codebox">
 未见财 SQL：2018 文件内仍有未来 UID1848 槽位<br>
@@ -4241,6 +3687,7 @@ Adam TXT：内容稳定<br>
             </div>
           </div>
         </div>`:""}
+      ${state.phase10Unlocked ? `<div class="panel"><div class="panel-body small">旧盘索引：<a href="#snapshots" data-route="snapshots">snapshots/</a></div></div>`:""}
     `,`首页 › 证据重审`);
   }
 
@@ -4282,7 +3729,7 @@ Adam TXT：内容稳定<br>
             <div class="old-bookmark mono">bookmark: Side Forum</div>
             <div class="chatlog">
               <div class="chatline"><span class="chatname">火山：</span>等下。</div>
-              <div class="chatline"><span class="chatname">火山：</span>所以以前就叫Side？</div>
+              <div class="chatline"><span class="chatname">火山：</span>等下，以前叫Side？</div>
               <div class="chatline"><span class="chatname">Hanlexios：</span>我记得是。</div>
               <div class="chatline"><span class="chatname">司南：</span>主库后来没了，B库顶上去，名字就懒得改。</div>
               <div class="chatline"><span class="chatname">E：</span>你确定？</div>
@@ -4323,7 +3770,7 @@ source=helper
           <div class="panel-body">
             <div class="chatlog">
               <div class="chatline"><span class="chatname">${esc(state.username)}：</span>CLIENT是什么。</div>
-              <div class="chatline"><span class="chatname">司南：</span>Helper回报。</div>
+              <div class="chatline"><span class="chatname">司南：</span>Helper传回来的。</div>
               <div class="chatline"><span class="chatname">${esc(state.username)}：</span>回报什么。</div>
               <div class="chatline"><span class="chatname">司南：</span>本地缓存里这个UID叫什么。</div>
               <div class="chatline"><span class="chatname">火山：</span>这也要上传？</div>
@@ -4347,7 +3794,7 @@ source=helper
           <div class="panel-body chatlog">
             <div class="chatline"><span class="chatname">火山：</span>所以是我们自己把房东投没了？</div>
             <div class="chatline"><span class="chatname">Hanlexios：</span>不能这么说。</div>
-            <div class="chatline"><span class="chatname">司南：</span>一开始只是因为我在用1094。</div>
+            <div class="chatline"><span class="chatname">司南：</span>那时候1094在我手上。</div>
             <div class="chatline"><span class="chatname">E：</span>你还改了邮箱。</div>
             <div class="chatline"><span class="chatname">司南：</span>我知道。</div>
             <div class="chatline"><span class="chatname">火山：</span>你知道个屁。</div>
@@ -4419,6 +3866,7 @@ function replay_client_cache() {<br>
             <button class="btn" id="openBConfig">看看它现在用什么当准</button>
           </div>
         </div>`:""}
+      ${state.phase11Unlocked ? `<div class="panel"><div class="panel-body small">同目录：<a href="#edges" data-route="edges">identity_audit_draft.txt</a></div></div>`:""}
     `,`首页 › 旧快照`);
   }
 
@@ -4599,33 +4047,33 @@ event:<br>
 &nbsp;&nbsp;related_to = identity_b<br>
 &nbsp;&nbsp;same_person = false
           </div>
-          <p class="small">人和账号分开记。</p>
+          
         </div>
       </div>
 
       ${mundaneBreak("code")}
       <div class="panel">
-        <div class="panel-title">先把人钉住</div>
-        <div class="panel-body identity-locks">
-          <div class="lock-card ${locks.adam?"locked":""}">
-            <strong>Adam / UID1839</strong>
-            <span>${locks.adam?"verified":"未验证"}</span>
-            ${!locks.adam?`<button class="btn smallbtn" id="lockAdam">找 recovery token</button>`:""}
+        <div class="panel-title">目录里的四份旧记录</div>
+        <div class="panel-body record-check-list">
+          <div class="record-check-row">
+            <strong>Adam</strong>
+            <span>${locks.adam?"已找到":"没找到"}</span>
+            ${!locks.adam?`<button class="btn smallbtn" id="lockAdam">找 Adam 留下的凭据</button>`:""}
           </div>
-          <div class="lock-card ${locks.wjc?"locked":""}">
-            <strong>未见财 / UID1261</strong>
-            <span>${locks.wjc?"verified":"未验证"}</span>
-            ${!locks.wjc?`<button class="btn smallbtn" id="lockWJC">核对 signing key</button>`:""}
+          <div class="record-check-row">
+            <strong>未见财</strong>
+            <span>${locks.wjc?"已找到":"没找到"}</span>
+            ${!locks.wjc?`<button class="btn smallbtn" id="lockWJC">核对未见财的提交记录</button>`:""}
           </div>
-          <div class="lock-card ${locks.qmark?"locked":""}">
-            <strong>？？ / 2023</strong>
-            <span>${locks.qmark?"verified":"未验证"}</span>
-            ${!locks.qmark?`<button class="btn smallbtn" id="lockQmark">找 release receipt</button>`:""}
+          <div class="record-check-row">
+            <strong>2023 · ？？</strong>
+            <span>${locks.qmark?"已找到":"没找到"}</span>
+            ${!locks.qmark?`<button class="btn smallbtn" id="lockQmark">找 2023 的退出记录</button>`:""}
           </div>
-          <div class="lock-card ${locks.pigeon?"locked":""}">
-            <strong>鸽子 / UID2097</strong>
-            <span>${locks.pigeon?"verified":"未验证"}</span>
-            ${!locks.pigeon?`<button class="btn smallbtn" id="lockPigeon">核对 migration receipt</button>`:""}
+          <div class="record-check-row">
+            <strong>2024 · 鸽子</strong>
+            <span>${locks.pigeon?"已找到":"没找到"}</span>
+            ${!locks.pigeon?`<button class="btn smallbtn" id="lockPigeon">找鸽子的迁移记录</button>`:""}
           </div>
         </div>
       </div>
@@ -4639,7 +4087,7 @@ answer: Lime<br><br>
 old game nick fragments:<br>
 Adam_A7 / Adam_F2 / Adam_6D / Adam_3B / Adam_19 / Adam_C0<br><br>
 token: A7F2-6D3B-19C0<br>
-Legacy identity verified.<br>
+Legacy identity 已找到.<br>
 Adam<br>
 UID1839<br>
 Independent identity
@@ -4723,7 +4171,7 @@ known identity receipt does not match selected owner
           <div class="panel-body mono logbox">
 2018 holder: UID1261 / 未见财<br>
 2023 holder: ？？<br>
-2024 holder: 鸽子 / UID2097<br>
+2024 holder: 2024 · 鸽子<br>
 2026 holder: ${esc(state.username)}<br>
 unresolved nodes: preserved
           </div>
@@ -4783,7 +4231,7 @@ STATUS=UNRESOLVED
           <div class="chatlog">
             <div class="chatline"><span class="chatname">司南：</span>1848已经能拆了，1094可以先不动。</div>
             <div class="chatline"><span class="chatname">火山：</span>为什么。</div>
-            <div class="chatline"><span class="chatname">司南：</span>因为会多一堆冲突。</div>
+            <div class="chatline"><span class="chatname">司南：</span>会报一堆错。</div>
             <div class="chatline"><span class="chatname">E：</span>本来就冲突。</div>
             <div class="chatline"><span class="chatname">司南：</span>我知道。</div>
           </div>
@@ -4970,15 +4418,14 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     state.ordinaryReplies = state.ordinaryReplies || [];
     state.ordinaryPMs = state.ordinaryPMs || [];
     state.forumVisits = Number.isFinite(state.forumVisits) ? state.forumVisits : 0;
-    state.pendingForumEvents = state.pendingForumEvents || [];
-    state.readyForumEvents = state.readyForumEvents || [];
     state.recentViewed = state.recentViewed || [];
+    state.searchHistory = state.searchHistory || [];
     state.navStack = state.navStack || [];
     state.readPMs = state.readPMs || [];
+    state.deliveredPMs = state.deliveredPMs || {};
     state.visibilityKnown = state.visibilityKnown || {};
     state.pendingSections = state.pendingSections || [];
     state.pendingPageUpdates = state.pendingPageUpdates || [];
-    state.stallSince = state.stallSince || {};
     state.edgeAssignments = state.edgeAssignments || {};
     state.identityLocks = Object.assign({adam:false,wjc:false,qmark:false,pigeon:false}, state.identityLocks || {});
     state.hiddenConfig = Object.assign({reference:"historical",offline:"enabled",unresolved:"majority"}, state.hiddenConfig || {});
@@ -4989,19 +4436,17 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
   function guardRoute(){
     const r=state.route;
     if(r==="qa" && !new URLSearchParams(location.search).has("qa")) state.route="home";
-    if(r==="candidate" && !state.rawCsvSeen) state.route="home";
-    if(r==="wjc" && !state.phase8Unlocked) state.route="home";
-    if(r==="code17" && !state.relationCodeSeen) state.route="home";
-    if(r==="incident2018" && !state.incident2018Unlocked) state.route="home";
-    if(r==="temp1848" && !state.phase9Unlocked) state.route="home";
-    if(r==="helper" && !state.helperSeen) state.route="home";
-    if(r==="audit" && !state.evidenceAuditSeen) state.route="home";
-    if(r==="snapshots" && !state.phase10Unlocked) state.route="home";
-    if(r==="snapconfig" && !state.hiddenRouteUnlocked) state.route="snapshots";
-    if(r==="edges" && !state.phase11Unlocked) state.route="home";
     if(r==="releasefinal" && !state.finalReleaseSeen) state.route="edges";
     if(r==="finalforum" && !state.normalAccountCreated) state.route="releasefinal";
   }
+  function applyHashRoute(){
+    const raw=(location.hash||"").replace(/^#\/?/,"").trim();
+    if(!raw)return;
+    const [route,arg]=raw.split("/",2);
+    const allowed=new Set(["home","forum","thread","profile","oldprofile","history2","pm","saved","search","tools","sources","evidence","relationtest","pigeon","nas","outside","feb12","leave","forsn","candidate","wjc","code17","incident2018","temp1848","helper","audit","snapshots","snapconfig","edges","about"]);
+    if(allowed.has(route)){state.route=route;state.routeArg=arg?decodeURIComponent(arg):null;}
+  }
+
 
   function updateDocumentTitle(){
     try{
@@ -5012,6 +4457,7 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
 
   function render(){
     normalizeState();
+    if(state.registered && !hashBootApplied){ applyHashRoute(); hashBootApplied=true; }
     updateDocumentTitle();
     guardRoute();
     const app=document.querySelector("#app");
@@ -5054,7 +4500,25 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     bind();
   }
 
-  function bind(){
+  
+function foldTechnicalBlocks(){
+  document.querySelectorAll(".codebox,.logbox").forEach(block=>{
+    if(block.closest("details.raw-fold")) return;
+    const panel=block.closest(".panel");
+    const title=panel?.querySelector(".panel-title")?.textContent?.trim()||"记录";
+    const d=document.createElement("details");
+    d.className="raw-fold";
+    const s=document.createElement("summary");
+    s.textContent=(/php|sql|code|config|header|client|relation|candidate|repair/i.test(title))
+      ? "原始内容（展开）"
+      : "原始记录（展开）";
+    block.parentNode.insertBefore(d,block);
+    d.appendChild(s);
+    d.appendChild(block);
+  });
+}
+function bind(){
+    foldTechnicalBlocks();
     const doBack=()=>{
       const prev=(state.navStack||[]).pop();
       if(prev){
@@ -5075,6 +4539,8 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       state.registered=true;
       state.firstVisitAt=Date.now();
       state.route="home";
+      hashBootApplied=true;
+      try{history.replaceState(null,"","#home");}catch(_){}
       state.navStack=[];
       state.phaseClock=1;
       record("registered",{username:state.username,uid:1848});
@@ -5086,6 +4552,7 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       pushNav();
       state.route=el.dataset.route;
       state.routeArg=null;
+      try{history.replaceState(null,"",`#${state.route}`);}catch(_){}
       save(); sidebPageSwap(render);
     }));
     document.querySelectorAll("[data-forum]").forEach(el=>el.addEventListener("click",(e)=>{
@@ -5168,7 +4635,6 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       state.route="oldprofile";
       state.routeArg=null;
       state.oldProfileOpened=true;
-      queueForumEvent('deferred_oldProfileOpened', 2, 'home');
       advance("oldprofile");
       render();
     });
@@ -5187,6 +4653,7 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     document.querySelector("#doSearch")?.addEventListener("click",()=>{
       if(state.route!=="search") pushNav();
       const q=(document.querySelector("#searchInput")?.value||"").trim();
+      recordSearchQuery(q);
       state.route="search";
       state.routeArg=q;
       if(q==="1848" || q===state.username){
@@ -5261,21 +4728,6 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       save(); sidebPageSwap(render);
     });
 
-    document.querySelectorAll(".evidence-save").forEach(el=>el.addEventListener("click",()=>{
-      const id=el.dataset.evidence;
-      if(!state.savedEvidence.includes(id) && state.savedEvidence.length<state.evidenceSlots){
-        state.savedEvidence.push(id);
-        record("evidence_saved",{id});
-      }
-      save(); sidebPageSwap(render);
-    }));
-
-    document.querySelector("#saveMemo")?.addEventListener("click",()=>{
-      state.userMemo=(document.querySelector("#userMemo")?.value||"").slice(0,800);
-      record("memo_saved");
-      save(); sidebPageSwap(render);
-    });
-
     document.querySelector("#replayUnlink")?.addEventListener("click",()=>{
       state.unlink2023Seen=true;
       state.unlink2023Done=true;
@@ -5283,22 +4735,6 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       advance("2023_unlink");
       save(); sidebPageSwap(render);
     });
-
-    document.querySelector("#recoverNextPigeon")?.addEventListener("click",()=>{
-      state.pigeonDay=Math.min(5,Math.max(1,state.pigeonDay)+1);
-      if(state.pigeonDay>=3) state.nasUnlocked=true;
-      advance("pigeon_day_"+state.pigeonDay);
-      save(); sidebPageSwap(render);
-    });
-
-    document.querySelectorAll(".diary-btn").forEach(el=>el.addEventListener("click",()=>{
-      const d=Number(el.dataset.day);
-      if(d <= Math.max(1,state.pigeonDay||1)){
-        // Entries are all displayed cumulatively; clicking simply records inspection.
-        advance("inspect_pigeon_day_"+d);
-        save(); sidebPageSwap(render);
-      }
-    }));
 
     document.querySelectorAll(".nas-folder").forEach(el=>el.addEventListener("click",()=>{
       state.nasFolder=el.dataset.folder;
@@ -5320,19 +4756,6 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     document.querySelector("#confirmOutside")?.addEventListener("click",()=>{
       state.qmarkOutsideSeen=true;
       advance("qmark_outside_confirmed");
-      save(); sidebPageSwap(render);
-    });
-
-    document.querySelector("#nextFeb12")?.addEventListener("click",()=>{
-      state.pigeonFinalStep=Math.min(7,(state.pigeonFinalStep||1)+1);
-      if(state.pigeonFinalStep>=3) state.consistencyRepairSeen=true;
-      if(state.pigeonFinalStep>=5) state.sinanOverrideSeen=true;
-      if(state.pigeonFinalStep>=6){
-        state.pigeonMigrated=true;
-        state.adamCandidateSeen=true;
-        state.exitEndingUnlocked=true;
-      }
-      advance("feb12_step_"+state.pigeonFinalStep);
       save(); sidebPageSwap(render);
     });
 
@@ -5384,15 +4807,9 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       state.candidateToolSeen=true;
       state.route="candidate";
       state.routeArg=null;
-      state.candidateStage=Math.max(1,state.candidateStage);
+      state.candidateStage=8;
+      state.currentScoreSeen=true;
       advance("gap_tool");
-      save(); sidebPageSwap(render);
-    });
-
-    document.querySelector("#nextScore")?.addEventListener("click",()=>{
-      state.candidateStage=Math.min(8,(state.candidateStage||1)+1);
-      if(state.candidateStage>=7) state.currentScoreSeen=true;
-      advance("candidate_score_"+state.candidateStage);
       save(); sidebPageSwap(render);
     });
 
@@ -5409,6 +4826,16 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       state.uid1261Seen=true;
       advance("wjc_revealed");
       save(); sidebPageSwap(render);
+    });
+
+    document.querySelector("#openWJCChat")?.addEventListener("click",()=>{
+      state.wjcChatSeen=true; save(); sidebPageSwap(render);
+    });
+    document.querySelector("#openCommitHistory")?.addEventListener("click",()=>{
+      state.commitHistorySeen=true; save(); sidebPageSwap(render);
+    });
+    document.querySelector("#openHelperCache")?.addEventListener("click",()=>{
+      state.helperIntroStep=2; save(); sidebPageSwap(render);
     });
 
     document.querySelector("#openRelationCode")?.addEventListener("click",()=>{
@@ -5436,15 +4863,6 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       state.incident2018Step=Math.max(1,state.incident2018Step);
       state.route="incident2018";
       advance("incident_open");
-      save(); sidebPageSwap(render);
-    });
-
-    document.querySelector("#nextIncident")?.addEventListener("click",()=>{
-      state.incident2018Step=Math.min(9,(state.incident2018Step||1)+1);
-      if(state.incident2018Step>=2) state.group32Seen=true;
-      if(state.incident2018Step>=5) state.uid1848BirthSeen=true;
-      if(state.incident2018Step>=8) state.reconstructedPmSeen=true;
-      advance("incident_step_"+state.incident2018Step);
       save(); sidebPageSwap(render);
     });
 
@@ -5695,6 +5113,11 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
       },{once:true});
     }
   }
+
+  window.addEventListener("hashchange",()=>{
+    if(!state||!state.registered)return;
+    applyHashRoute(); save(); sidebPageSwap(render);
+  });
 
   render();
 })();
