@@ -1252,10 +1252,16 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
+  const BUILD_ID = "rc1.8-20260830";
+  const BUILD_LABEL = "RC1.8";
 
   const initialState = {
     username: "",
     uid: 1848,
+    saveSchema: 1,
+    lastBuildId: "",
+    lastBuildLabel: "",
+    buildUpdatedAt: 0,
     registered: false,
     firstVisitAt: null,
     route: "home",
@@ -1550,18 +1556,36 @@ function safeParseSave(raw){
     t.posts = t.posts.map(x => ({user:x[0], uid:people[x[0]] || 900, time:x[1], body:x[2]}));
   });
 
+  function migrateSave(raw){
+    const prev=(raw && typeof raw==="object")?raw:{};
+    const next={...initialState,...prev};
+    // Keep the storage key stable: old progress is carried forward instead of reset.
+    next.saveSchema=1;
+    if(next.lastBuildId!==BUILD_ID){
+      next.previousBuildId=next.lastBuildId||"pre-versioned";
+      next.lastBuildId=BUILD_ID;
+      next.lastBuildLabel=BUILD_LABEL;
+      next.buildUpdatedAt=Date.now();
+    }
+    return next;
+  }
+
   function load(){
     try{
-      const raw = JSON.parse(SideBStorage.getItem(STORAGE_KEY));
-      return {...initialState, ...(raw || {})};
+      const parsed=JSON.parse(SideBStorage.getItem(STORAGE_KEY));
+      return migrateSave(parsed);
     }catch{
-      return {...initialState};
+      return migrateSave(null);
     }
   }
   state = load();
   normalizeBranchState();
 
-  function save(){ SideBStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function save(){
+    state.lastBuildId=BUILD_ID;
+    state.lastBuildLabel=BUILD_LABEL;
+    SideBStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
   function esc(s=""){
     return String(s)
       .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
@@ -4792,7 +4816,7 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     return topShell(`
       <div class="panel">
         <div class="panel-title">关于 Side-B</div>
-        <div class="panel-body">
+        <div class="panel-body"><p class="small">网页版本：${BUILD_LABEL}</p>
           <p>一个很老的小论坛。</p>
           <p>最早是哪年开的现在没人说得准，旧数据库搬过几次，部分页面会出现链接失效、头像错误、用户名显示不一致之类的问题。</p>
           <p>如果只是找资源，下载到本地以后自己留一份。</p>
