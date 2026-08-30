@@ -723,6 +723,135 @@ input,select,textarea{
 
 .thread-has-new-reply .thread-title{font-weight:bold}
 #newTopicBody,#userThreadReplyText{width:min(680px,100%);box-sizing:border-box;border:1px solid #8f979f;background:#fff;padding:7px 8px;font:inherit}
+
+/* RC1.9.3 — 老论坛视觉整理。保留表格感，不做现代卡片。 */
+:root{
+  --bg:#e6e8e4;
+  --paper:#fbfbf7;
+  --panel:#f8f8f3;
+  --line:#b5b9b4;
+  --line-soft:#d8dad6;
+  --dark:#34475b;
+  --dark2:#405a73;
+  --text:#262b2f;
+  --muted:#6f7678;
+  --link:#234f7c;
+  --head:#e9edf0;
+  --head2:#f3f4f1;
+}
+html{background:#dfe2df}
+body{
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0,rgba(255,255,255,.18) 1px,transparent 1px,transparent 4px),
+    var(--bg);
+  color:var(--text);
+  font:13px/1.65 Arial,"Microsoft YaHei","SimSun",sans-serif;
+}
+.site{width:min(980px,calc(100% - 28px));margin:14px auto 52px}
+.topbar{
+  min-height:46px;
+  padding:8px 13px;
+  background:linear-gradient(#526d88,#344b63);
+  border:1px solid #263b50;
+  border-bottom-color:#203247;
+  box-shadow:inset 0 1px rgba(255,255,255,.18);
+}
+.brand{font-family:Arial,"Microsoft YaHei",sans-serif;font-size:21px;letter-spacing:.3px;text-shadow:0 1px #26394b}
+.brand small{color:#e0e6ea;font-size:10px;letter-spacing:1px}
+.userbox{color:#eef2f5}
+.nav{
+  padding:6px 10px;
+  background:linear-gradient(#f8f9f7,#e9eceb);
+  border-color:#aab0b4;
+  box-shadow:inset 0 1px #fff;
+}
+.nav button{margin-right:12px;font-size:12px}
+.crumb{margin:9px 2px 6px;color:#747a7b}
+.panel{
+  background:var(--paper);
+  border-color:var(--line);
+  margin-bottom:10px;
+  box-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.panel-title{
+  padding:6px 9px;
+  background:linear-gradient(#f4f5f3,#e2e6e7);
+  border-bottom-color:#b9bdbb;
+  color:#36414a;
+  font-size:13px;
+  text-shadow:0 1px #fff;
+}
+.panel-body{padding:10px 11px}
+.forum-row{padding:9px 11px;border-top-color:#dedfdc;background:#fbfbf7}
+.forum-row:nth-child(even){background:#f7f8f4}
+.forum-name{font-size:14px}
+.thread-row{padding:7px 9px;border-top-color:#dedfdc;background:#fbfbf8;align-items:center}
+.thread-row:hover{background:#f2f5f6}
+.thread-row .thread-title{font-size:13px}
+.thread-has-new-reply{background:#f3f6f8}
+.thread-has-new-reply .thread-title:before{content:"新 ";font-size:10px;color:#8a2f2b;font-weight:bold}
+.badge{background:#eceeeb;border-color:#c0c4c1;color:#666;padding:0 3px}
+.notice{margin:0 0 9px;padding:7px 9px;background:#fffde9;border:1px solid #d4cfaa;color:#5f5a42;font-size:12px}
+.post{grid-template-columns:138px 1fr;border-top-color:#d2d5d2;background:#fdfdf9}
+.post:nth-child(even){background:#fafaf6}
+.post-user{padding:10px;background:#edf0ef;border-right-color:#d0d4d2;color:#4d5559}
+.post-user strong{font-size:13px;color:#294f72}
+.post-body{padding:9px 12px 15px;min-height:86px}
+.post-time{padding-bottom:4px;margin-bottom:8px;color:#84898a;border-bottom-color:#d5d7d4}
+.quote{margin:4px 0;padding:5px 8px;border-left:3px solid #c4c8c5;background:#f0f1ee;color:#5e6465}
+.btn{
+  border:1px solid #8d969b;
+  border-top-color:#bfc5c8;
+  border-left-color:#bfc5c8;
+  background:linear-gradient(#fff,#e3e6e5);
+  color:#28323a;
+  padding:4px 10px;
+  line-height:1.4;
+  box-shadow:inset 0 1px #fff;
+}
+.btn:hover{background:linear-gradient(#fff,#dce2e4)}
+.btn.primary{background:linear-gradient(#637d96,#405c75);border-color:#354e65;color:#fff;text-shadow:0 1px #2c4052}
+input[type=text],input[type=password],textarea{
+  border:1px solid #9ba3a5;
+  border-top-color:#7f898d;
+  background:#fffefb;
+  padding:5px 6px;
+  color:#222;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
+}
+#newTopicTitle{width:min(620px,100%)}
+#newTopicBody,#userThreadReplyText{width:100%;max-width:760px;resize:vertical;min-height:96px}
+.editor-table{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px 10px;align-items:start}
+.editor-label{padding-top:5px;color:#5d6467;text-align:right}
+.editor-hint{margin-top:3px;color:#8a8f90}
+.post-editor{scroll-margin-top:8px}
+.topic-tools{display:flex;justify-content:space-between;align-items:center;margin:5px 2px 7px;color:#707778;font-size:12px}
+.topic-tools a{border:1px solid #b7bdc0;background:#f4f5f2;padding:2px 7px;text-decoration:none}
+.pm{background:#fbfbf8}
+.pm:hover{background:#f1f4f4}
+.page-bottom-nav{padding:6px 2px;border-top:1px solid #c5c9c6;color:#727879;font-size:12px}
+.footer{margin-top:11px;padding-top:4px;color:#858a8a}
+.small,.meta,.forum-desc{color:#777e80}
+.statline{background:#f8f8f4}
+
+@media(max-width:700px){
+  body{font-size:14px;background:#f0f1ee}
+  .site{width:100%;margin:0 0 28px}
+  .topbar{min-height:42px;padding:7px 10px}
+  .brand{font-size:19px}
+  .nav{white-space:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .nav button{margin-right:10px}
+  .crumb{padding:0 8px}
+  .post{grid-template-columns:1fr}
+  .post-user{display:flex;gap:8px;align-items:baseline;padding:6px 9px;border-right:0;border-bottom:1px solid #d4d7d4}
+  .post-user strong{margin:0}
+  .post-user .small{display:inline}
+  .post-body{min-height:0;padding:8px 10px 13px}
+  .editor-table{grid-template-columns:1fr;gap:3px}
+  .editor-label{text-align:left;padding-top:2px;font-weight:bold}
+  .panel-body{padding:9px}
+  .topic-tools{padding:0 8px}
+}
 </style></head><body><div id="sideb-start-error" style="display:none"></div><div id="app"></div><script>window.__sideBLoaded=false;window.addEventListener("error",function(e){var b=document.getElementById("sideb-start-error");if(b){b.style.display="block";b.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown")}});</script><script>
 const SideBStorage = (() => {
   const mem = {};
@@ -1135,8 +1264,8 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
-  const BUILD_ID = "rc1.9.2-20260831";
-  const BUILD_LABEL = "RC1.9.2";
+  const BUILD_ID = "rc1.9.3-20260831";
+  const BUILD_LABEL = "RC1.9.3";
 
   const initialState = {
     username: "",
@@ -1160,6 +1289,8 @@ function safeParseSave(raw){
     inquiryThreadId: "",
     inquiryRepliesDelivered: {},
     inquiryLastSeenReplyCount: 0,
+    inquirySeq: 0,
+    inquiryPromptedMilestones: {},
     events: [],
     signature: "",
     phaseClock: 0,
@@ -1709,9 +1840,49 @@ function safeParseSave(raw){
   }
 
 
-  function inquiryKeywordMatch(title="", body=""){
-    const s=(String(title)+" "+String(body)).toLowerCase();
-    return ["1848","2019","旧帖","存档","注册","主页","名字","新人帖","新来的"].some(k=>s.includes(k));
+  function inquiryText(title="",body=""){
+    return (String(title)+" "+String(body)).toLowerCase().replace(/\s+/g," ");
+  }
+
+  function inquiryIntent(title="",body=""){
+    const s=inquiryText(title,body);
+    const mundane=["耳机","steam","游戏","路由器","硬盘","字体","键盘","显卡","鼠标","作业","上班","泡面"];
+    const anomaly=["1848","2019","旧帖","老帖","存档","注册","主页","名字","用户名","作者","新人帖","新来的","时间不对","日期不对","显示成我","变成我","我今天才","不是我发","怎么是我","什么情况","不对劲","有问题","看错","怪","？？","???"];
+    const help=["有人","帮我","帮看","帮忙","怎么","为什么","咋","什么","?","？","看得到","能看","问一下"];
+    const explicit=anomaly.filter(k=>s.includes(k)).length;
+    const asking=help.filter(k=>s.includes(k)).length;
+    const ordinary=mundane.filter(k=>s.includes(k)).length;
+    if(explicit>0) return {kind:"anomaly",score:explicit*3+asking, text:s};
+    if(asking>0 && ordinary===0) return {kind:"vague",score:asking,text:s};
+    if(ordinary>0 && explicit===0) return {kind:"mundane",score:0,text:s};
+    return {kind:"neutral",score:0,text:s};
+  }
+
+  function inquiryMentions(text,group){
+    const s=inquiryText("",text);
+    const sets={
+      old:["2019","旧帖","老帖","存档","以前","几年前","新人帖","新来的"],
+      identity:["名字","用户名","作者","uid","1848","显示成我","变成我","是我"],
+      today:["今天","刚注册","刚来的","才注册","新号","刚进"],
+      profile:["主页","资料","注册时间","注册日期","日期","年份"],
+      link:["链接","地址","那个帖","存档区","迁移","新来的"],
+      holder2023:["2023","两个问号","？？","问号","另一个1848","以前的1848"],
+      holder2024:["2024","鸽子","2097","又一个1848"],
+      relation:["关联","关系","1094","房东","司南","账号交接","接手"],
+      wjc:["1261","未见财","wjc","weijiancai","relation.php","1.7","1.9","rollback","回滚"],
+      future:["未来","future","2018的表","没发生","对不上","以后日期"],
+      helper:["helper","插件","浏览器插件","联系人","备注","客户端","缓存"],
+      snapshot:["snapshot","client","共识","consensus","离线回放","offline","修复配置"],
+      temp:["temp_user","临时账号","候选","candidate","匹配","为什么是1848"],
+      adam:["adam","删除记录","恢复账号"],
+      tech:["relation","group32","1261","未见财","wjc","repair","temp_user","helper","snapshot"]
+    };
+    return (sets[group]||[]).some(k=>s.includes(k));
+  }
+
+  function nextInquirySeq(){
+    state.inquirySeq=(state.inquirySeq||0)+1;
+    return state.inquirySeq;
   }
 
   function inquiryReplyCount(){
@@ -1722,76 +1893,94 @@ function safeParseSave(raw){
     if(!state.inquiryThreadId || !condition) return false;
     state.inquiryRepliesDelivered=state.inquiryRepliesDelivered||{};
     if(state.inquiryRepliesDelivered[id]) return false;
-    state.inquiryRepliesDelivered[id]={at:Date.now()};
+    state.inquiryRepliesDelivered[id]={at:Date.now(),seq:nextInquirySeq(),post:post||null};
     if(typeof sideEffect==="function") sideEffect();
     save();
     return true;
   }
 
+  function inquiryPlayerTexts(){
+    const t=(state.userThreads||[]).find(x=>x.id===state.inquiryThreadId);
+    if(!t) return [];
+    return [t.body||"",...(t.userReplies||[]).map(x=>x.text||"")];
+  }
+
+  function inquiryLastPlayerText(){
+    const xs=inquiryPlayerTexts(); return xs[xs.length-1]||"";
+  }
+
+  function inquiryPlayerReplyCount(){
+    const t=(state.userThreads||[]).find(x=>x.id===state.inquiryThreadId);
+    return (t?.userReplies||[]).length;
+  }
+
   function syncInquiryReplies(){
     if(!state.inquiryThreadId) return;
-    // The thread is the discussion hub. Replies only appear because the player asked first.
-    // Each condition is tied to something the player actually discovered or did.
-    deliverInquiryReply("fire_first", true, null);
-    deliverInquiryReply("e_profile", state.oldProfileOpened || state.saw2019Twin, null, ()=>{
+    const texts=inquiryPlayerTexts();
+    const first=texts[0]||"";
+    const last=inquiryLastPlayerText();
+    const replies=inquiryPlayerReplyCount();
+    const intent=inquiryIntent("",first);
+    const anyOld=texts.some(x=>inquiryMentions(x,"old"));
+    const anyIdentity=texts.some(x=>inquiryMentions(x,"identity"));
+    const anyToday=texts.some(x=>inquiryMentions(x,"today"));
+    const anyProfile=texts.some(x=>inquiryMentions(x,"profile"));
+
+    // 早期：NPC不读心。玩家说得含糊，火山就只追问；说清楚后才去验证。
+    deliverInquiryReply("fire_open", true, {user:"火山",uid:388,body:intent.kind==="anomaly" && (anyOld||anyIdentity) ? "你说哪个？发下链接。" : "咋了？"});
+    deliverInquiryReply("fire_where", replies>=1 && !anyOld && !anyIdentity, {user:"火山",uid:388,body:"你说的是哪页？我没懂。"});
+    deliverInquiryReply("fire_check", replies>=1 && ((anyOld&&anyIdentity) || (state.saw2019Twin&&anyOld)), {user:"火山",uid:388,body:"找到了。等下，我这边作者也是你。你今天刚注册？"});
+    deliverInquiryReply("fire_call_e", !!state.inquiryRepliesDelivered?.fire_check && (replies>=2 || state.oldProfileOpened), {user:"火山",uid:388,body:"行。我叫E看一眼，他以前弄过旧站。"});
+    deliverInquiryReply("e_enter", !!state.inquiryRepliesDelivered?.fire_call_e && (replies>=3 || state.oldProfileOpened), {user:"E",uid:77,body:"火山发我了。你现在资料页注册时间写什么？"});
+    deliverInquiryReply("e_profile", state.oldProfileOpened && !!state.inquiryRepliesDelivered?.e_enter, {user:"E",uid:77,body:"别改资料。我这边先存一份。打印页也开一下，看作者栏。后面再翻到什么就接着回这帖，别另开，我好找。"}, ()=>{
       state.eSavedProfile=true;
-      if(state.saw2019Twin){
-        state.historyExpanded=true;
-        state.oldReplyCount=Math.max(state.oldReplyCount,26);
-      }
+      if(state.saw2019Twin){state.historyExpanded=true;state.oldReplyCount=Math.max(state.oldReplyCount,26);}
     });
-    deliverInquiryReply("fire_1848", state.volcanoNoticed || state.volcanoEvidenceSeen, null);
-    deliverInquiryReply("han_oldposts", state.hanJoined || state.volcanoEvidenceSeen, null, ()=>{
-      state.hanJoined=true;
-      state.sinanToolsUnlocked=true;
-    });
-    deliverInquiryReply("sinan_tools", state.sinanToolsUnlocked && (state.editLogSeen || state.cacheSeen || state.sourceCompareUnlocked), null);
-    deliverInquiryReply("e_2023", state.holder2023Known, null);
-    deliverInquiryReply("fire_2024", state.holder2024Known, null);
-    deliverInquiryReply("fire_unlink", state.unlink2023Done, null);
-    deliverInquiryReply("e_forget", state.eForgot2023, null);
-    deliverInquiryReply("e_pigeon", state.pigeonMigrated, null);
-    deliverInquiryReply("adam_memory", state.adamCandidateSeen, null);
-    deliverInquiryReply("sinan_force", state.forceConfirmRevealSeen, null);
-    deliverInquiryReply("wjc_voice", state.wjcKnown, null);
-    deliverInquiryReply("han_futuredb", state.futureDbSeen, null);
+    deliverInquiryReply("fire_1848", (state.volcanoNoticed||state.volcanoEvidenceSeen) && !!state.inquiryRepliesDelivered?.e_profile, {user:"火山",uid:388,body:"1848这个号我真有点印象。不是你这个人，我是说这个号。"});
+    deliverInquiryReply("fire_get_han", state.volcanoEvidenceSeen && !!state.inquiryRepliesDelivered?.fire_1848, {user:"火山",uid:388,body:"我问下Han，他以前老翻存档。"});
+    deliverInquiryReply("han_oldposts", !!state.inquiryRepliesDelivered?.fire_get_han && (replies>=2||state.historyExpanded), {user:"Hanlexios",uid:521,body:"刚翻了下。1848以前在旧页里出现过，不止今天。年份我还没对完。"}, ()=>{state.hanJoined=true;state.sinanToolsUnlocked=true;});
+
+    // 中段：讨论帖继续承接玩家已经实际查到的东西，不凭空解锁。
+    deliverInquiryReply("e_2023", state.holder2023Known && inquiryMentions(last,"holder2023"), {user:"E",uid:77,body:"2023那个我找到了。用户名就是两个问号。"});
+    deliverInquiryReply("fire_2023_verify", state.holder2023Known && !!state.inquiryRepliesDelivered?.e_2023 && replies>=4, {user:"火山",uid:388,body:"我旧聊天里也有这号。说话挺急的，点东西比我还快。"});
+    deliverInquiryReply("fire_2024", state.holder2024Known && inquiryMentions(last,"holder2024"), {user:"火山",uid:388,body:"2024那份联系人备注是“鸽子”。页面上现在显示什么先别信。"});
+    deliverInquiryReply("e_pigeon", state.pigeonMigrated && inquiryMentions(last,"holder2024"), {user:"E",uid:77,body:"2097能登。她刚在站外回我了。"});
+    deliverInquiryReply("fire_unlink", state.unlink2023Done && inquiryMentions(last,"holder2023"), {user:"火山",uid:388,body:"两个问号那个确实退掉了，我这边旧聊天还在。"});
+    deliverInquiryReply("e_forget", state.eForgot2023 && inquiryMentions(last,"holder2023"), {user:"E",uid:77,body:"等会，两个问号是谁？NAS里有文件夹，我没印象。"});
+
+    // 技术线：先有人提“旧接口”，再由玩家自己去看。
+    deliverInquiryReply("sinan_enter", state.sinanToolsUnlocked && (state.editLogSeen||state.cacheSeen||state.sourceCompareUnlocked) && (inquiryMentions(last,"relation")||inquiryMentions(last,"wjc")), {user:"司南",uid:1094,body:"旧版编辑记录还活着。以前修站时没删干净。"});
+    deliverInquiryReply("wjc_voice", state.wjcKnown && inquiryMentions(last,"wjc"), {user:"E",uid:77,body:"未见财我记得。人挺欠的。你说WJC的话，像是他以前签名。"});
+    deliverInquiryReply("adam_memory", state.adamCandidateSeen && inquiryMentions(last,"adam"), {user:"火山",uid:388,body:"Adam这个名字我也眼熟。年份别问我，我真记不准。"});
+    deliverInquiryReply("han_futuredb", state.futureDbSeen && inquiryMentions(last,"future"), {user:"Hanlexios",uid:521,body:"那份未来日期的表我看了。里面有一条和后来实际记录对不上。先放着，别急着给它起名字。"});
+    deliverInquiryReply("sinan_force", state.forceConfirmRevealSeen && (inquiryMentions(last,"relation")||inquiryMentions(last,"temp")), {user:"司南",uid:1094,body:"那个关联是我绑的。你没点确认，我知道。"});
+    deliverInquiryReply("helper_fire", (state.helperSeen||state.helperStatusSeen) && inquiryMentions(last,"helper"), {user:"火山",uid:388,body:"Side Helper我装过。以前就拿它看头像和备注，后来嫌烦卸了。"});
+    deliverInquiryReply("snapshot_han", (state.snapshotsSeen||state.snapshotBSeen) && inquiryMentions(last,"snapshot"), {user:"Hanlexios",uid:521,body:"snapshot_B里那些CLIENT行，和Helper导出的格式能对上。"});
   }
 
   function inquiryNPCPosts(){
     if(!state.inquiryThreadId) return [];
     syncInquiryReplies();
-    const d=state.inquiryRepliesDelivered||{};
-    const posts=[];
-    const add=(id,user,uid,body)=>{ if(d[id]) posts.push({user,uid,time:"刚刚",body}); };
-
-    add("fire_first","火山",388,"你说存档区那个？我刚点了下，也能开。");
-    add("e_profile","E",77,"你自己资料页现在写哪年？我这边点进去还是今天。先别改资料，我存一份。");
-    add("fire_1848","火山",388,"1848这个号我好像真见过。不是说你本人，我只对这个数字有点印象。");
-    add("han_oldposts","Hanlexios",521,"火山把那几个旧帖链接丢我了。1848我以前在旧页里见过，哪年我得翻。");
-    add("sinan_tools","司南",1094,"旧版编辑记录和缓存页还活着。以前修站时留的，地址没删。");
-    add("e_2023","E",77,"2023那个号我有点印象。用户名就是两个问号。别问我为什么能注册，当时确实能。");
-    add("fire_2024","火山",388,"我那份联系人导出里，2024那个备注叫“鸽子”。我现在只敢认备注，不敢认页面上的名字。");
-    add("fire_unlink","火山",388,"2023那个真退掉了。我这边旧聊天还在。");
-    add("e_forget","E",77,"等会，两个问号是谁？我NAS里有个文件夹，但我真没印象。");
-    add("e_pigeon","E",77,"鸽子那边2097还能登。刚在站外回了我一句，说去睡了。");
-    add("adam_memory","火山",388,"Adam这个名字我好像也见过。先别算年份，我记得不准。");
-    add("sinan_force","司南",1094,"你问那个关联怎么来的？我绑的。你没点确认，我知道。");
-    add("wjc_voice","E",77,"未见财这个名字我有印象。人挺欠的。别的我得看旧文件。");
-    add("han_futuredb","Hanlexios",521,"之前日志里那个Adam，删除记录我翻到了。那条‘Hanlexios删除’只写了谁按提交，没写是谁要求的。");
-
-    return posts;
+    const rows=[];
+    for(const [id,rec] of Object.entries(state.inquiryRepliesDelivered||{})){
+      if(!rec?.post) continue;
+      rows.push({...rec.post,time:"刚刚",_seq:rec.seq||0,_kind:"npc"});
+    }
+    return rows.sort((a,b)=>a._seq-b._seq);
   }
 
   function userCreatedThreads(){
     const rows=(state.userThreads||[]).map(t=>{
-      const posts=[{user:state.username,uid:1848,time:t.time||"今天",body:t.body||""}];
-      if(t.id===state.inquiryThreadId) posts.push(...inquiryNPCPosts());
-      (t.userReplies||[]).forEach(x=>posts.push({user:state.username,uid:1848,time:"刚刚",body:x.text}));
-      const last=posts[posts.length-1];
+      if(t.id===state.inquiryThreadId) syncInquiryReplies();
+      const stream=[{user:state.username,uid:1848,time:t.time||"今天",body:t.body||"",_seq:0,_kind:"user"}];
+      if(t.id===state.inquiryThreadId) stream.push(...inquiryNPCPosts());
+      (t.userReplies||[]).forEach((x,i)=>stream.push({user:state.username,uid:1848,time:"刚刚",body:x.text,_seq:x.seq||((i+1)*1000),_kind:"user"}));
+      stream.sort((a,b)=>(a._seq||0)-(b._seq||0));
+      const last=stream[stream.length-1];
       return {
         id:t.id, forum:t.forum||"general", title:t.title||"问一下", author:state.username,
-        replies:Math.max(0,posts.length-1), last:last?.user===state.username?"刚刚":`${last?.user||state.username} / 刚刚`,
-        userCreated:true, posts
+        replies:Math.max(0,stream.length-1), last:last?.user===state.username?"刚刚":`${last?.user||state.username} / 刚刚`,
+        userCreated:true, posts:stream
       };
     });
     return rows;
@@ -1982,12 +2171,13 @@ function threadRow(t){
         ${ts.length ? ts.map(threadRow).join("") : `<div class="empty">这里没什么东西。</div>`}
       </div>
       ${fid==="general" ? `
-      <div class="panel">
-        <div class="panel-title">发表主题</div>
-        <div class="panel-body">
-          <div class="form-row"><label for="newTopicTitle">标题</label><input id="newTopicTitle" type="text" maxlength="40"></div>
-          <div class="form-row"><label for="newTopicBody">内容</label><textarea id="newTopicBody" rows="5" maxlength="1000"></textarea></div>
-          <button class="btn" id="postNewTopic">发表主题</button>
+      <div class="topic-tools"><span>本版主题: ${ts.length}</span><a href="#postbox" class="linklike">发表新主题</a></div>
+      <div class="panel post-editor" id="postbox">
+        <div class="panel-title">发表新主题</div>
+        <div class="panel-body editor-table">
+          <div class="editor-label">标题</div><div><input id="newTopicTitle" type="text" maxlength="40"></div>
+          <div class="editor-label">内容</div><div><textarea id="newTopicBody" rows="6" maxlength="1000"></textarea><div class="small editor-hint">支持普通文本。请勿连续顶帖。</div></div>
+          <div></div><div><button class="btn primary" id="postNewTopic">发表主题</button>　<button class="btn" type="button" id="clearNewTopic">清空</button></div>
         </div>
       </div>`:""}
       `,`首页 › ${esc(f?.name||"")}`);
@@ -2058,9 +2248,10 @@ function threadRow(t){
     }
     let related="";
     const ownReplyBox=t.userCreated ? `
-      <div class="panel"><div class="panel-title">快速回复</div><div class="panel-body">
-        <textarea id="userThreadReplyText" rows="3" placeholder="回复"></textarea><br>
-        <button class="btn" id="replyUserThread" data-user-thread="${esc(t.id)}">发表回复</button>
+      <div class="topic-tools"><span>回复 ${t.replies}</span><a href="#replybox" class="linklike">快速回复</a></div>
+      <div class="panel post-editor" id="replybox"><div class="panel-title">快速回复</div><div class="panel-body editor-table">
+        <div class="editor-label">内容</div><div><textarea id="userThreadReplyText" rows="4" placeholder=""></textarea><div class="small editor-hint">楼主可继续补充情况。</div></div>
+        <div></div><div><button class="btn primary" id="replyUserThread" data-user-thread="${esc(t.id)}">发表回复</button></div>
       </div></div>`:"";
     return topShell(`${banner}<div class="panel"><div class="panel-title">${esc(t.title)}</div>${renderedPosts}</div>${ownReplyBox}${related}`,`首页 › ${esc(t.title)}`);
   }
@@ -4193,6 +4384,16 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     state.inquiryRepliesDelivered = state.inquiryRepliesDelivered || {};
     state.inquiryThreadId = state.inquiryThreadId || "";
     state.inquiryLastSeenReplyCount = Number.isFinite(state.inquiryLastSeenReplyCount) ? state.inquiryLastSeenReplyCount : 0;
+    state.inquirySeq = Number.isFinite(state.inquirySeq) ? state.inquirySeq : 0;
+    state.inquiryPromptedMilestones = state.inquiryPromptedMilestones || {};
+    // RC1.9.2 delivered records did not carry dialogue content/sequence. Rebuild only that
+    // transient discussion layer while keeping the player's thread and replies intact.
+    if(Object.values(state.inquiryRepliesDelivered||{}).some(x=>x && !Object.prototype.hasOwnProperty.call(x,"post"))){
+      state.inquiryRepliesDelivered={};
+      const own=(state.userThreads||[]).find(x=>x.id===state.inquiryThreadId);
+      state.inquirySeq=Math.max(0,...((own?.userReplies)||[]).map(x=>Number(x.seq)||0));
+      state.inquiryLastSeenReplyCount=0;
+    }
     state.forumVisits = Number.isFinite(state.forumVisits) ? state.forumVisits : 0;
     state.recentViewed = state.recentViewed || [];
     state.searchHistory = state.searchHistory || [];
@@ -4346,6 +4547,10 @@ function bind(){
       save(); sidebPageSwap(render);
     }));
 
+    document.querySelector("#clearNewTopic")?.addEventListener("click",()=>{
+      const a=document.querySelector("#newTopicTitle"),b=document.querySelector("#newTopicBody"); if(a)a.value=""; if(b)b.value="";
+    });
+
     document.querySelector("#postNewTopic")?.addEventListener("click",()=>{
       const title=(document.querySelector("#newTopicTitle")?.value||"").trim();
       const body=(document.querySelector("#newTopicBody")?.value||"").trim();
@@ -4353,11 +4558,13 @@ function bind(){
       state.userThreads=state.userThreads||[];
       const id="user_"+Date.now().toString(36);
       state.userThreads.unshift({id,forum:"general",title:title.slice(0,40),body:body.slice(0,1000),time:"今天",userReplies:[]});
-      if(!state.inquiryThreadId && event("first_anomaly") && inquiryKeywordMatch(title,body)){
+      const intent=inquiryIntent(title,body);
+      if(!state.inquiryThreadId && event("first_anomaly") && intent.kind!=="mundane"){
         state.inquiryThreadId=id;
         state.inquiryRepliesDelivered={};
         state.inquiryLastSeenReplyCount=0;
-        record("player_started_inquiry",{thread:id,title:title.slice(0,40)});
+        state.inquirySeq=0;
+        record("player_started_inquiry",{thread:id,title:title.slice(0,40),intent:intent.kind});
       }
       pushNav();
       state.route="thread";
@@ -4372,7 +4579,8 @@ function bind(){
       const t=(state.userThreads||[]).find(x=>x.id===id);
       if(!t) return;
       t.userReplies=t.userReplies||[];
-      t.userReplies.push({text:text.slice(0,700),at:Date.now()});
+      t.userReplies.push({text:text.slice(0,700),at:Date.now(),seq:nextInquirySeq()});
+      if(id===state.inquiryThreadId) syncInquiryReplies();
       save(); sidebPageSwap(render);
     });
     document.querySelectorAll("[data-pm]").forEach(el=>el.addEventListener("click",(e)=>{
