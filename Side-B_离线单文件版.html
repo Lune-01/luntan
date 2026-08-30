@@ -1182,18 +1182,25 @@ function composerRefList(key){
   return state.composerRefs[key];
 }
 
+function persistReferenceState(){
+  try{
+    if(!state) return;
+    const storageKey = "sideb_phase3_state_v1";
+    SideBStorage.setItem(storageKey, JSON.stringify(state));
+  }catch(e){}
+}
 function addComposerRef(key,ref){
   if(!ref) return;
   const xs=composerRefList(key);
   if(!xs.some(x=>refId(x)===refId(ref))) xs.push(ref);
   state.composerRefs[key]=xs.slice(0,5);
-  save();
+  persistReferenceState();
 }
 
 function removeComposerRef(key,index){
   const xs=composerRefList(key);
   xs.splice(index,1);
-  save();
+  persistReferenceState();
 }
 
 function availableReferenceOptions(excludeRoute="",excludeArg=""){
