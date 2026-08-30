@@ -720,3 +720,6 @@ input,select,textarea{
 .archive-record>summary{cursor:pointer;padding:6px 9px;font-size:12px;color:#4f5962;background:#eceeef}
 .archive-record[open]>summary{border-bottom:1px solid #b8bdc2}
 .archive-record>.panel{margin:0;border:0}
+
+.thread-has-new-reply .thread-title{font-weight:bold}
+#newTopicBody,#userThreadReplyText{width:min(680px,100%);box-sizing:border-box;border:1px solid #8f979f;background:#fff;padding:7px 8px;font:inherit}

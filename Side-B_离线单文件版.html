@@ -720,7 +720,10 @@ input,select,textarea{
 .archive-record>summary{cursor:pointer;padding:6px 9px;font-size:12px;color:#4f5962;background:#eceeef}
 .archive-record[open]>summary{border-bottom:1px solid #b8bdc2}
 .archive-record>.panel{margin:0;border:0}
-</style></head><body><div id="app"></div><script>
+
+.thread-has-new-reply .thread-title{font-weight:bold}
+#newTopicBody,#userThreadReplyText{width:min(680px,100%);box-sizing:border-box;border:1px solid #8f979f;background:#fff;padding:7px 8px;font:inherit}
+</style></head><body><div id="sideb-start-error" style="display:none"></div><div id="app"></div><script>window.__sideBLoaded=false;window.addEventListener("error",function(e){var b=document.getElementById("sideb-start-error");if(b){b.style.display="block";b.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown")}});</script><script>
 const SideBStorage = (() => {
   const mem = {};
   return {
@@ -1132,8 +1135,8 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
-  const BUILD_ID = "rc1.9.1-20260831";
-  const BUILD_LABEL = "RC1.9.1";
+  const BUILD_ID = "rc1.9.2-20260831";
+  const BUILD_LABEL = "RC1.9.2";
 
   const initialState = {
     username: "",
@@ -1153,6 +1156,10 @@ function safeParseSave(raw){
     pendingSections: [],
     pendingPageUpdates: [],
     readThreads: [],
+    userThreads: [],
+    inquiryThreadId: "",
+    inquiryRepliesDelivered: {},
+    inquiryLastSeenReplyCount: 0,
     events: [],
     signature: "",
     phaseClock: 0,
@@ -1701,8 +1708,97 @@ function safeParseSave(raw){
     return r;
   }
 
+
+  function inquiryKeywordMatch(title="", body=""){
+    const s=(String(title)+" "+String(body)).toLowerCase();
+    return ["1848","2019","旧帖","存档","注册","主页","名字","新人帖","新来的"].some(k=>s.includes(k));
+  }
+
+  function inquiryReplyCount(){
+    return Object.keys(state.inquiryRepliesDelivered||{}).length;
+  }
+
+  function deliverInquiryReply(id, condition, post, sideEffect=null){
+    if(!state.inquiryThreadId || !condition) return false;
+    state.inquiryRepliesDelivered=state.inquiryRepliesDelivered||{};
+    if(state.inquiryRepliesDelivered[id]) return false;
+    state.inquiryRepliesDelivered[id]={at:Date.now()};
+    if(typeof sideEffect==="function") sideEffect();
+    save();
+    return true;
+  }
+
+  function syncInquiryReplies(){
+    if(!state.inquiryThreadId) return;
+    // The thread is the discussion hub. Replies only appear because the player asked first.
+    // Each condition is tied to something the player actually discovered or did.
+    deliverInquiryReply("fire_first", true, null);
+    deliverInquiryReply("e_profile", state.oldProfileOpened || state.saw2019Twin, null, ()=>{
+      state.eSavedProfile=true;
+      if(state.saw2019Twin){
+        state.historyExpanded=true;
+        state.oldReplyCount=Math.max(state.oldReplyCount,26);
+      }
+    });
+    deliverInquiryReply("fire_1848", state.volcanoNoticed || state.volcanoEvidenceSeen, null);
+    deliverInquiryReply("han_oldposts", state.hanJoined || state.volcanoEvidenceSeen, null, ()=>{
+      state.hanJoined=true;
+      state.sinanToolsUnlocked=true;
+    });
+    deliverInquiryReply("sinan_tools", state.sinanToolsUnlocked && (state.editLogSeen || state.cacheSeen || state.sourceCompareUnlocked), null);
+    deliverInquiryReply("e_2023", state.holder2023Known, null);
+    deliverInquiryReply("fire_2024", state.holder2024Known, null);
+    deliverInquiryReply("fire_unlink", state.unlink2023Done, null);
+    deliverInquiryReply("e_forget", state.eForgot2023, null);
+    deliverInquiryReply("e_pigeon", state.pigeonMigrated, null);
+    deliverInquiryReply("adam_memory", state.adamCandidateSeen, null);
+    deliverInquiryReply("sinan_force", state.forceConfirmRevealSeen, null);
+    deliverInquiryReply("wjc_voice", state.wjcKnown, null);
+    deliverInquiryReply("han_futuredb", state.futureDbSeen, null);
+  }
+
+  function inquiryNPCPosts(){
+    if(!state.inquiryThreadId) return [];
+    syncInquiryReplies();
+    const d=state.inquiryRepliesDelivered||{};
+    const posts=[];
+    const add=(id,user,uid,body)=>{ if(d[id]) posts.push({user,uid,time:"刚刚",body}); };
+
+    add("fire_first","火山",388,"你说存档区那个？我刚点了下，也能开。");
+    add("e_profile","E",77,"你自己资料页现在写哪年？我这边点进去还是今天。先别改资料，我存一份。");
+    add("fire_1848","火山",388,"1848这个号我好像真见过。不是说你本人，我只对这个数字有点印象。");
+    add("han_oldposts","Hanlexios",521,"火山把那几个旧帖链接丢我了。1848我以前在旧页里见过，哪年我得翻。");
+    add("sinan_tools","司南",1094,"旧版编辑记录和缓存页还活着。以前修站时留的，地址没删。");
+    add("e_2023","E",77,"2023那个号我有点印象。用户名就是两个问号。别问我为什么能注册，当时确实能。");
+    add("fire_2024","火山",388,"我那份联系人导出里，2024那个备注叫“鸽子”。我现在只敢认备注，不敢认页面上的名字。");
+    add("fire_unlink","火山",388,"2023那个真退掉了。我这边旧聊天还在。");
+    add("e_forget","E",77,"等会，两个问号是谁？我NAS里有个文件夹，但我真没印象。");
+    add("e_pigeon","E",77,"鸽子那边2097还能登。刚在站外回了我一句，说去睡了。");
+    add("adam_memory","火山",388,"Adam这个名字我好像也见过。先别算年份，我记得不准。");
+    add("sinan_force","司南",1094,"你问那个关联怎么来的？我绑的。你没点确认，我知道。");
+    add("wjc_voice","E",77,"未见财这个名字我有印象。人挺欠的。别的我得看旧文件。");
+    add("han_futuredb","Hanlexios",521,"之前日志里那个Adam，删除记录我翻到了。那条‘Hanlexios删除’只写了谁按提交，没写是谁要求的。");
+
+    return posts;
+  }
+
+  function userCreatedThreads(){
+    const rows=(state.userThreads||[]).map(t=>{
+      const posts=[{user:state.username,uid:1848,time:t.time||"今天",body:t.body||""}];
+      if(t.id===state.inquiryThreadId) posts.push(...inquiryNPCPosts());
+      (t.userReplies||[]).forEach(x=>posts.push({user:state.username,uid:1848,time:"刚刚",body:x.text}));
+      const last=posts[posts.length-1];
+      return {
+        id:t.id, forum:t.forum||"general", title:t.title||"问一下", author:state.username,
+        replies:Math.max(0,posts.length-1), last:last?.user===state.username?"刚刚":`${last?.user||state.username} / 刚刚`,
+        userCreated:true, posts
+      };
+    });
+    return rows;
+  }
+
   function allThreads(){
-    const out = [...mundane, ...oldThreads()];
+    const out = [...userCreatedThreads(), ...mundane, ...oldThreads()];
     if(state.registered) out.unshift(newcomerThread());
     return out;
   }
@@ -1831,9 +1927,10 @@ function topShell(content, crumb="首页"){
   
 
 function threadRow(t){
-    const unread = state.registered && !state.readThreads.includes(t.id);
+    const ownInquiryUnread = t.id===state.inquiryThreadId && t.replies>(state.inquiryLastSeenReplyCount||0);
+    const unread = state.registered && (!state.readThreads.includes(t.id) || ownInquiryUnread);
     return `
-      <div class="thread-row">
+      <div class="thread-row ${ownInquiryUnread?'thread-has-new-reply':''}">
         <div>${unread?'<span class="badge">新</span>':''}<a class="thread-title" href="#" data-thread="${t.id}">${esc(t.title)}</a></div>
         <div class="small">${esc(t.author)}<br>${t.replies} 回复</div>
         <div class="small">${esc(t.last)}</div>
@@ -1883,7 +1980,17 @@ function threadRow(t){
       <div class="panel">
         <div class="panel-title">${esc(f?.name||"版块")}</div>
         ${ts.length ? ts.map(threadRow).join("") : `<div class="empty">这里没什么东西。</div>`}
-      </div>`,`首页 › ${esc(f?.name||"")}`);
+      </div>
+      ${fid==="general" ? `
+      <div class="panel">
+        <div class="panel-title">发表主题</div>
+        <div class="panel-body">
+          <div class="form-row"><label for="newTopicTitle">标题</label><input id="newTopicTitle" type="text" maxlength="40"></div>
+          <div class="form-row"><label for="newTopicBody">内容</label><textarea id="newTopicBody" rows="5" maxlength="1000"></textarea></div>
+          <button class="btn" id="postNewTopic">发表主题</button>
+        </div>
+      </div>`:""}
+      `,`首页 › ${esc(f?.name||"")}`);
   }
 
   function formatBody(body){
@@ -1945,8 +2052,17 @@ function threadRow(t){
         </div>`;
     }).join("");
 
+    if(t.id===state.inquiryThreadId){
+      state.inquiryLastSeenReplyCount=t.replies||0;
+      save();
+    }
     let related="";
-    return topShell(`${banner}<div class="panel"><div class="panel-title">${esc(t.title)}</div>${renderedPosts}</div>${related}`,`首页 › ${esc(t.title)}`);
+    const ownReplyBox=t.userCreated ? `
+      <div class="panel"><div class="panel-title">快速回复</div><div class="panel-body">
+        <textarea id="userThreadReplyText" rows="3" placeholder="回复"></textarea><br>
+        <button class="btn" id="replyUserThread" data-user-thread="${esc(t.id)}">发表回复</button>
+      </div></div>`:"";
+    return topShell(`${banner}<div class="panel"><div class="panel-title">${esc(t.title)}</div>${renderedPosts}</div>${ownReplyBox}${related}`,`首页 › ${esc(t.title)}`);
   }
 
   function profileLevel(){
@@ -2051,281 +2167,16 @@ function threadRow(t){
   function syncStallMarks(){ }
 
   function pmData(){
-    syncStallMarks();
-    const pms = [];
-
-
-    if(deliverPM("futuredb", (state.futureDbSeen && !state.adamTruthSeen))){
-      pms.push({
-        id:"futuredb",from:"Hanlexios",time:"刚刚",preview:"之前日志里那个 Adam，删除记录翻到了。",body:[
-          ["Hanlexios","之前日志里那个 Adam，删除记录翻到了。"],
-          [state.username,"是你删的Adam？"],
-          ["Hanlexios","不是我自己要删他。"],
-          ["Hanlexios","他让我从旧的自助删除页代提交。"],
-          ["火山","那日志怎么写成你删的？"],
-          ["Hanlexios","提交键是我按的。"],
-          ["E","那后面怎么又回来了？"],
-          ["Hanlexios","司南拉回来的。"],
-          
-        ]
-      });
-    }
-
-    if(deliverPM("wjcvoice", (state.wjcKnown))){
-      pms.push({
-        id:"wjcvoice",from:"E",time:"刚刚",preview:"未见财……这个我有点印象。",body:[
-          ["E","未见财……这个我有点印象。"],
-          [state.username,"他人怎么样？"],
-          ["E","嘴挺欠。"],
-          
-          ["Hanlexios","1.9 里有他的签名。"],
-          ["司南","1.9 他写的。"],
-          [state.username,"那 1.7 是你？"],
-          ["司南","嗯"],
-          ["火山","你们当年到底往这破站里塞了多少玩意。"],
-          ["司南","问当年站长。"],
-          ["E","人早没影了。"]
-        ]
-      });
-    }
-
-    if(deliverPM("snforce", (state.forceConfirmRevealSeen))){
-      pms.push({
-        id:"snforce",from:"司南",time:"刚刚",preview:"你点开关联页以后。",body:[
-          [state.username,"你什么时候看到我过 0.60 的？"],
-          ["司南","你点开关联页以后。"],
-          [state.username,"你那时候就看出来了？"],
-          ["司南","对。"],
-          [state.username,"然后你还给我绑上了。"],
-          ["司南","对。"],
-          [state.username,"你为什么不先说？"],
-          ["司南","我说了你还会继续查？"],
-          [state.username,"不会。"],
-          ["司南","那不就得了。"],
-          
-          ["E","继续。"]
-        ]
-      });
-    }
-
-    if(deliverPM("stay", (state.stayChosen && !state.forSnSeen))){
-      pms.push({
-        id:"stay",from:"E",time:"刚刚",preview:"确定？",body:[
-          ["E","确定？"],
-          [state.username,"嗯"],
-          ["E","行"],
-          ["Hanlexios","我晚点把旧硬盘索引丢过来。"],
-          ["司南","我这还有个东西。"],
-          ["E","什么。"],
-          ["司南","Adam 当年发我的。"]
-        ]
-      });
-    }
-
-    if(deliverPM("adamcandidate", (state.adamCandidateSeen))){
-      pms.push({
-        id:"adamcandidate",from:"火山",time:"刚刚",preview:"等下，我好像想起 Adam 了。",body:[
-          ["火山","等下，我好像想起 Adam 了。"],
-          [state.username,"这时候想起来？"],
-          ["火山","嗯"],
-          ["火山","他是不是 2019 左右也来过？"],
-          ["E","年份先放着。"],
-          ["E","你上次说的是别的年份。"],
-          ["E","翻一下旧的。"]
-        ]
-      });
-    }
-
-    if(deliverPM("afterpigeon", (state.pigeonMigrated))){
-      pms.push({
-        id:"afterpigeon",from:"E",time:"刚刚",preview:"鸽子退了。",body:[
-          ["E","鸽子退了。"],
-          [state.username,"2097 还能进？"],
-          ["E","能。"],
-          ["E","他刚在外面跟我说去睡了。"],
-          ["火山","那 1848 呢？"],
-          ["E","空。"],
-          ["司南","目前是。"]
-        ]
-      });
-    }
-
-    if(deliverPM("eforget", (state.eForgot2023 && (state.readPMs||[]).includes("afterunlink")))){
-      pms.push({
-        id:"eforget",from:"E",time:"刚刚",preview:"？？是谁。",body:[
-          ["火山","你真一点都不记得？？？"],
-          ["E","谁？"],
-          ["火山","就用户名两个问号那个。"],
-          ["E","不认识。"],
-          ["火山","你 NAS 里整整一个文件夹都是他的。"],
-          ["E","等会。"],
-          ["E","我翻一下。"],
-          ["E","……还真有。"],
-          [state.username,"一点印象都没？"],
-          ["E","没有。"],
-          ["E","文件别动。"]
-        ]
-      });
-    }
-
-    if(deliverPM("afterunlink", (state.unlink2023Done))){
-      pms.push({
-        id:"afterunlink",from:"火山",time:"刚刚",preview:"他真退出去了。",body:[
-          ["火山","他真退出去了。"],
-          [state.username,"？？？"],
-          ["火山","嗯"],
-          ["火山","我这边旧聊天还在。"],
-          ["E","先存。"],
-          ["司南","1848空了？"],
-          ["E","别动。"],
-          ["司南","我就问问。"],
-          ["E","最好真只是问。"]
-        ]
-      });
-    }
-
-    if(deliverPM("v2024", (state.holder2024Known))){
-      pms.push({
-        id:"v2024",from:"火山",time:"刚刚",preview:"2024那个号有名字了。",body:[
-          ["火山","2024那个号有名字了。"],
-          [state.username,"什么？"],
-          ["火山","联系人备注写的“鸽子”。"],
-          ["火山","我刚翻到聊天导出的联系人备注。"],
-          ["火山","我当时给他备注了“鸽子”。"],
-          [state.username,"你记得他？"],
-          ["火山","有一点。"],
-          ["火山","挺谨慎。点东西前总要问。"],
-          
-          
-        ]
-      });
-    }
-
-    if(deliverPM("e2023", (state.holder2023Known))){
-      pms.push({
-        id:"e2023",from:"E",time:"刚刚",preview:"2023那个号，我好像见过。",body:[
-          ["E","2023那个号，我好像见过。"],
-          [state.username,"？？？"],
-          ["E","两个问号。"],
-          [state.username,"这也能注册？"],
-          ["E","那时候能。"],
-          [state.username,"你记得他？"],
-          ["E","一点。"],
-          ["E","手快。你说别点的时候他一般已经点了。"],
-          [state.username,"后来呢？"],
-          ["E","不知道。翻文件。"]
-        ]
-      });
-    }
-
-    if(deliverPM("e_sig", (state.historyExpanded && state.volcanoEvidenceSeen && !state.sawStaticQuoteConflict && !state.signature))){
-      pms.push({
-        id:"e_sig",from:"E",time:"刚刚",preview:"你资料页现在还能改什么？",body:[
-          ["E","你资料页现在还能改什么？"],
-          [state.username,"签名。"],
-          ["E","随便写点。"],
-          [state.username,"干嘛。"],
-          ["E","我看看旧帖会不会跟着变。"],
-          [state.username,"你自己怎么不试？"],
-          ["E","我这边没变。"]
-        ]
-      });
-    }
-
-    if(deliverPM("han1", (state.hanJoined))){
-      pms.push({
-        id:"han1",from:"Hanlexios",time:"刚刚",preview:"火山把那两帖甩我了。",body:[
-          ["Hanlexios","火山把那两帖甩我了。"],
-          [state.username,"你见过这个号？"],
-          ["Hanlexios","1848我见过。"],
-          [state.username,"什么时候？"],
-          ["Hanlexios","旧帖里。哪年忘了。"],
-          [state.username,"那以前那个是我？"],
-          ["Hanlexios","我哪知道。"],
-          [state.username,"名字都一样。"],
-          ["Hanlexios","我手里这份是刚存的。旧的没留。"],
-          
-        ]
-      });
-    }
-
-    if(deliverPM("sn1", (state.sinanToolsUnlocked))){
-      pms.push({
-        id:"sn1",from:"司南",time:"刚刚",preview:"旧版编辑记录还能点开。",body:[
-          ["司南","旧版编辑记录还能点开。"],
-          [state.username,"在哪？"],
-          ["司南","我给你加个入口。"],
-          [state.username,"你怎么知道？"],
-          ["司南","以前修过几次。"],
-          [state.username,"你以前是管理？"],
-          ["司南","不是。"],
-          
-          
-        ]
-      });
-    }
-
-    if(deliverPM("v1", (state.volcanoNoticed))){
-      pms.push({
-        id:"v1",from:"火山",time:"刚刚",preview:"我是不是见过你这个号",body:[
-          ["火山","我是不是见过你这个号"],
-          [state.username,"？"],
-          ["火山","不是说你本人。"],
-          ["火山","1848。"],
-          [state.username,"怎么了？"],
-          ["火山","我刚搜了下，1848 有点眼熟。"],
-          ["火山","也可能我记串了，这站旧号太多。"],
-          ...(state.volcanoEvidenceSeen ? [
-            ["火山","等下。"],
-            ["火山","2020 那个合作图我有印象。"],
-            [state.username,"你记得是我？"],
-            ["火山","我记得当时缺一个，后来进了个人。"],
-            ["火山","名字我真不敢认。"],
-            ["火山","“老位置”这句是我说的。"]
-          ] : [])
-        ]
-      });
-    }
-
-    if(deliverPM("e2", (state.saw2019Twin || state.searched1848))){
-      pms.push({
-        id:"e2",from:"E",time:"刚刚",preview:"你主页现在写的哪年？",body:[
-          ["E","你主页现在写的哪年？"],
-          [state.username,`2019，${state.oldReplyCount} 个回复。`],
-          ["E","截一下。"],
-          [state.username,"发你了。"],
-          ["E","行"],
-          [state.username,"什么叫“行”？"],
-          ["E","存了。资料先别改。"],
-          ...(state.sawStaticQuoteConflict ? [
-            [state.username,"旧帖里我的签名也变了。"],
-            ["E","哪一帖。"],
-            [state.username,"2022 那个上班帖。"],
-            ["E","火山引用的那段呢？"],
-            [state.username,"没变。"],
-            ["E","两边都存。"]
-          ] : [])
-        ]
-      });
-    }
-
-    deliverPM("e1", true);
+    const pms=[];
     deliverPM("sys1", true);
-    pms.push(
-      {id:"e1",from:"E",time:"今天",preview:"新来的？",body:[
-        ["E","新来的？"],
-        [state.username,"嗯"],
-        ["E","哪搜到的。"],
-        [state.username,"搜索。"],
-        ["E","还能搜到啊。"]
-      ]},
-      {id:"sys1",from:"系统",time:"今天",preview:"临时账号已创建",body:[
+    pms.push({
+      id:"sys1",from:"系统",time:"今天",preview:"临时账号已创建",body:[
         ["系统",`临时账号开好了。UID 1848，用户名：${state.username}。`]
-      ]}
-    );
-
+      ]
+    });
     return pms;
   }
+
 
   function renderPM(){
     noteForumVisit("pm");
@@ -2335,11 +2186,6 @@ function threadRow(t){
       if(pm){
         state.readPMs=state.readPMs||[];
         if(!state.readPMs.includes(pm.id)){ state.readPMs.push(pm.id); save(); }
-        if(pm.id==="e2" && !state.eSavedProfile){
-          state.eSavedProfile=true;
-          record("e_saved_profile");
-        }
-        if(pm.id==="sn1") state.sinanToolsUnlocked=true;
         return topShell(`
           <div class="panel">
             <div class="panel-title">短消息：${esc(pm.from)}</div>
@@ -4343,6 +4189,10 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     state.savedEvidence = state.savedEvidence || [];
     state.ordinaryReplies = state.ordinaryReplies || [];
     state.ordinaryPMs = state.ordinaryPMs || [];
+    state.userThreads = state.userThreads || [];
+    state.inquiryRepliesDelivered = state.inquiryRepliesDelivered || {};
+    state.inquiryThreadId = state.inquiryThreadId || "";
+    state.inquiryLastSeenReplyCount = Number.isFinite(state.inquiryLastSeenReplyCount) ? state.inquiryLastSeenReplyCount : 0;
     state.forumVisits = Number.isFinite(state.forumVisits) ? state.forumVisits : 0;
     state.recentViewed = state.recentViewed || [];
     state.searchHistory = state.searchHistory || [];
@@ -4495,6 +4345,36 @@ function bind(){
       state.routeArg=el.dataset.thread;
       save(); sidebPageSwap(render);
     }));
+
+    document.querySelector("#postNewTopic")?.addEventListener("click",()=>{
+      const title=(document.querySelector("#newTopicTitle")?.value||"").trim();
+      const body=(document.querySelector("#newTopicBody")?.value||"").trim();
+      if(!title || !body) return;
+      state.userThreads=state.userThreads||[];
+      const id="user_"+Date.now().toString(36);
+      state.userThreads.unshift({id,forum:"general",title:title.slice(0,40),body:body.slice(0,1000),time:"今天",userReplies:[]});
+      if(!state.inquiryThreadId && event("first_anomaly") && inquiryKeywordMatch(title,body)){
+        state.inquiryThreadId=id;
+        state.inquiryRepliesDelivered={};
+        state.inquiryLastSeenReplyCount=0;
+        record("player_started_inquiry",{thread:id,title:title.slice(0,40)});
+      }
+      pushNav();
+      state.route="thread";
+      state.routeArg=id;
+      save(); sidebPageSwap(render);
+    });
+
+    document.querySelector("#replyUserThread")?.addEventListener("click",()=>{
+      const id=document.querySelector("#replyUserThread")?.dataset.userThread;
+      const text=(document.querySelector("#userThreadReplyText")?.value||"").trim();
+      if(!id || !text) return;
+      const t=(state.userThreads||[]).find(x=>x.id===id);
+      if(!t) return;
+      t.userReplies=t.userReplies||[];
+      t.userReplies.push({text:text.slice(0,700),at:Date.now()});
+      save(); sidebPageSwap(render);
+    });
     document.querySelectorAll("[data-pm]").forEach(el=>el.addEventListener("click",(e)=>{
       e.preventDefault();
       pushNav();
@@ -5065,4 +4945,5 @@ function bind(){
   });
 
   render();
-})();</script></body></html>
+})();
+window.__sideBLoaded=true;</script></body></html>
