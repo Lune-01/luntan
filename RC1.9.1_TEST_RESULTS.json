@@ -1,0 +1,12 @@
+{
+  "syntax": true,
+  "qa.js": true,
+  "qa_reachability.js": true,
+  "player_simulation.js": true,
+  "player_simulation_adversarial.js": true,
+  "blind_reasoning_test.js": true,
+  "cognitive_structure": true,
+  "pm_new_marker_preserved": true,
+  "old_save_migration": true,
+  "chromium_headless_dump_dom": "ENVIRONMENT_TIMEOUT"
+}
