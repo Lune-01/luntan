@@ -1041,7 +1041,7 @@ function forumUtilityNav(){
     <a href="#home" data-route="home">论坛首页</a>
     <span>›</span>
     <a href="#general" data-forum="general" class="forum-post-link">发帖</a>
-    ${state.inquiryThreadId ? `<span>·</span><a href="#" data-thread="${esc(state.inquiryThreadId)}">我的主题</a>`:""}
+    ${state.inquiryThreadId ? `<span>·</span><a href="#" data-thread="${escGlobal(state.inquiryThreadId)}">我的主题</a>`:""}
     <span>·</span>
     <a href="#search" data-route="search">搜索</a>
     <span>·</span>
@@ -1065,23 +1065,48 @@ function threadUtilities(){
 }
 function forumHelpBox(){ return ""; }
 
+// Legacy breadcrumb decoration referenced by several old maintenance pages.
+// Older builds called this helper but never defined it, causing those pages to crash at runtime.
+// Keep it deliberately empty: it was decorative only and must never block a page.
+function ordinaryThreadStrip(){ return ""; }
+
+// Another decorative helper referenced by the old relation.php view but absent in prior builds.
+function forumDetour(){ return ""; }
+
 function refId(ref){
   return [ref.kind||"页面",ref.route||"",ref.arg||"",ref.label||""].join("|");
 }
 
 function currentPageReference(){
-  const r=state.route, a=state.routeArg||"";
+  const r=state?.route, a=state?.routeArg||"";
+  if(!state || !r) return null;
+
   if(r==="thread"){
-    const t=allThreads().find(x=>x.id===a);
-    if(!t || t.userCreated) return null;
-    let label=t.title;
-    if(a==="newcomer_2019") label=`2019旧帖 · ${t.title} · UID1848`;
-    return {kind:"帖子",label,route:"thread",arg:a};
+    // Do not call allThreads() here: it lives inside the application closure.
+    // Resolve user-created threads from persisted state; known story threads use stable labels.
+    const mine=(state.userThreads||[]).find(x=>x.id===a);
+    if(mine) return null; // Never attach the investigation thread to itself.
+
+    const knownThreadLabels={
+      newcomer_2019:"2019旧帖 · 新来的，冒个泡。 · UID1848",
+      newcomer:"新来的，冒个泡。",
+      temp_notice:"临时账号说明",
+      old_2018_relation:"relation.php那次回滚有人记得吗",
+      old_2023_profile:"账号资料日期会自己变？",
+      old_2024_pigeon:"日记 / 2024",
+      old_adam:"Adam",
+      old_landlord:"房东",
+      old_helper:"Side Helper"
+    };
+    return {kind:"帖子",label:knownThreadLabels[a]||`论坛主题 · ${a||"unknown"}`,route:"thread",arg:a};
   }
+
   if(r==="profile"){
-    const reg=profileLevel()>=1?"2019-06-11":"今天";
+    const hasAnomaly=(state.events||[]).some(e=>e?.type==="first_anomaly");
+    const reg=(state.historyExpanded||state.searched1848||state.saw2019Twin||state.oldProfileOpened||hasAnomaly)?"2019-06-11":"今天";
     return {kind:"页面",label:`用户资料 · UID1848 · 注册时间 ${reg}`,route:"profile",arg:""};
   }
+
   const map={
     oldprofile:["页面","旧版用户资料 · UID1848","oldprofile"],
     history2:["页面","旧版用户资料 · 历史记录","history2"],
@@ -1189,23 +1214,23 @@ function referencePickerHtml(key,excludeRoute="",excludeArg=""){
   const selected=composerRefList(key);
   const options=availableReferenceOptions(excludeRoute,excludeArg);
   return `
-    <div class="reference-composer" data-composer-key="${esc(key)}">
+    <div class="reference-composer" data-composer-key="${escGlobal(key)}">
       <div class="reference-row">
         <select class="reference-select">
-          ${options.length?options.map((r,i)=>`<option value="${i}">${esc(`[${r.kind}] ${r.label}`)}</option>`).join(""):`<option value="">最近没有可附的页面</option>`}
+          ${options.length?options.map((r,i)=>`<option value="${i}">${escGlobal(`[${r.kind}] ${r.label}`)}</option>`).join(""):`<option value="">最近没有可附的页面</option>`}
         </select>
         <button class="btn smallbtn add-reference" type="button" ${options.length?"":"disabled"}>附上</button>
       </div>
       <div class="reference-help small">这里列的是你最近打开过的帖子、页面和文件，不会自动替你选。</div>
       <div class="selected-references">
-        ${selected.length?selected.map((r,i)=>`<span class="selected-reference">[${esc(r.kind)}] ${esc(r.label)} <button type="button" class="remove-reference" data-index="${i}" title="移除">×</button></span>`).join(""):`<span class="small muted">未附内容</span>`}
+        ${selected.length?selected.map((r,i)=>`<span class="selected-reference">[${escGlobal(r.kind)}] ${escGlobal(r.label)} <button type="button" class="remove-reference" data-index="${i}" title="移除">×</button></span>`).join(""):`<span class="small muted">未附内容</span>`}
       </div>
     </div>`;
 }
 
 function renderPostReferences(refs){
   if(!refs || !refs.length) return "";
-  return `<div class="post-references"><b>附：</b>${refs.map(r=>`<a href="#" data-ref-route="${esc(r.route)}" data-ref-arg="${esc(r.arg||"")}">[${esc(r.kind)}] ${esc(r.label)}</a>`).join("　")}</div>`;
+  return `<div class="post-references"><b>附：</b>${refs.map(r=>`<a href="#" data-ref-route="${escGlobal(r.route)}" data-ref-arg="${escGlobal(r.arg||"")}">[${escGlobal(r.kind)}] ${escGlobal(r.label)}</a>`).join("　")}</div>`;
 }
 
 function inquiryEntryText(text,refs=[]){
@@ -1521,8 +1546,8 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
-  const BUILD_ID = "rc1.9.4-20260831";
-  const BUILD_LABEL = "RC1.9.4";
+  const BUILD_ID = "rc1.9.4.4-20260831";
+  const BUILD_LABEL = "RC1.9.4.4";
 
   const initialState = {
     username: "",
@@ -4720,8 +4745,13 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     if(state.registered && !hashBootApplied){ applyHashRoute(); hashBootApplied=true; }
     updateDocumentTitle();
     guardRoute();
-    const currentRef=currentPageReference();
-    if(currentRef) rememberReference(currentRef);
+    try{
+      const currentRef=currentPageReference();
+      if(currentRef) rememberReference(currentRef);
+    }catch(refErr){
+      // Reference history is auxiliary UI. A broken label must never make a forum page unavailable.
+      try{console.warn("reference bookkeeping skipped",refErr);}catch(_){}
+    }
     const app=document.querySelector("#app");
     if(!state.registered){ app.innerHTML=renderLogin(); bind(); return; }
     switch(state.route){
