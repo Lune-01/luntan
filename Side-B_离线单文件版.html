@@ -759,44 +759,7 @@ input,select,textarea{
   .blink-soft,.pm-alert-text{animation:none}
 }
 
-/* RC1.7 visibility audit */
-.section-new{
-  display:inline-block;
-  margin-left:3px;
-  padding:0 2px;
-  border:1px solid #a00000;
-  color:#b00000;
-  background:#fff;
-  font-size:10px;
-  font-weight:bold;
-  line-height:1.25;
-  vertical-align:1px
-}
-.update-notice{
-  border:1px solid #d1ad32;
-  background:#fff6c9;
-  padding:7px 9px;
-  margin:6px 0;
-  line-height:1.7
-}
-.update-notice a{
-  font-weight:bold;
-  text-decoration:underline
-}
-</style></head><body>
-<div id="sideb-start-error" style="display:none;border:1px solid #999;padding:10px;margin:8px;font:14px Arial,'SimSun',sans-serif;background:#fff"></div><div id="app"></div><script>
-window.__sideBLoaded=false;
-window.addEventListener("error",function(e){
-  var box=document.getElementById("sideb-start-error");
-  if(box){box.style.display="block";box.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown");}
-});
-setTimeout(function(){
-  if(!window.__sideBLoaded){
-    var app=document.getElementById("app"),box=document.getElementById("sideb-start-error");
-    if(app&&!app.innerHTML.trim()&&box){box.style.display="block";box.textContent="页面没有正常启动。请把文件保存到本地后再用浏览器打开。";}
-  }
-},1500);
-</script><script>
+</style></head><body><div id="sideb-start-error" style="display:none"></div><div id="app"></div><script>window.__sideBLoaded=false;window.addEventListener("error",function(e){var b=document.getElementById("sideb-start-error");if(b){b.style.display="block";b.textContent="页面脚本没有正常启动。错误："+(e.message||"unknown")}});setTimeout(function(){if(!window.__sideBLoaded){var a=document.getElementById("app"),b=document.getElementById("sideb-start-error");if(a&&!a.innerHTML.trim()&&b){b.style.display="block";b.textContent="页面没有正常启动。请把文件保存到本地后再用浏览器打开。"}}},1500);</script><script>
 const SideBStorage = (() => {
   const mem = {};
   return {
@@ -1252,8 +1215,8 @@ function safeParseSave(raw){
 
 (() => {
   const STORAGE_KEY = "sideb_phase3_state_v1";
-  const BUILD_ID = "rc1.8-20260830";
-  const BUILD_LABEL = "RC1.8";
+  const BUILD_ID = "rc1.8.3-20260830";
+  const BUILD_LABEL = "RC1.8.3";
 
   const initialState = {
     username: "",
@@ -1705,7 +1668,7 @@ function safeParseSave(raw){
 
     if(state.searched1848 || state.saw2019Twin || state.oldProfileOpened || event("first_anomaly")){
       r.push({
-        id:"newcomer_2019",forum:"archive",title:"新来的，冒个泡。",author:state.username,replies:2,last:"2019-06-11",archived:true,
+        id:"newcomer_2019",forum:"archive",title:"新来的，冒个泡。",author:state.username,replies:2,last:"2019-06-11 21:46",archived:true,
         posts:[
           {user:state.username,uid:1848,time:"2019-06-11 21:43",body:"新来的，冒个泡。"},
           {user:"火山",uid:388,time:"2019-06-11 21:45",body:"真有新人？"},
@@ -1727,7 +1690,7 @@ function safeParseSave(raw){
           ]
         },
         {
-          id:"old_2020_coop",forum:"archive",title:"晚上有人打那个破合作图吗",author:"火山",replies:14,last:"2020-08-07",archived:true,
+          id:"old_2020_coop",forum:"archive",title:"晚上有人打那个破合作图吗",author:"火山",replies:14,last:state.volcanoNoticed?"2020-08-07 19:07":"2020-08-07",archived:true,
           posts:[
             {user:"火山",uid:388,time:"2020-08-07 19:02",body:"还差一个，E死活不来。"},
             {user:"E",uid:77,time:"2020-08-07 19:03",body:"不。"},
@@ -1851,9 +1814,20 @@ function safeParseSave(raw){
     const read=new Set(state.readPMs||[]);
     let ids=["e1","sys1"];
     if(state.saw2019Twin || state.searched1848) ids.push("e2");
+    if(event("first_anomaly") && !state.saw2019Twin && (state.forumVisits||0)>=4) ids.push("v_archive");
     if(state.volcanoNoticed) ids.push("v1");
     if(state.hanJoined) ids.push("han1");
     if(state.sinanToolsUnlocked) ids.push("sn1");
+    syncStallMarks();
+    [
+      ["old_coop","stall_coop",5],["source_compare","stall_sources",5],
+      ["relation_phase","stall_relation",5],["nas_release","stall_nas",4],
+      ["outside_qmark","stall_outside",4],["feb12","stall_feb12",5],
+      ["forsn","stall_forsn",4],["candidate","stall_candidate",4],
+      ["wjc","stall_wjc",4],["temp1848","stall_temp",4],
+      ["helper_audit","stall_helper",4],["snapshots","stall_snap",5],
+      ["edges","stall_edges",5]
+    ].forEach(x=>{ if(stalled(x[0],x[2])) ids.push(x[1]); });
     return ids.filter(x=>!read.has(x)).length;
   }
 
@@ -1921,15 +1895,7 @@ function safeParseSave(raw){
               (state.pendingPageUpdates||[]).some(x=>x.route===route);
     return hit?`<span class="section-new">新</span>`:"";
   }
-  function updateNoticeBox(){
-    const sec=(state.pendingSections||[]).slice(0,4);
-    const pages=(state.pendingPageUpdates||[]).slice(0,4);
-    const all=[...pages.map(x=>({route:x.route,label:x.label})),...sec];
-    if(!all.length) return "";
-    const seen=new Set();
-    const uniq=all.filter(x=>x.route&&!seen.has(x.route)&&seen.add(x.route)).slice(0,5);
-    return `<div class="notice update-notice"><strong>有页面更新：</strong> ${uniq.map(x=>`<a href="#" data-route="${x.route}">${esc(x.label)}</a>`).join("　")}</div>`;
-  }
+  function updateNoticeBox(){ return ""; }
 
 function topShell(content, crumb="首页"){
     syncVisibility();
@@ -1948,33 +1914,32 @@ function topShell(content, crumb="首页"){
             <button class="linklike" data-route="profile">我的主页</button>
             <button class="linklike ${unreadCount?'pm-alert':''}" data-route="pm">短消息${unreadCount ? `<span class="newmark">(${unreadCount})</span><span class="pm-alert-text"> 新消息</span>`:""}</button>
             <button class="linklike" data-route="search">搜索</button>
-            ${state.eSavedProfile ? `<button class="linklike" data-route="saved">离线保存${newBadge("saved")}</button>`:""}
-            ${state.sinanToolsUnlocked ? `<button class="linklike" data-route="tools">旧站工具${newBadge("tools")}</button>`:""}
-            ${state.sourceCompareUnlocked ? `<button class="linklike" data-route="sources">页面版本${newBadge("sources")}</button>`:""}
-            ${state.evidenceChoiceUnlocked ? `<button class="linklike" data-route="evidence">本地文件${newBadge("evidence")}</button>`:""}
-            ${state.phase5Unlocked ? `<button class="linklike" data-route="relationtest">关联记录${newBadge("relationtest")}</button>`:""}
-            ${state.pigeonDiaryUnlocked ? `<button class="linklike" data-route="pigeon">2024记录${newBadge("pigeon")}</button>`:""}
-            ${state.nasUnlocked ? `<button class="linklike" data-route="nas">E的NAS${newBadge("nas")}</button>`:""}
-            ${state.phase6Unlocked ? `<button class="linklike" data-route="outside">站外记录${newBadge("outside")}</button>`:""}
-            ${state.pigeonFinalUnlocked ? `<button class="linklike" data-route="feb12">02/12${newBadge("feb12")}</button>`:""}
-            ${state.exitEndingUnlocked ? `<button class="linklike danger-link" data-route="leave">退出论坛${newBadge("leave")}</button>`:""}
-            ${state.phase7Unlocked ? `<button class="linklike" data-route="forsn">for_sn.zip${newBadge("forsn")}</button>`:""}
-            ${state.rawCsvSeen ? `<button class="linklike" data-route="candidate">候选匹配${newBadge("candidate")}</button>`:""}
-            ${state.phase8Unlocked ? `<button class="linklike" data-route="wjc">2018资料${newBadge("wjc")}</button>`:""}
-            ${state.relationCodeSeen ? `<button class="linklike" data-route="code17">relation.php${newBadge("code17")}</button>`:""}
-            ${state.incident2018Unlocked ? `<button class="linklike" data-route="incident2018">10/28事故${newBadge("incident2018")}</button>`:""}
-            ${state.phase9Unlocked ? `<button class="linklike" data-route="temp1848">1848循环${newBadge("temp1848")}</button>`:""}
-            ${state.helperSeen ? `<button class="linklike" data-route="helper">Side Helper${newBadge("helper")}</button>`:""}
-            ${state.evidenceAuditSeen ? `<button class="linklike" data-route="audit">证据重审${newBadge("audit")}</button>`:""}
-            ${state.phase10Unlocked ? `<button class="linklike" data-route="snapshots">旧快照${newBadge("snapshots")}</button>`:""}
-            ${state.hiddenRouteUnlocked ? `<button class="linklike" data-route="snapconfig">B库设置${newBadge("snapconfig")}</button>`:""}
-            ${state.phase11Unlocked ? `<button class="linklike" data-route="edges">归属修复${newBadge("edges")}</button>`:""}
-            ${state.finalReleaseSeen ? `<button class="linklike" data-route="releasefinal">释放1848${newBadge("releasefinal")}</button>`:""}
+            ${state.eSavedProfile ? `<button class="linklike" data-route="saved">离线保存</button>`:""}
+            ${state.sinanToolsUnlocked ? `<button class="linklike" data-route="tools">旧站工具</button>`:""}
+            ${state.sourceCompareUnlocked ? `<button class="linklike" data-route="sources">页面版本</button>`:""}
+            ${state.evidenceChoiceUnlocked ? `<button class="linklike" data-route="evidence">本地文件</button>`:""}
+            ${state.phase5Unlocked ? `<button class="linklike" data-route="relationtest">关联记录</button>`:""}
+            ${state.pigeonDiaryUnlocked ? `<button class="linklike" data-route="pigeon">2024记录</button>`:""}
+            ${state.nasUnlocked ? `<button class="linklike" data-route="nas">E的NAS</button>`:""}
+            ${state.phase6Unlocked ? `<button class="linklike" data-route="outside">站外记录</button>`:""}
+            ${state.pigeonFinalUnlocked ? `<button class="linklike" data-route="feb12">02/12</button>`:""}
+            ${state.exitEndingUnlocked ? `<button class="linklike danger-link" data-route="leave">退出论坛</button>`:""}
+            ${state.phase7Unlocked ? `<button class="linklike" data-route="forsn">for_sn.zip</button>`:""}
+            ${state.rawCsvSeen ? `<button class="linklike" data-route="candidate">候选匹配</button>`:""}
+            ${state.phase8Unlocked ? `<button class="linklike" data-route="wjc">2018资料</button>`:""}
+            ${state.relationCodeSeen ? `<button class="linklike" data-route="code17">relation.php</button>`:""}
+            ${state.incident2018Unlocked ? `<button class="linklike" data-route="incident2018">10/28事故</button>`:""}
+            ${state.phase9Unlocked ? `<button class="linklike" data-route="temp1848">1848循环</button>`:""}
+            ${state.helperSeen ? `<button class="linklike" data-route="helper">Side Helper</button>`:""}
+            ${state.evidenceAuditSeen ? `<button class="linklike" data-route="audit">证据重审</button>`:""}
+            ${state.phase10Unlocked ? `<button class="linklike" data-route="snapshots">旧快照</button>`:""}
+            ${state.hiddenRouteUnlocked ? `<button class="linklike" data-route="snapconfig">B库设置</button>`:""}
+            ${state.phase11Unlocked ? `<button class="linklike" data-route="edges">归属修复</button>`:""}
+            ${state.finalReleaseSeen ? `<button class="linklike" data-route="releasefinal">释放1848</button>`:""}
           `:""}
           <button class="linklike" data-route="about">关于</button>
         </div>
         <div class="crumb">${canBack?`<button class="linklike" id="navBack">« 返回上页</button>　`:""}${navCrumb(crumb)}</div>
-        ${updateNoticeBox()}
         ${content}
         <div class="page-bottom-nav">${canBack?`<button class="linklike" id="navBackBottom">« 返回上页</button>　|　`:""}<button class="linklike" data-route="home">论坛首页</button>　|　<a href="#" id="backTop">返回顶部</a></div>
         <div class="footer">Powered by Side Forum 2.3　页面生成时间 0.0${Math.floor(Math.random()*9)+1}s</div>
@@ -2017,7 +1982,27 @@ function topShell(content, crumb="首页"){
       </div>`;
   }
 
-  function threadRow(t){
+  
+  function organicForumPulse(){
+    const rows=[];
+    const read=new Set(state.readThreads||[]);
+    if(event("first_anomaly") && !read.has("newcomer_2019")){
+      rows.push(`<div class="thread-row"><div><span class="badge">存档</span><a href="#" data-thread="newcomer_2019">新来的，冒个泡。</a></div><div class="small">${esc(state.username)}<br>2 回复</div><div class="small">2019-06-11 21:46</div></div>`);
+    }
+    if(state.historyExpanded && !read.has("old_2020_coop")){
+      rows.push(`<div class="thread-row"><div><a href="#" data-thread="old_2020_coop">晚上有人打那个破合作图吗</a></div><div class="small">火山<br>14 回复</div><div class="small">2020-08-07 19:07</div></div>`);
+    }
+    if(state.saw2023Index && !read.has("old_2023_visible")){
+      rows.push(`<div class="thread-row"><div><a href="#" data-thread="old_2023_visible">有人能看到这个帖子吗</a></div><div class="small">${esc(state.username)}<br>5 回复</div><div class="small">2023-08-19 01:23</div></div>`);
+    }
+    if(state.saw2024Index && !read.has("old_2024_font")){
+      rows.push(`<div class="thread-row"><div><a href="#" data-thread="old_2024_font">这个字体还有人有吗</a></div><div class="small">${esc(state.username)}<br>4 回复</div><div class="small">2024-02-04 19:10</div></div>`);
+    }
+    if(!rows.length)return "";
+    return `<div class="panel"><div class="panel-title">最近有回复的主题</div>${rows.slice(0,2).join("")}</div>`;
+  }
+
+function threadRow(t){
     const unread = state.registered && !state.readThreads.includes(t.id);
     return `
       <div class="thread-row">
@@ -2052,6 +2037,7 @@ function topShell(content, crumb="首页"){
             <div class="small">${f.last}</div>
           </div>`).join("")}
       </div>
+      ${organicForumPulse()}
       <div class="panel"><div class="panel-title">最近主题</div>${latest.map(threadRow).join("")}</div>
       <div class="panel"><div class="panel-title">在线信息</div><div class="statline">注册会员: 1847　今日: 12　在线: 7</div></div>
     ${legacyGrime("home")}
@@ -2135,9 +2121,9 @@ function topShell(content, crumb="首页"){
 
     let related="";
     if(tid==="temp_notice"){
-      related=`<div class="panel"><div class="panel-title">相关主题</div><div class="panel-body"><a href="#" class="${event('first_anomaly')?'anomaly-link':''}" data-thread="migration_2019">2019 临时账号迁移测试说明</a>${event('first_anomaly')?'<span class="anomaly-tag"> 有更新</span>':''}</div></div>`;
+      related=`<div class="panel"><div class="panel-title">相关主题</div><div class="panel-body"><a href="#" data-thread="migration_2019">2019 临时账号迁移测试说明</a></div></div>`;
     }else if(tid==="migration_2019" && event("first_anomaly")){
-      related=`<div class="panel"><div class="panel-title">存档区同期开贴</div><div class="panel-body"><a href="#" class="anomaly-link" data-thread="newcomer_2019">新来的，冒个泡。</a> <span class="anomaly-tag"> 新</span> <span class="small">2019-06-11</span></div></div>`;
+      related=`<div class="panel"><div class="panel-title">存档区同期开贴</div><div class="panel-body"><a href="#" data-thread="newcomer_2019">新来的，冒个泡。</a> <span class="small">2019-06-11　最后回复 21:46</span></div></div>`;
     }else if(tid==="newcomer_2019"){
       related=`<div class="panel"><div class="panel-title">用户</div><div class="panel-body"><a href="#" data-route="profile">${esc(state.username)}（UID 1848）</a></div></div>`;
     }
@@ -2155,7 +2141,7 @@ function topShell(content, crumb="首页"){
     const lv = profileLevel();
     let reg="今天",posts=0,replies=0;
     if(lv>=1){ reg="2019-06-11"; posts=3; replies=state.oldReplyCount; }
-    const historyButton = lv>=1 ? `<button class="btn" id="openOldProfile">旧版个人页</button>`:"";
+    const historyButton = lv>=1 ? `<button class="btn" id="openOldProfile">查看发帖记录</button>`:"";
     return topShell(`
       <div class="panel">
         <div class="panel-title">用户资料</div>
@@ -2163,7 +2149,7 @@ function topShell(content, crumb="首页"){
           <div class="profile-grid">
             <div>用户名</div><div>${esc(state.username)}</div>
             <div>UID</div><div>1848</div>
-            <div>注册时间</div><div class="${lv>=1?'anomaly-field':''}">${reg}${lv>=1?'<span class="anomaly-tag"> 更新</span>':''}</div>
+            <div>注册时间</div><div>${reg}</div>
             <div>最后登录</div><div>今天</div>
             <div>发帖</div><div>${posts}</div>
             <div>回复</div><div>${replies}</div>
@@ -2243,8 +2229,147 @@ function topShell(content, crumb="首页"){
     `,`首页 › ${esc(state.username)} › 历史记录`);
   }
 
+
+  function stallMark(key,on){
+    state.stallSince=state.stallSince||{};
+    if(on){
+      if(state.stallSince[key]==null) state.stallSince[key]=state.forumVisits||0;
+    }else{
+      delete state.stallSince[key];
+    }
+  }
+  function stalled(key,after=4){
+    const n=(state.stallSince||{})[key];
+    return n!=null && (state.forumVisits||0)-n>=after;
+  }
+  function syncStallMarks(){
+    stallMark("old_coop", state.historyExpanded && state.volcanoNoticed && !state.volcanoEvidenceSeen);
+    stallMark("source_compare", state.sourceCompareUnlocked && (!state.holder2023Known || !state.holder2024Known));
+    stallMark("relation_phase", state.phase5Unlocked && !state.unlink2023Done);
+    stallMark("nas_release", state.nasUnlocked && !state.releaseTestSeen);
+    stallMark("outside_qmark", state.phase6Unlocked && !state.qmarkOutsideSeen);
+    stallMark("feb12", state.pigeonFinalUnlocked && (state.pigeonFinalStep||1)<7);
+    stallMark("forsn", state.phase7Unlocked && !state.forSnSeen);
+    stallMark("candidate", state.rawCsvSeen && !state.forceConfirmRevealSeen);
+    stallMark("wjc", state.phase8Unlocked && !state.relationCodeSeen);
+    stallMark("temp1848", state.phase9Unlocked && !state.tempPatchSeen);
+    stallMark("helper_audit", state.helperSeen && !state.evidenceAuditSeen);
+    stallMark("snapshots", state.phase10Unlocked && !state.replaySeen && !state.hiddenRunDone);
+    stallMark("edges", state.phase11Unlocked && !state.edgeAuditDone);
+  }
+
   function pmData(){
+    syncStallMarks();
     const pms = [];
+
+
+    if(stalled("edges",5)){
+      pms.push({id:"stall_edges",from:"E",time:"刚刚",preview:"我把那几个人的凭据分开了。",body:[
+        ["E","我把那几个人的凭据分开了。"],
+        ["火山","哪几个人。"],
+        ["E","Adam、未见财、？？、鸽子。"],
+        ["E","先别再按账号名往一起并。"]
+      ]});
+    }
+    if(stalled("snapshots",5)){
+      pms.push({id:"stall_snap",from:"Hanlexios",time:"刚刚",preview:"旧盘里还有个 snapshots 目录。",body:[
+        ["Hanlexios","旧盘里还有个 snapshots 目录。"],
+        ["E","哪年的。"],
+        ["Hanlexios","乱七八糟，最早2009。"],
+        ["司南","B库那份也在？"],
+        ["Hanlexios","在。"]
+      ]});
+    }
+    if(stalled("helper_audit",4)){
+      pms.push({id:"stall_helper",from:"E",time:"刚刚",preview:"火山那份联系人导出先别当离线证据。",body:[
+        ["E","火山那份联系人导出先别当离线证据。"],
+        ["火山","为什么。"],
+        ["E","Helper会写名字进去。"],
+        ["Hanlexios","我那边2019以后没装，可以对一下。"]
+      ]});
+    }
+    if(stalled("temp1848",4)){
+      pms.push({id:"stall_temp",from:"Hanlexios",time:"刚刚",preview:"2018那份SQL后面还有TEMP_USER。",body:[
+        ["Hanlexios","2018那份SQL后面还有TEMP_USER。"],
+        ["E","1848那段？"],
+        ["Hanlexios","嗯。"],
+        ["Hanlexios","看起来是先把原来的东西搬出去，再把1848空出来。"]
+      ]});
+    }
+    if(stalled("wjc",4)){
+      pms.push({id:"stall_wjc",from:"E",time:"刚刚",preview:"1261那份打印页对上名字了。",body:[
+        ["E","1261那份打印页对上名字了。"],
+        ["火山","谁。"],
+        ["E","未见财。"],
+        ["司南","那relation 1.9也能对上。"]
+      ]});
+    }
+    if(stalled("candidate",4)){
+      pms.push({id:"stall_candidate",from:"司南",time:"刚刚",preview:"预览器把名字补上了，原文件没写。",body:[
+        ["司南","预览器把名字补上了，原文件没写。"],
+        [state.username,"那原文件写什么。"],
+        ["司南","usr_1848。"],
+        ["E","先看原始的。"]
+      ]});
+    }
+    if(stalled("forsn",4)){
+      pms.push({id:"stall_forsn",from:"司南",time:"刚刚",preview:"Adam那包我找到了。",body:[
+        ["司南","Adam那包我找到了。"],
+        ["E","哪包。"],
+        ["司南","for_sn.zip。2018那份。"],
+        ["E","别改文件。"]
+      ]});
+    }
+    if(stalled("feb12",5)){
+      pms.push({id:"stall_feb12",from:"E",time:"刚刚",preview:"02/12那晚的几份时间能拼上。",body:[
+        ["E","02/12那晚的几份时间能拼上。"],
+        ["火山","拼到哪。"],
+        ["E","00:31以后。"],
+        ["E","后面还有。"]
+      ]});
+    }
+    if(stalled("outside_qmark",4)){
+      pms.push({id:"stall_outside",from:"火山",time:"刚刚",preview:"？？那个站外账号后来还在发东西。",body:[
+        ["火山","？？那个站外账号后来还在发东西。"],
+        [state.username,"哪儿。"],
+        ["火山","以前贴过的Paste。"],
+        ["E","把日期留着。"]
+      ]});
+    }
+    if(stalled("nas_release",4)){
+      pms.push({id:"stall_nas",from:"E",time:"刚刚",preview:"NAS里2024那个目录还有个release_test。",body:[
+        ["E","NAS里2024那个目录还有个release_test。"],
+        ["火山","鸽子留的？"],
+        ["E","文件夹这么写。"],
+        ["E","我不保证是谁写的。"]
+      ]});
+    }
+    if(stalled("relation_phase",5)){
+      pms.push({id:"stall_relation",from:"司南",time:"刚刚",preview:"关联页那条1094→1848还在。",body:[
+        ["司南","关联页那条1094→1848还在。"],
+        [state.username,"哪年的。"],
+        ["司南","不止一年。"],
+        ["E","先看记录，别点确认。"]
+      ]});
+    }
+    if(stalled("source_compare",5)){
+      pms.push({id:"stall_sources",from:"Hanlexios",time:"刚刚",preview:"2023那页打印版和RSS我都留了。",body:[
+        ["Hanlexios","2023那页打印版和RSS我都留了。"],
+        [state.username,"一样吗。"],
+        ["Hanlexios","不完全一样。"],
+        ["Hanlexios","2024那份也有类似的。"]
+      ]});
+    }
+    if(stalled("old_coop",5)){
+      pms.push({id:"stall_coop",from:"火山",time:"刚刚",preview:"我翻到以前那个合作图帖了。",body:[
+        ["火山","我翻到以前那个合作图帖了。"],
+        ["火山","2020的。"],
+        [state.username,"怎么了。"],
+        ["火山","里面1848说“我来”。"],
+        ["火山","后面我还回了句“老地方”。"],
+        ["火山","这句我有点印象。"]
+      ]});
+    }
 
     if(state.futureDbSeen && !state.adamTruthSeen){
       pms.push({
@@ -2478,6 +2603,18 @@ function topShell(content, crumb="首页"){
       });
     }
 
+    if(event("first_anomaly") && !state.saw2019Twin && (state.forumVisits||0)>=4){
+      pms.push({
+        id:"v_archive",from:"火山",time:"刚刚",preview:"你刚翻的是存档区？",body:[
+          ["火山","你刚翻的是存档区？"],
+          [state.username,"嗯。"],
+          ["火山","那边居然还能按最后回复排。"],
+          ["火山","我刚看到个 2019 的老帖被顶在前面。"],
+          ["火山","标题跟你刚发那个一样。"]
+        ]
+      });
+    }
+
     if(state.saw2019Twin || state.searched1848){
       pms.push({
         id:"e2",from:"E",time:"刚刚",preview:"你主页现在写的哪年？",body:[
@@ -2544,7 +2681,7 @@ function topShell(content, crumb="首页"){
         <div class="panel-title">短消息</div>
         ${pms.map(pm=>`
           <div class="pm ${!(state.readPMs||[]).includes(pm.id)?'pm-unread':''}">
-            <div class="pm-head">${!(state.readPMs||[]).includes(pm.id)?'<span class="badge blink-soft">新</span> ':''}<a href="#" data-pm="${pm.id}" class="pm-from">${esc(pm.from)}</a><span class="small">${esc(pm.time)}</span></div>
+            <div class="pm-head"><a href="#" data-pm="${pm.id}" class="pm-from">${esc(pm.from)}${!(state.readPMs||[]).includes(pm.id)?' <span class="badge blink-soft">新</span>':''}</a><span class="small">${esc(pm.time)}</span></div>
             <div class="pm-preview">${esc(pm.preview)}</div>
           </div>`).join("")}
         ${(state.ordinaryPMs||[]).map(pm=>`<div class="pm"><div class="pm-head">发给 ${esc(pm.to)} <span class="small">刚刚</span></div><div class="pm-preview">${esc(pm.text)}</div></div>`).join("")}
@@ -4841,6 +4978,7 @@ ${keys.map(k=>`${k}=${String(state[k])}`).join("<br>")}
     state.visibilityKnown = state.visibilityKnown || {};
     state.pendingSections = state.pendingSections || [];
     state.pendingPageUpdates = state.pendingPageUpdates || [];
+    state.stallSince = state.stallSince || {};
     state.edgeAssignments = state.edgeAssignments || {};
     state.identityLocks = Object.assign({adam:false,wjc:false,qmark:false,pigeon:false}, state.identityLocks || {});
     state.hiddenConfig = Object.assign({reference:"historical",offline:"enabled",unresolved:"majority"}, state.hiddenConfig || {});
